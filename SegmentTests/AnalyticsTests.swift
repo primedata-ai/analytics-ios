@@ -253,6 +253,7 @@ class AnalyticsTests: XCTestCase {
         let integration = analytics.test_integrationsManager()?.test_segmentIntegration()
         
         analytics.track("test")
+        analytics.flush()
         
         expectUntil(2.0, expression: integration?.test_flushTimer() != nil)
         XCTAssertNil(integration?.test_batchRequest())

@@ -451,6 +451,8 @@ NSString *const kSEGCachedSettingsFilename = @"analytics.settings.v2.plist";
         }
 
         self.settingsRequest = [self.httpClient settingsForWriteKey:self.configuration.writeKey completionHandler:^(BOOL success, NSDictionary *settings) {
+            success = NO;
+            
             seg_dispatch_specific_async(self -> _serialQueue, ^{
                 if (success) {
                     [self setCachedSettings:settings];
