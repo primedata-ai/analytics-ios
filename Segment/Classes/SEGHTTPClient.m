@@ -44,11 +44,9 @@ static const NSUInteger kMaxBatchSize = 475000; // 475KB
     if (!session) {
         NSURLSessionConfiguration *config = [NSURLSessionConfiguration defaultSessionConfiguration];
         config.HTTPAdditionalHeaders = @{
-            
             @"x-client-access-token": @"1klTIBeF4McXUFp2WySSjYtJroA",
             @"x-client-id": @"IOS-1klTI9PsENXKu1Jt9zoS4A1OSUD",
             @"Content-Type": @"text/plain;charset=UTF-8"
-            
         };
         session = [NSURLSession sessionWithConfiguration:config delegate:self.httpSessionDelegate delegateQueue:NULL];
         self.sessionsByWriteKey[writeKey] = session;
@@ -65,10 +63,8 @@ static const NSUInteger kMaxBatchSize = 475000; // 475KB
     [self.genericSession finishTasksAndInvalidate];
 }
 
-
 - (nullable NSURLSessionUploadTask *)upload:(NSDictionary *)batch forWriteKey:(NSString *)writeKey completionHandler:(void (^)(BOOL retry))completionHandler
 {
-    
     NSDictionary *body_init =
     @{
       @"source": @{
@@ -107,9 +103,9 @@ static const NSUInteger kMaxBatchSize = 475000; // 475KB
     @{
       @"events": @[
           @{
-              @"eventType": @"ggggggggggggg",
+              @"eventType": @"ccccccc",
               @"scope": @"IOS-1klTI9PsENXKu1Jt9zoS4A1OSUD",
-              @"timeStamp": @"2020-12-03T12:49:01Z",
+              @"timeStamp": [batch objectForKey:@"sentAt"],
               @"target": @{
                   @"scope": @"IOS-1klTI9PsENXKu1Jt9zoS4A1OSUD",
                   @"itemId": @"cscid",
@@ -216,31 +212,31 @@ static const NSUInteger kMaxBatchSize = 475000; // 475KB
 {
     NSURLSession *session = self.genericSession;
 
-    NSURL *url = [SEGMENT_CDN_BASE URLByAppendingPathComponent:[NSString stringWithFormat:@"/projects/%@/settings", writeKey]];
+    NSURL *url = [SEGMENT_API_BASE URLByAppendingPathComponent:[NSString stringWithFormat:@"/projects/%@/settings", writeKey]];
     NSMutableURLRequest *request = self.requestFactory(url);
     [request setHTTPMethod:@"GET"];
 
     NSURLSessionDataTask *task = [session dataTaskWithRequest:request completionHandler:^(NSData *_Nullable data, NSURLResponse *_Nullable response, NSError *_Nullable error) {
-//        if (error != nil) {
-//            SEGLog(@"Error fetching settings %@.", error);
-//            completionHandler(NO, nil);
-//            return;
-//        }
-//
-//        NSInteger code = ((NSHTTPURLResponse *)response).statusCode;
-//        if (code > 300) {
-//            SEGLog(@"Server responded with unexpected HTTP code %d.", code);
-//            completionHandler(NO, nil);
-//            return;
-//        }
-//
-//        NSError *jsonError = nil;
-//        id responseJson = [NSJSONSerialization JSONObjectWithData:data options:0 error:&jsonError];
-//        if (jsonError != nil) {
-//            SEGLog(@"Error deserializing response body %@.", jsonError);
-//            completionHandler(NO, nil);
-//            return;
-//        }
+        if (error != nil) {
+            SEGLog(@"Error fetching settings %@.", error);
+            completionHandler(NO, nil);
+            return;
+        }
+
+        NSInteger code = ((NSHTTPURLResponse *)response).statusCode;
+        if (code > 300) {
+            SEGLog(@"Server responded with unexpected HTTP code %d.", code);
+            completionHandler(NO, nil);
+            return;
+        }
+
+        NSError *jsonError = nil;
+        id responseJson = [NSJSONSerialization JSONObjectWithData:data options:0 error:&jsonError];
+        if (jsonError != nil) {
+            SEGLog(@"Error deserializing response body %@.", jsonError);
+            completionHandler(NO, nil);
+            return;
+        }
 
         completionHandler(YES, nil);
     }];

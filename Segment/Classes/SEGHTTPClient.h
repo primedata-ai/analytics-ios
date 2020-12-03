@@ -3,10 +3,7 @@
 
 // TODO: Make this configurable via SEGAnalyticsConfiguration
 // NOTE: `/` at the end kind of screws things up. So don't use it
-//#define SEGMENT_API_BASE [NSURL URLWithString:@"https://api-segment-io-5fsaj1xnikhp.runscope.net/v1"]
-//#define SEGMENT_CDN_BASE [NSURL URLWithString:@"https://cdn-segment-com-5fsaj1xnikhp.runscope.net/v1"]
-#define SEGMENT_API_BASE [NSURL URLWithString:@"https://powehi.primedata.ai"] 
-#define SEGMENT_CDN_BASE [NSURL URLWithString:@"https://cdn-settings.segment.com/v1"]
+#define SEGMENT_API_BASE [NSURL URLWithString:@"https://powehi.primedata.ai"]
 
 NS_ASSUME_NONNULL_BEGIN
 
