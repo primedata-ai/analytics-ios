@@ -445,44 +445,52 @@ NSString *const kSEGCachedSettingsFilename = @"analytics.settings.v2.plist";
 
 - (void)refreshSettings
 {
-    seg_dispatch_specific_async(_serialQueue, ^{
-        if (self.settingsRequest) {
-            return;
-        }
-
-        self.settingsRequest = [self.httpClient settingsForWriteKey:self.configuration.writeKey completionHandler:^(BOOL success, NSDictionary *settings) {
-            seg_dispatch_specific_async(self -> _serialQueue, ^{
-                if (success) {
-                    [self setCachedSettings:settings];
-                    [self configureEdgeFunctions:settings];
-                } else {
-                    NSDictionary *previouslyCachedSettings = [self cachedSettings];
-                    if (previouslyCachedSettings && [previouslyCachedSettings count] > 0) {
-                        [self setCachedSettings:previouslyCachedSettings];
-                        [self configureEdgeFunctions:settings];
-                    } else if (self.configuration.defaultSettings != nil) {
-                        // If settings request fail, load a user-supplied version if present.
-                        // but make sure segment.io is in the integrations
-                        NSMutableDictionary *newSettings = [self.configuration.defaultSettings serializableMutableDeepCopy];
-                        newSettings[@"integrations"][@"Segment.io"][@"apiKey"] = self.configuration.writeKey;
-                        [self setCachedSettings:newSettings];
-                        // don't configure edge functions here.  it'll do the right thing on it's own.
-                    } else {
-                        // If settings request fail, fall back to using just Segment integration.
-                        // Doesn't address situations where this callback never gets called (though we don't expect that to ever happen).
-                        [self setCachedSettings:@{
-                            @"integrations" : @{
-                                @"Segment.io" : @{@"apiKey" : self.configuration.writeKey},
-                            },
-                            @"plan" : @{@"track" : @{}}
-                        }];
-                        // don't configure edge functions here.  it'll do the right thing on it's own.
-                    }
-                }
-                self.settingsRequest = nil;
-            });
-        }];
-    });
+    [self setCachedSettings:@{
+                               @"integrations" : @{
+                                   @"Segment.io" : @{@"apiKey" : self.configuration.writeKey},
+                               },
+                               @"plan" : @{@"track" : @{}}
+                           }];
+//    seg_dispatch_specific_async(_serialQueue, ^{
+//        if (self.settingsRequest) {
+//            return;
+//        }
+//
+//        self.settingsRequest = [self.httpClient settingsForWriteKey:self.configuration.writeKey completionHandler:^(BOOL success, NSDictionary *settings) {
+//            success = NO;
+//
+//            seg_dispatch_specific_async(self -> _serialQueue, ^{
+//                if (success) {
+//                    [self setCachedSettings:settings];
+//                    [self configureEdgeFunctions:settings];
+//                } else {
+//                    NSDictionary *previouslyCachedSettings = [self cachedSettings];
+//                    if (previouslyCachedSettings && [previouslyCachedSettings count] > 0) {
+//                        [self setCachedSettings:previouslyCachedSettings];
+//                        [self configureEdgeFunctions:settings];
+//                    } else if (self.configuration.defaultSettings != nil) {
+//                        // If settings request fail, load a user-supplied version if present.
+//                        // but make sure segment.io is in the integrations
+//                        NSMutableDictionary *newSettings = [self.configuration.defaultSettings serializableMutableDeepCopy];
+//                        newSettings[@"integrations"][@"Segment.io"][@"apiKey"] = self.configuration.writeKey;
+//                        [self setCachedSettings:newSettings];
+//                        // don't configure edge functions here.  it'll do the right thing on it's own.
+//                    } else {
+//                        // If settings request fail, fall back to using just Segment integration.
+//                        // Doesn't address situations where this callback never gets called (though we don't expect that to ever happen).
+//                        [self setCachedSettings:@{
+//                            @"integrations" : @{
+//                                @"Segment.io" : @{@"apiKey" : self.configuration.writeKey},
+//                            },
+//                            @"plan" : @{@"track" : @{}}
+//                        }];
+//                        // don't configure edge functions here.  it'll do the right thing on it's own.
+//                    }
+//                }
+//                self.settingsRequest = nil;
+//            });
+//        }];
+//    });
 }
 
 #pragma mark - Private
