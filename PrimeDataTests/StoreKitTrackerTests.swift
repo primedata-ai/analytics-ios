@@ -46,7 +46,7 @@ class StoreKitTrackerTests: XCTestCase {
     
     override func setUp() {
         super.setUp()
-        let config = AnalyticsConfiguration(writeKey: "foobar")
+        let config = AnalyticsConfiguration(writeKey: "foobar", andScopeKey:"IOS-bfiahefiohjsad0f0-9sdaujfd")
         test = TestMiddleware()
         config.sourceMiddleware = [test]
         analytics = Analytics(configuration: config)

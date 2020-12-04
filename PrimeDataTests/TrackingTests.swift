@@ -17,7 +17,7 @@ class TrackingTests: XCTestCase {
     
     override func setUp() {
         super.setUp()
-        let config = AnalyticsConfiguration(writeKey: "1klTIBeF4McXUFp2WySSjYtJroA")
+        let config = AnalyticsConfiguration(writeKey: "1klTIBeF4McXUFp2WySSjYtJroA", andScopeKey:"IOS-bfiahefiohjsad0f0-9sdaujfd")
         config.flushAt = 1
         passthrough = PassthroughMiddleware()
         config.sourceMiddleware = [

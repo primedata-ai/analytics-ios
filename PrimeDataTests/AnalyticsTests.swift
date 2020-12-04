@@ -12,7 +12,7 @@ import XCTest
 
 class AnalyticsTests: XCTestCase {
     
-    let config = AnalyticsConfiguration(writeKey: "QUI5ydwIGeFFTa1IvCBUhxL9PyW5B0jE")
+    let config = AnalyticsConfiguration(writeKey: "QUI5ydwIGeFFTa1IvCBUhxL9PyW5B0jE", andScopeKey:"IOS-bfiahefiohjsad0f0-9sdaujfd")
     let cachedSettings = [
         "integrations": [
             "PrimeData.io": ["apiKey": "QUI5ydwIGeFFTa1IvCBUhxL9PyW5B0jE"]
@@ -67,7 +67,7 @@ class AnalyticsTests: XCTestCase {
                 initialized = true
             }
         }
-        let config2 = AnalyticsConfiguration(writeKey: "TESTKEY")
+        let config2 = AnalyticsConfiguration(writeKey: "TESTKEY", andScopeKey:"IOS-bfiahefiohjsad0f0-9sdaujfd")
         config2.use(webhookIntegration)
         let analytics2 = Analytics(configuration: config2)
         let factoryList = (config2.value(forKey: "factories") as? NSMutableArray)

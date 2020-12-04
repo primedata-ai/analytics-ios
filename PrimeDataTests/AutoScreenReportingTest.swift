@@ -16,7 +16,7 @@ class AutoScreenReportingTests: XCTestCase {
     override func setUp() {
         super.setUp()
         
-        let config = AnalyticsConfiguration(writeKey: "foobar")
+        let config = AnalyticsConfiguration(writeKey: "foobar", andScopeKey:"IOS-bfiahefiohjsad0f0-9sdaujfd")
         config.trackApplicationLifecycleEvents = true
         config.recordScreenViews = true
         
