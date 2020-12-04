@@ -27,7 +27,7 @@
 		EAA5427D1EB42B8C00945DA7 /* PDReachability.h in Headers */ = {isa = PBXBuildFile; fileRef = EAA5427B1EB42B8C00945DA7 /* PDReachability.h */; };
 		EAA5427E1EB42B8C00945DA7 /* PDReachability.m in Sources */ = {isa = PBXBuildFile; fileRef = EAA5427C1EB42B8C00945DA7 /* PDReachability.m */; };
 		EAA542801EB4382100945DA7 /* StoreKitTrackerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = EAA5427F1EB4382100945DA7 /* StoreKitTrackerTests.swift */; };
-		EADEB8601DECD080005322DA /* Segment.h in Headers */ = {isa = PBXBuildFile; fileRef = EADEB85E1DECD080005322DA /* Segment.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		EADEB8601DECD080005322DA /* PrimeData.h in Headers */ = {isa = PBXBuildFile; fileRef = EADEB85E1DECD080005322DA /* PrimeData.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		EADEB8AE1DECD12B005322DA /* PDAES256Crypto.h in Headers */ = {isa = PBXBuildFile; fileRef = EADEB8781DECD12B005322DA /* PDAES256Crypto.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		EADEB8AF1DECD12B005322DA /* PDAES256Crypto.m in Sources */ = {isa = PBXBuildFile; fileRef = EADEB8791DECD12B005322DA /* PDAES256Crypto.m */; };
 		EADEB8B01DECD12B005322DA /* PDCrypto.h in Headers */ = {isa = PBXBuildFile; fileRef = EADEB87A1DECD12B005322DA /* PDCrypto.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -121,7 +121,7 @@
 		EAA5427C1EB42B8C00945DA7 /* PDReachability.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PDReachability.m; sourceTree = "<group>"; };
 		EAA5427F1EB4382100945DA7 /* StoreKitTrackerTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = StoreKitTrackerTests.swift; path = SegmentTests/StoreKitTrackerTests.swift; sourceTree = SOURCE_ROOT; };
 		EADEB85B1DECD080005322DA /* Segment.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Segment.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		EADEB85E1DECD080005322DA /* Segment.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Segment.h; sourceTree = "<group>"; };
+		EADEB85E1DECD080005322DA /* PrimeData.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PrimeData.h; sourceTree = "<group>"; };
 		EADEB85F1DECD080005322DA /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		EADEB86A1DECD0EF005322DA /* SegmentTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SegmentTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		EADEB8781DECD12B005322DA /* PDAES256Crypto.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PDAES256Crypto.h; sourceTree = "<group>"; };
@@ -280,7 +280,7 @@
 		EADEB8751DECD12B005322DA /* Classes */ = {
 			isa = PBXGroup;
 			children = (
-				EADEB85E1DECD080005322DA /* Segment.h */,
+				EADEB85E1DECD080005322DA /* PrimeData.h */,
 				EADEB87C1DECD12B005322DA /* PDAliasPayload.h */,
 				EADEB87D1DECD12B005322DA /* PDAliasPayload.m */,
 				EADEB8A91DECD12B005322DA /* PDAnalytics.h */,
@@ -406,7 +406,7 @@
 				EADEB8D21DECD12B005322DA /* PDUserDefaultsStorage.h in Headers */,
 				EADEB8D01DECD12B005322DA /* PDStoreKitTracker.h in Headers */,
 				EADEB8D41DECD12B005322DA /* PDUtils.h in Headers */,
-				EADEB8601DECD080005322DA /* Segment.h in Headers */,
+				EADEB8601DECD080005322DA /* PrimeData.h in Headers */,
 				EADEB8C31DECD12B005322DA /* PDAnalyticsUtils.h in Headers */,
 				EADEB8B91DECD12B005322DA /* PDIntegrationsManager.h in Headers */,
 				630FC8EA2107F2A500A759C5 /* PDScreenReporting.h in Headers */,
