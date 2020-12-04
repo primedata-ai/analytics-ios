@@ -68,7 +68,8 @@
         self.shouldUseLocationServices = NO;
         self.enableAdvertisingTracking = YES;
         self.shouldUseBluetooth = NO;
-        self.flushAt = 20;
+        self.flushAt = 1;
+        self.sessionTimeout = 30;
         self.flushInterval = 30;
         self.maxQueueSize = 1000;
         self.payloadFilters = @{

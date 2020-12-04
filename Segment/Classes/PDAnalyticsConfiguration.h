@@ -87,6 +87,11 @@ NS_SWIFT_NAME(AnalyticsConfiguration)
 @property (nonatomic, assign) NSUInteger flushAt;
 
 /**
+* The Session Time Out number in minutes. `30` by default.
+*/
+@property (nonatomic, assign) NSUInteger sessionTimeout;
+
+/**
  * The amount of time to wait before each tick of the flush timer.
  * Smaller values will make events delivered in a more real-time manner and also use more battery.
  * A value smaller than 10 seconds will seriously degrade overall performance.
