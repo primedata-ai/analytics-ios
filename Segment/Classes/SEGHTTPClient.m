@@ -65,77 +65,78 @@ static const NSUInteger kMaxBatchSize = 475000; // 475KB
 
 - (nullable NSURLSessionUploadTask *)upload:(NSDictionary *)batch forWriteKey:(NSString *)writeKey completionHandler:(void (^)(BOOL retry))completionHandler
 {
-    NSDictionary *body_init =
-    @{
-      @"source": @{
-          @"scope": @"IOS-1klTI9PsENXKu1Jt9zoS4A1OSUD",
-          @"itemId": @"home",
-          @"itemType": @"screen",
-          @"properties": @{
-              @"screen_width": @"1024",
-              @"screen_height": @"2048",
-              @"connection_type": @"iOS-Intel",
-              @"device_id": @"0000.0000.0000.0000",
-          }
-      },
-      @"sendAt": [batch objectForKey:@"sentAt"],
-      @"events": @[@{
-              @"eventType": @"search_by_cscid",
-              @"scope": @"IOS-1klTI9PsENXKu1Jt9zoS4A1OSUD",
-              @"timeStamp": [batch objectForKey:@"sentAt"],
-              @"target": @{
-                  @"scope": @"IOS-1klTI9PsENXKu1Jt9zoS4A1OSUD",
-                  @"itemId": @"home",
-                  @"itemType": @"screen"
-              },
-              @"source": @{
-                  @"scope": @"IOS-1klTI9PsENXKu1Jt9zoS4A1OSUD",
-                  @"itemId": @"home",
-                  @"itemType": @"screen"
-              }
-          },
-      ],
-      
-      @"sessionId": @"257eb9a0-352b-11eb-8ae6-53f6a0677ce9"
-    };
-    
-    NSDictionary *body_track =
-    @{
-      @"events": @[
-          @{
-              @"eventType": @"ccccccc",
-              @"scope": @"IOS-1klTI9PsENXKu1Jt9zoS4A1OSUD",
-              @"timeStamp": [batch objectForKey:@"sentAt"],
-              @"target": @{
-                  @"scope": @"IOS-1klTI9PsENXKu1Jt9zoS4A1OSUD",
-                  @"itemId": @"cscid",
-                  @"itemType": @"search_by_cscid",
-                  @"properties": @{
-                      @"value": @"aaa",
-                  }
-              },
-              @"source": @{
-                  @"scope": @"IOS-1klTI9PsENXKu1Jt9zoS4A1OSUD",
-                  @"itemId": @"home",
-                  @"itemType": @"screen",
-                  @"properties": @{
-                      @"screenInfo": @{
-                          @"screenName": @"Home",
-                          @"screenPath": @"Home"
-                      },
-                      @"attributes": @[],
-                      @"consentTypes": @[],
-                      @"interests": @{}
-                  }
-              },
-              @"properties": @{}
-          }
-      ],
-      
-      @"sessionId": @"257eb9a0-352b-11eb-8ae6-53f6a0677ce9"
-    };
-    
-    batch = body_track;
+//    NSDictionary *body_init =
+//    @{
+//      @"source": @{
+//          @"scope": @"IOS-1klTI9PsENXKu1Jt9zoS4A1OSUD",
+//          @"itemId": @"home",
+//          @"itemType": @"screen",
+//          @"properties": @{
+//              @"screen_width": @"1024",
+//              @"screen_height": @"2048",
+//              @"connection_type": @"iOS-Intel",
+//              @"device_id": @"0000.0000.0000.0000",
+//          }
+//      },
+//      @"sendAt": [batch objectForKey:@"sentAt"],
+//      @"events": @[@{
+//              @"eventType": @"search_by_cscid",
+//              @"scope": @"IOS-1klTI9PsENXKu1Jt9zoS4A1OSUD",
+//              @"timeStamp": [batch objectForKey:@"sentAt"],
+//              @"target": @{
+//                  @"scope": @"IOS-1klTI9PsENXKu1Jt9zoS4A1OSUD",
+//                  @"itemId": @"home",
+//                  @"itemType": @"screen"
+//              },
+//              @"source": @{
+//                  @"scope": @"IOS-1klTI9PsENXKu1Jt9zoS4A1OSUD",
+//                  @"itemId": @"home",
+//                  @"itemType": @"screen"
+//              }
+//          },
+//      ],
+//
+//      @"sessionId": @"257eb9a0-352b-11eb-8ae6-53f6a0677ce9"
+//    };
+//
+//    NSDictionary *body_track =
+//    @{
+//      @"events": @[
+//          @{
+//              @"eventType": @"ccccccc",
+//              @"scope": @"IOS-1klTI9PsENXKu1Jt9zoS4A1OSUD",
+//              @"timeStamp": [batch objectForKey:@"sentAt"],
+//              @"target": @{
+//                  @"scope": @"IOS-1klTI9PsENXKu1Jt9zoS4A1OSUD",
+//                  @"itemId": @"cscid",
+//                  @"itemType": @"search_by_cscid",
+//                  @"properties": @{
+//                      @"value": @"aaa",
+//                  }
+//              },
+//              @"source": @{
+//                  @"scope": @"IOS-1klTI9PsENXKu1Jt9zoS4A1OSUD",
+//                  @"itemId": @"home",
+//                  @"itemType": @"screen",
+//                  @"properties": @{
+//                      @"screenInfo": @{
+//                          @"screenName": @"Home",
+//                          @"screenPath": @"Home"
+//                      },
+//                      @"attributes": @[],
+//                      @"consentTypes": @[],
+//                      @"interests": @{}
+//                  }
+//              },
+//              @"properties": @{}
+//          }
+//      ],
+//
+//      @"sessionId": @"257eb9a0-352b-11eb-8ae6-53f6a0677ce9"
+//    };
+//
+//    batch = body_track;
+
     //    batch = SEGCoerceDictionary(batch);
     NSURLSession *session = [self sessionForWriteKey:writeKey];
 

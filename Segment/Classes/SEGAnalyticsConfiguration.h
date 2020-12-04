@@ -57,7 +57,7 @@ NS_SWIFT_NAME(AnalyticsConfiguration)
  *
  * @param writeKey Your project's write key from segment.io.
  */
-+ (_Nonnull instancetype)configurationWithWriteKey:(NSString *_Nonnull)writeKey;
++ (_Nonnull instancetype)configurationWithWriteKey:(NSString *_Nonnull)writeKey andScopeKey:(NSString *_Nonnull)scopeKey;
 
 /**
  * Your project's write key from segment.io.
@@ -65,6 +65,9 @@ NS_SWIFT_NAME(AnalyticsConfiguration)
  * @see +configurationWithWriteKey:
  */
 @property (nonatomic, copy, readonly, nonnull) NSString *writeKey;
+
+
+@property (nonatomic, copy, readonly, nonnull) NSString *scopeKey;
 
 /**
  * Whether the analytics client should use location services.

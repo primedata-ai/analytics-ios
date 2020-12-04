@@ -3,7 +3,8 @@
 
 // TODO: Make this configurable via SEGAnalyticsConfiguration
 // NOTE: `/` at the end kind of screws things up. So don't use it
-#define SEGMENT_API_BASE [NSURL URLWithString:@"https://powehi.primedata.ai"]
+//#define SEGMENT_API_BASE [NSURL URLWithString:@"https://powehi.primedata.ai"]
+#define SEGMENT_API_BASE [NSURL URLWithString:@"https://abcdefabcdefabcdef.abcdefabcdefabcdef.com"]
 
 NS_ASSUME_NONNULL_BEGIN
 

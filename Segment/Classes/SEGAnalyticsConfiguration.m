@@ -38,6 +38,7 @@
 @interface SEGAnalyticsConfiguration ()
 
 @property (nonatomic, copy, readwrite) NSString *writeKey;
+@property (nonatomic, copy, readwrite) NSString *scopeKey;
 @property (nonatomic, strong, readonly) NSMutableArray *factories;
 @property (nonatomic, strong) SEGAnalyticsExperimental *experimental;
 
@@ -46,15 +47,16 @@
 
 @implementation SEGAnalyticsConfiguration
 
-+ (instancetype)configurationWithWriteKey:(NSString *)writeKey
++ (instancetype)configurationWithWriteKey:(NSString *)writeKey andScopeKey:(NSString *)scopeKey
 {
-    return [[SEGAnalyticsConfiguration alloc] initWithWriteKey:writeKey];
+    return [[SEGAnalyticsConfiguration alloc] initWithWriteKey:writeKey andScopeKey:scopeKey];
 }
 
-- (instancetype)initWithWriteKey:(NSString *)writeKey
+- (instancetype)initWithWriteKey:(NSString *)writeKey andScopeKey:(NSString *)scopeKey
 {
     if (self = [self init]) {
         self.writeKey = writeKey;
+        self.scopeKey = scopeKey;
     }
     return self;
 }
