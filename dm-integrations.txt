@@ -1,4 +1,4 @@
-Segment Owned
+PrimeData Owned
 -------------
 analytics-ios-integration-firebase
 analytics-ios-integration-amplitude

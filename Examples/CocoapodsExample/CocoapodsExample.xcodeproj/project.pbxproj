@@ -132,7 +132,7 @@
 			isa = PBXProject;
 			attributes = {
 				LastUpgradeCheck = 0900;
-				ORGANIZATIONNAME = Segment;
+				ORGANIZATIONNAME = PrimeData;
 				TargetAttributes = {
 					EADEB9181DED460A005322DA = {
 						CreatedOnToolsVersion = 8.1;
@@ -197,11 +197,11 @@
 			);
 			inputPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-CocoapodsExample/Pods-CocoapodsExample-frameworks.sh",
-				"${BUILT_PRODUCTS_DIR}/Analytics/Segment.framework",
+				"${BUILT_PRODUCTS_DIR}/Analytics/PrimeData.framework",
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Segment.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/PrimeData.framework",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;

@@ -1,12 +1,12 @@
 {
   "images" : [
     {
-      "filename" : "Segment_Logo.png",
+      "filename" : "PrimeData_Logo.png",
       "idiom" : "universal",
       "scale" : "1x"
     },
     {
-      "filename" : "Segment_Logo@2x.png",
+      "filename" : "PrimeData_Logo@2x.png",
       "idiom" : "universal",
       "scale" : "2x"
     },

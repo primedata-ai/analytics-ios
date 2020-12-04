@@ -1,13 +1,13 @@
 //
 //  ViewController.swift
-//  SegmentMac
+//  PrimeDataMac
 //
 //  Created by Cody Garvin on 7/6/20.
 //  Copyright © 2020 Cody Garvin. All rights reserved.
 //
 
 import Cocoa
-import Segment
+import PrimeData
 
 class ViewController: NSViewController {
     
@@ -31,7 +31,7 @@ class ViewController: NSViewController {
         let analytics = Analytics.shared()
         
         // identify screen load
-        analytics.screen("SegmentMac")
+        analytics.screen("PrimeDataMac")
     }
 
     override var representedObject: Any? {

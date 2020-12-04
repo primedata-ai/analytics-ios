@@ -101,7 +101,7 @@
 			attributes = {
 				LastSwiftUpdateCheck = 0730;
 				LastUpgradeCheck = 0810;
-				ORGANIZATIONNAME = Segment;
+				ORGANIZATIONNAME = PrimeData;
 				TargetAttributes = {
 					EAACFE521D25BFA400668199 = {
 						CreatedOnToolsVersion = 7.3.1;

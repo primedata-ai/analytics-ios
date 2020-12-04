@@ -11,7 +11,7 @@
 		96A12BB024B3AEE200949804 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96A12BAF24B3AEE200949804 /* ViewController.swift */; };
 		96A12BB224B3AEE400949804 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 96A12BB124B3AEE400949804 /* Assets.xcassets */; };
 		96A12BB524B3AEE400949804 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 96A12BB324B3AEE400949804 /* Main.storyboard */; };
-		96E46DAA2547A9090086871C /* Segment in Frameworks */ = {isa = PBXBuildFile; productRef = 96E46DA92547A9090086871C /* Segment */; };
+		96E46DAA2547A9090086871C /* PrimeData in Frameworks */ = {isa = PBXBuildFile; productRef = 96E46DA92547A9090086871C /* PrimeData */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -28,13 +28,13 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		96A12BAA24B3AEE200949804 /* SegmentMac.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SegmentMac.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		96A12BAA24B3AEE200949804 /* PrimeDataMac.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = PrimeDataMac.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		96A12BAD24B3AEE200949804 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		96A12BAF24B3AEE200949804 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		96A12BB124B3AEE400949804 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		96A12BB424B3AEE400949804 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		96A12BB624B3AEE400949804 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		96A12BB724B3AEE400949804 /* SegmentMac.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = SegmentMac.entitlements; sourceTree = "<group>"; };
+		96A12BB724B3AEE400949804 /* PrimeDataMac.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = PrimeDataMac.entitlements; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -42,7 +42,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				96E46DAA2547A9090086871C /* Segment in Frameworks */,
+				96E46DAA2547A9090086871C /* PrimeData in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -52,7 +52,7 @@
 		96A12BA124B3AEE200949804 = {
 			isa = PBXGroup;
 			children = (
-				96A12BAC24B3AEE200949804 /* SegmentMac */,
+				96A12BAC24B3AEE200949804 /* PrimeDataMac */,
 				96A12BAB24B3AEE200949804 /* Products */,
 				96A12C0B24B65C4C00949804 /* Frameworks */,
 			);
@@ -61,12 +61,12 @@
 		96A12BAB24B3AEE200949804 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				96A12BAA24B3AEE200949804 /* SegmentMac.app */,
+				96A12BAA24B3AEE200949804 /* PrimeDataMac.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
 		};
-		96A12BAC24B3AEE200949804 /* SegmentMac */ = {
+		96A12BAC24B3AEE200949804 /* PrimeDataMac */ = {
 			isa = PBXGroup;
 			children = (
 				96A12BAD24B3AEE200949804 /* AppDelegate.swift */,
@@ -74,9 +74,9 @@
 				96A12BB124B3AEE400949804 /* Assets.xcassets */,
 				96A12BB324B3AEE400949804 /* Main.storyboard */,
 				96A12BB624B3AEE400949804 /* Info.plist */,
-				96A12BB724B3AEE400949804 /* SegmentMac.entitlements */,
+				96A12BB724B3AEE400949804 /* PrimeDataMac.entitlements */,
 			);
-			path = SegmentMac;
+			path = PrimeDataMac;
 			sourceTree = "<group>";
 		};
 		96A12C0B24B65C4C00949804 /* Frameworks */ = {
@@ -89,9 +89,9 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		96A12BA924B3AEE200949804 /* SegmentMac */ = {
+		96A12BA924B3AEE200949804 /* PrimeDataMac */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 96A12BBA24B3AEE400949804 /* Build configuration list for PBXNativeTarget "SegmentMac" */;
+			buildConfigurationList = 96A12BBA24B3AEE400949804 /* Build configuration list for PBXNativeTarget "PrimeDataMac" */;
 			buildPhases = (
 				96A12BA624B3AEE200949804 /* Sources */,
 				96A12BA724B3AEE200949804 /* Frameworks */,
@@ -102,12 +102,12 @@
 			);
 			dependencies = (
 			);
-			name = SegmentMac;
+			name = PrimeDataMac;
 			packageProductDependencies = (
-				96E46DA92547A9090086871C /* Segment */,
+				96E46DA92547A9090086871C /* PrimeData */,
 			);
-			productName = SegmentMac;
-			productReference = 96A12BAA24B3AEE200949804 /* SegmentMac.app */;
+			productName = PrimeDataMac;
+			productReference = 96A12BAA24B3AEE200949804 /* PrimeDataMac.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -125,7 +125,7 @@
 					};
 				};
 			};
-			buildConfigurationList = 96A12BA524B3AEE200949804 /* Build configuration list for PBXProject "SegmentMac" */;
+			buildConfigurationList = 96A12BA524B3AEE200949804 /* Build configuration list for PBXProject "PrimeDataMac" */;
 			compatibilityVersion = "Xcode 9.3";
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
@@ -141,7 +141,7 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				96A12BA924B3AEE200949804 /* SegmentMac */,
+				96A12BA924B3AEE200949804 /* PrimeDataMac */,
 			);
 		};
 /* End PBXProject section */
@@ -299,17 +299,17 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CODE_SIGN_ENTITLEMENTS = SegmentMac/SegmentMac.entitlements;
+				CODE_SIGN_ENTITLEMENTS = PrimeDataMac/PrimeDataMac.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
 				DEVELOPMENT_TEAM = "";
 				ENABLE_HARDENED_RUNTIME = YES;
-				INFOPLIST_FILE = SegmentMac/Info.plist;
+				INFOPLIST_FILE = PrimeDataMac/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/../Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.Segment.SegmentMac;
+				PRODUCT_BUNDLE_IDENTIFIER = com.PrimeData.PrimeDataMac;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
 			};
@@ -319,17 +319,17 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CODE_SIGN_ENTITLEMENTS = SegmentMac/SegmentMac.entitlements;
+				CODE_SIGN_ENTITLEMENTS = PrimeDataMac/PrimeDataMac.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
 				DEVELOPMENT_TEAM = "";
 				ENABLE_HARDENED_RUNTIME = YES;
-				INFOPLIST_FILE = SegmentMac/Info.plist;
+				INFOPLIST_FILE = PrimeDataMac/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/../Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.Segment.SegmentMac;
+				PRODUCT_BUNDLE_IDENTIFIER = com.PrimeData.PrimeDataMac;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
 			};
@@ -338,7 +338,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		96A12BA524B3AEE200949804 /* Build configuration list for PBXProject "SegmentMac" */ = {
+		96A12BA524B3AEE200949804 /* Build configuration list for PBXProject "PrimeDataMac" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				96A12BB824B3AEE400949804 /* Debug */,
@@ -347,7 +347,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		96A12BBA24B3AEE400949804 /* Build configuration list for PBXNativeTarget "SegmentMac" */ = {
+		96A12BBA24B3AEE400949804 /* Build configuration list for PBXNativeTarget "PrimeDataMac" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				96A12BBB24B3AEE400949804 /* Debug */,
@@ -370,10 +370,10 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
-		96E46DA92547A9090086871C /* Segment */ = {
+		96E46DA92547A9090086871C /* PrimeData */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 961C616B24BE5BA200A8B8E3 /* XCRemoteSwiftPackageReference "analytics-ios" */;
-			productName = Segment;
+			productName = PrimeData;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

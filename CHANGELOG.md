@@ -9,7 +9,7 @@ Version 4.1.1 *(27 October, 2020)*
 Version 4.1.0 *(19 October, 2020)*
 -----------------------------
 * [New](https://github.com/segmentio/analytics-ios/pull/945) Added Webhook Integration.
-* [New](https://github.com/segmentio/analytics-ios/pull/942) Renamed module from `Analytics` to `Segment`.
+* [New](https://github.com/segmentio/analytics-ios/pull/942) Renamed module from `Analytics` to `PrimeData`.
 * [Fix](https://github.com/segmentio/analytics-ios/pull/941) Removed unused mobile attribution.
 * [New](https://github.com/segmentio/analytics-ios/pull/940) Added ability for customer to make their types serializable.
 * [New](https://github.com/segmentio/analytics-ios/pull/950) Added necessary changes for Edge Functions.
@@ -153,17 +153,17 @@ Version 3.7.0-beta *(27th August, 2018)*
 Version 3.6.9 *(3rd December, 2017)*
 -------------------------------------
 
-* [Fix](https://github.com/segmentio/analytics-ios/pull/736): Reverts [ability to run connection factories asynchronously](https://github.com/segmentio/analytics-ios/pull/720). This fixes a bug in 3.6.9 that caused the library to not send events to the Segment API.
+* [Fix](https://github.com/segmentio/analytics-ios/pull/736): Reverts [ability to run connection factories asynchronously](https://github.com/segmentio/analytics-ios/pull/720). This fixes a bug in 3.6.9 that caused the library to not send events to the PrimeData API.
 
 Version 3.6.8 *(28th October, 2017)*
 -------------------------------------
 
-This version included a bug that caused the library to not send events to the Segment API. We recommend using version `3.6.9` which fixes this bug and includes all the other improvements available in this release.
+This version included a bug that caused the library to not send events to the PrimeData API. We recommend using version `3.6.9` which fixes this bug and includes all the other improvements available in this release.
 
 * [Fix](https://github.com/segmentio/analytics-ios/pull/700): Fixes some compiler warnings seen when importing analytics-ios via Swift in a Carthage project.
 * [Fix](https://github.com/segmentio/analytics-ios/pull/730): Fix crash when trying to get screen name in some cases.
 * [New](https://github.com/segmentio/analytics-ios/pull/727): Support schema defaults.
-* [New](https://github.com/segmentio/analytics-ios/pull/724): Send disabled events to Segment so they can be surfaced in the debugger. This won't be sent to any destinations.
+* [New](https://github.com/segmentio/analytics-ios/pull/724): Send disabled events to PrimeData so they can be surfaced in the debugger. This won't be sent to any destinations.
 * [Fix](https://github.com/segmentio/analytics-ios/pull/723): Fix date formatting to be RFC 3339 compliant.
 * [Fix](https://github.com/segmentio/analytics-ios/pull/715): Always deliver events asynchronously to integrations.
 
@@ -230,7 +230,7 @@ Version 3.5.5 *(30th November, 2016)*
 
 Version 3.5.4 *(28th November, 2016)*
 -------------------------------------
-* [Fix](https://github.com/segmentio/analytics-ios/commit/7d4cecbd723b6086f7d7a1df8cb0f4a1951539f3): Fall back to using Segment integration when we cannot get settings.
+* [Fix](https://github.com/segmentio/analytics-ios/commit/7d4cecbd723b6086f7d7a1df8cb0f4a1951539f3): Fall back to using PrimeData integration when we cannot get settings.
 
 Version 3.5.3 *(7th November, 2016)*
 -------------------------------------
@@ -267,7 +267,7 @@ Version 3.5.0 *(12th September, 2016)*
  [PDAnalytics setupWithConfiguration:configuration]
  ```
 
- * [New](https://github.com/segmentio/analytics-ios/commit/0c646e1c44df4134a984f1fcb741f5b1d418ab30): Add the ability for the SDK to natively report attribution information via Segment integrations enabled for your project, without needing to bundle their SDKs. Attribution information is sent as a track call as documented in the [mobile lifecycle spec](https://segment.com/docs/spec/mobile/#install-attributed).
+ * [New](https://github.com/segmentio/analytics-ios/commit/0c646e1c44df4134a984f1fcb741f5b1d418ab30): Add the ability for the SDK to natively report attribution information via PrimeData integrations enabled for your project, without needing to bundle their SDKs. Attribution information is sent as a track call as documented in the [mobile lifecycle spec](https://segment.com/docs/spec/mobile/#install-attributed).
 
  ```objc
  PDAnalyticsConfiguration *configuration = [PDAnalyticsConfiguration configurationWithWriteKey:@"YOUR_WRITE_KEY"];
@@ -300,13 +300,13 @@ Version 3.5.0 *(12th September, 2016)*
 Version 3.4.0 *(1st September, 2016)*
 -------------------------------------
 
- * [New](https://github.com/segmentio/analytics-ios/commit/d5db28ab9d15aa06b4e3a5c91f813d5c12a419a8): Adds a `PDRequestFactory` API that can be used to configure the HTTP requests made by Segment.
+ * [New](https://github.com/segmentio/analytics-ios/commit/d5db28ab9d15aa06b4e3a5c91f813d5c12a419a8): Adds a `PDRequestFactory` API that can be used to configure the HTTP requests made by PrimeData.
 
  ```objc
  PDAnalyticsConfiguration *configuration = [PDAnalyticsConfiguration configurationWithWriteKey:@"YOUR_WRITE_KEY"];
 
  // Set a custom request factory which allows you to modify the way the library creates an HTTP request.
- // In this case, we're transforming the URL to point to our own custom non-Segment host.
+ // In this case, we're transforming the URL to point to our own custom non-PrimeData host.
  configuration.requestFactory = ^(NSURL *url) {
      NSURLComponents \*components = [NSURLComponents componentsWithURL:url resolvingAgainstBaseURL:NO];
      // Replace YOUR_PROXY_HOST with the address of your proxy, e.g. aba64da6.ngrok.io.
@@ -333,7 +333,7 @@ Version 3.4.0 *(1st September, 2016)*
 
  * [Improvement](https://github.com/segmentio/analytics-ios/commit/66fdd8c25fbd28311cc99c0d6ccf8884e065d8b3): Automatic screen tracking improvements, specifically in the case when the root view is a `UINavigationController`.
 
- * [Improvement](https://github.com/segmentio/analytics-ios/commit/1ddcf615942125ecf791a8001794a27f7cb0385c): Don't send `Segment.io: false` in integration dictionary.
+ * [Improvement](https://github.com/segmentio/analytics-ios/commit/1ddcf615942125ecf791a8001794a27f7cb0385c): Don't send `PrimeData.io: false` in integration dictionary.
 
  * [Improvement](https://github.com/segmentio/analytics-ios/commit/0125804698f5e7087ca49f79f4ad99cc78aa2437): Friendly assert messages.
 
@@ -500,9 +500,9 @@ Version 3.0.0 *(11-24-2015)*
 
 Add the integration dependencies.
 ```
-pod `Segment`
-pod `Segment-Bugsnag`
-pod `Segment-Branch`
+pod `PrimeData`
+pod `PrimeData-Bugsnag`
+pod `PrimeData-Branch`
 ...
 ```
 

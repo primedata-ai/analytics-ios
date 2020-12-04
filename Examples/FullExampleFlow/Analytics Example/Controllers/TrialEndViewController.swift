@@ -40,8 +40,8 @@ analytics.track("Signed Out", properties: ["username": "pgibbons"])
 """
         
         // Add the button
-        let deleteButton = UIButton.SegmentButton("Request Delete Account", target: self, action: #selector(deleteUser(_:)))
-        continueButton = UIButton.SegmentButton("Done", target: self, action: #selector(continueToNext(_:)))
+        let deleteButton = UIButton.PrimeDataButton("Request Delete Account", target: self, action: #selector(deleteUser(_:)))
+        continueButton = UIButton.PrimeDataButton("Done", target: self, action: #selector(continueToNext(_:)))
         continueButton.isEnabled = false
     
         propertyViews = [deleteButton, UIView.separator(), continueButton, UIView.separator()]

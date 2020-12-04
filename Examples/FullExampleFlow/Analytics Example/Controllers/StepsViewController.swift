@@ -45,7 +45,7 @@ class StepsViewController: UIViewController {
     
     private func titleBarSetup() {
         
-        let titleImageView = UIImageView(image: UIImage(named: "SegmentLogo"))
+        let titleImageView = UIImageView(image: UIImage(named: "PrimeDataLogo"))
         titleImageView.frame = CGRect(x: 0, y: 0, width: 193.0, height: 40.0)
         titleImageView.contentMode = .scaleAspectFit
         navigationItem.titleView = titleImageView
@@ -129,7 +129,7 @@ extension UIColor {
 }
 
 extension UIButton {
-    static func SegmentButton(_ title: String, target: Any, action: Selector) -> UIButton {
+    static func PrimeDataButton(_ title: String, target: Any, action: Selector) -> UIButton {
         let trackButton = UIButton()
         trackButton.setTitle(title, for: .normal)
         trackButton.setTitleColor(UIColor.primaryColor02(), for: .normal)

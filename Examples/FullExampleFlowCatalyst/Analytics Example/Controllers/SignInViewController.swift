@@ -29,8 +29,8 @@ analytics.track("Signed In", properties: ["username": "pgibbons"])
 """
         
         // Add the button
-        let signinButton = UIButton.SegmentButton("Sign In", target: self, action: #selector(signin(_:)))
-        continueButton = UIButton.SegmentButton("Continue", target: self, action: #selector(continueToNext(_:)))
+        let signinButton = UIButton.PrimeDataButton("Sign In", target: self, action: #selector(signin(_:)))
+        continueButton = UIButton.PrimeDataButton("Continue", target: self, action: #selector(continueToNext(_:)))
         continueButton.isEnabled = false
     
         propertyViews = [signinButton, UIView.separator(), continueButton, UIView.separator()]
