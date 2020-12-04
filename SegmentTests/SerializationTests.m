@@ -11,23 +11,23 @@
 
 #pragma mark - Internal copy-overs for testing
 
-JSON_DICT SEGCoerceDictionary(NSDictionary *_Nullable dict);
+JSON_DICT PDCoerceDictionary(NSDictionary *_Nullable dict);
 
 @interface NSJSONSerialization (Serializable)
 + (BOOL)isOfSerializableType:(id)obj;
 @end
 
-@protocol SEGSerializableDeepCopy <NSObject>
+@protocol PDSerializableDeepCopy <NSObject>
 -(id _Nullable) serializableDeepCopy;
 @end
 
-@interface NSDictionary(SerializableDeepCopy) <SEGSerializableDeepCopy>
+@interface NSDictionary(SerializableDeepCopy) <PDSerializableDeepCopy>
 @end
 
-@interface NSArray(SerializableDeepCopy) <SEGSerializableDeepCopy>
+@interface NSArray(SerializableDeepCopy) <PDSerializableDeepCopy>
 @end
 
-@interface MyObject: NSObject <SEGSerializable>
+@interface MyObject: NSObject <PDSerializable>
 @end
 
 @implementation MyObject
@@ -72,7 +72,7 @@ JSON_DICT SEGCoerceDictionary(NSDictionary *_Nullable dict);
     XCTAssertThrows([nonserializable serializableDeepCopy]);
 }
 
-- (void)testSEGSerialization {
+- (void)testPDSerialization {
     MyObject *myObj = [[MyObject alloc] init];
     NSDate *date = [NSDate date];
     NSData *data = [NSData data];
@@ -98,11 +98,11 @@ JSON_DICT SEGCoerceDictionary(NSDictionary *_Nullable dict);
     XCTAssertThrows([nonserializable serializableDeepCopy]);
     
     NSDictionary *testCoersion1 = @{@"test1": @[date], @"test2": url, @"test3": @1};
-    NSDictionary *coersionResult1 = SEGCoerceDictionary(testCoersion1);
+    NSDictionary *coersionResult1 = PDCoerceDictionary(testCoersion1);
     XCTAssertNotNil(coersionResult1);
     
     NSDictionary *testCoersion2 = @{@"test1": @[date], @"test2": url, @"test3": @1, @"test4": data};
-    XCTAssertThrows(SEGCoerceDictionary(testCoersion2));
+    XCTAssertThrows(PDCoerceDictionary(testCoersion2));
 }
 
 @end

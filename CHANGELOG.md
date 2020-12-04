@@ -25,7 +25,7 @@ Version 4.0.5 (pre-release) *(28 August, 2020)*
 Version 4.0.4 (pre-release) *(14 July, 2020)*
 -----------------------------
 * [New](https://github.com/segmentio/analytics-ios/pull/918) Added MacOS support.
-* [Fix](https://github.com/segmentio/analytics-ios/pull/921) Fixed SEGLog permissions.
+* [Fix](https://github.com/segmentio/analytics-ios/pull/921) Fixed PDLog permissions.
 * [Fix](https://github.com/segmentio/analytics-ios/pull/920) Adopted Swift 5 syntax in tests. Removed SwiftTryCatch dependency for tests. Fixed deadlock from #916.
 
 Version 4.0.3 (pre-release) *(6 July, 2020)*
@@ -81,7 +81,7 @@ Version 3.8.0 *(22nd April, 2020)*
  
 Version 3.8.0-beta.2 *(15th April, 2020)*
 -----------------------------------------
- * [Fix](https://github.com/segmentio/analytics-ios/pull/861) Move SEGQueue from UserDefaults to caches directory.
+ * [Fix](https://github.com/segmentio/analytics-ios/pull/861) Move PDQueue from UserDefaults to caches directory.
  * [Fix](https://github.com/segmentio/analytics-ios/pull/862) Fix issues around plist->json conversion and nil values.
  * [Fix](https://github.com/segmentio/analytics-ios/pull/851) Expect dictionary as well as bool for integration enablement.
  * [Fix](https://github.com/segmentio/analytics-ios/pull/864) Differences observed in how iOS/android pass userId/anonId; Corrected.
@@ -145,7 +145,7 @@ Version 3.7.0-beta *(27th August, 2018)*
 * [Fix](https://github.com/segmentio/analytics-ios/pull/763): Retry HTTP 429 status codes
 * [Fix](https://github.com/segmentio/analytics-ios/pull/761): Send RFC 7231 Formatted User Agent
 * [Fix](https://github.com/segmentio/analytics-ios/pull/751): Ensure queue is always < 1000 items
-* [Fix](https://github.com/segmentio/analytics-ios/pull/750): Reset SEGUserIdKey only on tvOS
+* [Fix](https://github.com/segmentio/analytics-ios/pull/750): Reset PDUserIdKey only on tvOS
 * [Fix](https://github.com/segmentio/analytics-ios/pull/749): Renames GZIP category to prevent collisions
 * [Fix](https://github.com/segmentio/analytics-ios/pull/744): sharedAnalytics returns null before setup
 * [Fix](https://github.com/segmentio/analytics-ios/pull/741): Swift 4 support
@@ -196,7 +196,7 @@ Version 3.6.2 *(6th July, 2017)*
 * Remove canceling ongoing requests in reset method. (#691)
 * Extract UIApplication to permit linkage with iOS extensions. (#698)
 * Add missing includes to umbrella header (#696)
-* Reuse NSURLSession in SEGHTTPCLient (#699)
+* Reuse NSURLSession in PDHTTPCLient (#699)
 
 Version 3.6.1 *(24th May, 2017)*
 -------------------------------------
@@ -205,9 +205,9 @@ Version 3.6.1 *(24th May, 2017)*
 * Fix `Application Opened` event #675
  * Fire during applicationWillEnterForeground, not just applicationDidFinishLaunching
  * Adding from_background, referring_application and url to Application Opened event
-* Add [session finishTasksAndInvalidate] to SEGHTTPClient.m to prevent memory leak #679
+* Add [session finishTasksAndInvalidate] to PDHTTPClient.m to prevent memory leak #679
 * Use a separate queue for endBackgroundTask to fix deadlock (#684)
-* Exposing SEGMiddleware and SEGContext header publicly
+* Exposing PDMiddleware and PDContext header publicly
 * Removing deprecated APIs
 * Adding several test suites - reaching 70% coverage
 
@@ -218,7 +218,7 @@ Version 3.6.0 *(28th February, 2017)*
 Version 3.6.0-rc *(10th January, 2017)*
 -------------------------------------
 * Publicly exposing the middleware API, allowing custom middlewares to be inserted into the chain
-* Added `SEGBlockMiddleware` helper to make it easier to create middleware out of anonymous functions
+* Added `PDBlockMiddleware` helper to make it easier to create middleware out of anonymous functions
 
 Version 3.6.0-beta *(1st December, 2016)*
 -------------------------------------
@@ -252,25 +252,25 @@ Version 3.5.0 *(12th September, 2016)*
 -------------------------------------
 * Not a recommended version.  Regression introduced in 3.5.0 will generate a new anonymousId on every app launch.
 
-* [New](https://github.com/segmentio/analytics-ios/pull/592): Adds a `SEGCrypto` API that can be used to configure the at rest encryption strategy for the client.
+* [New](https://github.com/segmentio/analytics-ios/pull/592): Adds a `PDCrypto` API that can be used to configure the at rest encryption strategy for the client.
 
  ```objc
- SEGAnalyticsConfiguration *configuration = [SEGAnalyticsConfiguration configurationWithWriteKey:@"YOUR_WRITE_KEY"];
+ PDAnalyticsConfiguration *configuration = [PDAnalyticsConfiguration configurationWithWriteKey:@"YOUR_WRITE_KEY"];
 
  // Set a custom crypto implementation. An AES-256 implementation is provided out of the box.
- configuration.crypto = [SEGAES256Crypto initWithPassword:"YOUR_PRIVATE_PASSWORD"];
+ configuration.crypto = [PDAES256Crypto initWithPassword:"YOUR_PRIVATE_PASSWORD"];
 
  // Set any other custom configuration options.
  ...
 
  // Initialize the SDK with the configuration.
- [SEGAnalytics setupWithConfiguration:configuration]
+ [PDAnalytics setupWithConfiguration:configuration]
  ```
 
  * [New](https://github.com/segmentio/analytics-ios/commit/0c646e1c44df4134a984f1fcb741f5b1d418ab30): Add the ability for the SDK to natively report attribution information via Segment integrations enabled for your project, without needing to bundle their SDKs. Attribution information is sent as a track call as documented in the [mobile lifecycle spec](https://segment.com/docs/spec/mobile/#install-attributed).
 
  ```objc
- SEGAnalyticsConfiguration *configuration = [SEGAnalyticsConfiguration configurationWithWriteKey:@"YOUR_WRITE_KEY"];
+ PDAnalyticsConfiguration *configuration = [PDAnalyticsConfiguration configurationWithWriteKey:@"YOUR_WRITE_KEY"];
 
  // Enable attribution tracking.
  configuration.trackAttributionData = @YES;
@@ -279,13 +279,13 @@ Version 3.5.0 *(12th September, 2016)*
  ...
 
  // Initialize the SDK with the configuration.
- [SEGAnalytics setupWithConfiguration:configuration]
+ [PDAnalytics setupWithConfiguration:configuration]
  ```
 
  * [New](https://github.com/segmentio/analytics-ios/pull/597): Add the ability for the SDK to disable bluetooth collection. Going forwards, bluetooth information will **not** be collected by default. This is because iOS 10 requires [explicit documentation](https://developer.apple.com/library/prerelease/content/releasenotes/General/WhatsNewIniOS/Articles/iOS10.html) on why the CoreBluetooth APIs are accessed. If you enable this flag, your app's Info.plist must contain an [`NSBluetoothPeripheralUsageDescription` key](https://developer.apple.com/library/ios/documentation/General/Reference/InfoPlistKeyReference/Articles/CocoaKeys.html#//apple_ref/doc/uid/TP40009251-SW20) with a string value explaining to the user how the app uses this data. On this note, you should do the same for [`NSLocationAlwaysUsageDescription`](https://developer.apple.com/library/ios/documentation/General/Reference/InfoPlistKeyReference/Articles/CocoaKeys.html#//apple_ref/doc/uid/TP40009251-SW18) if you have `shouldUseLocationServices` set to `@YES`. If you are linking against iOS 10, you'll want to update to this version to prevent your app submission from being rejected (or provide `NSBluetoothPeripheralUsageDescription` and/or `NSLocationAlwaysUsageDescription` descriptions in your app's Info.plist).
 
  ```objc
- SEGAnalyticsConfiguration *configuration = [SEGAnalyticsConfiguration configurationWithWriteKey:@"YOUR_WRITE_KEY"];
+ PDAnalyticsConfiguration *configuration = [PDAnalyticsConfiguration configurationWithWriteKey:@"YOUR_WRITE_KEY"];
 
  // Enable bluetooth collection.
  configuration.shouldUseBluetooth = @YES;
@@ -294,16 +294,16 @@ Version 3.5.0 *(12th September, 2016)*
  ...
 
  // Initialize the SDK with the configuration.
- [SEGAnalytics setupWithConfiguration:configuration]
+ [PDAnalytics setupWithConfiguration:configuration]
  ```
 
 Version 3.4.0 *(1st September, 2016)*
 -------------------------------------
 
- * [New](https://github.com/segmentio/analytics-ios/commit/d5db28ab9d15aa06b4e3a5c91f813d5c12a419a8): Adds a `SEGRequestFactory` API that can be used to configure the HTTP requests made by Segment.
+ * [New](https://github.com/segmentio/analytics-ios/commit/d5db28ab9d15aa06b4e3a5c91f813d5c12a419a8): Adds a `PDRequestFactory` API that can be used to configure the HTTP requests made by Segment.
 
  ```objc
- SEGAnalyticsConfiguration *configuration = [SEGAnalyticsConfiguration configurationWithWriteKey:@"YOUR_WRITE_KEY"];
+ PDAnalyticsConfiguration *configuration = [PDAnalyticsConfiguration configurationWithWriteKey:@"YOUR_WRITE_KEY"];
 
  // Set a custom request factory which allows you to modify the way the library creates an HTTP request.
  // In this case, we're transforming the URL to point to our own custom non-Segment host.
@@ -319,14 +319,14 @@ Version 3.4.0 *(1st September, 2016)*
  ...
 
  // Initialize the SDK with the configuration.
- [SEGAnalytics setupWithConfiguration:configuration]
+ [PDAnalytics setupWithConfiguration:configuration]
  ```
 
 
  * [New](https://github.com/segmentio/analytics-ios/commit/b8aed9692e82ad1dbbecfae0ad5fc353a9eb2220): Add method to retrieve anonymous ID.
 
  ```objc
- [[SEGAnalytics sharedAnalytics] getAnonymousId];
+ [[PDAnalytics sharedAnalytics] getAnonymousId];
  ```
 
  * [Improvement](https://github.com/segmentio/analytics-ios/commit/98a467292de62eb6179107b6ebbc59f13caf16a2): Store `context` object with every event. This makes it more accurate collecting the context at the time the event was observed, rather than uploaded.
@@ -352,17 +352,17 @@ Version 3.3.0 *(08-05-2016)*
  * [New](https://github.com/segmentio/analytics-ios/pull/557): Automatically track campaign data.
 
  ```objc
- SEGAnalyticsConfiguration *configuration = [SEGAnalyticsConfiguration configurationWithWriteKey:@"YOUR_WRITE_KEY"];
+ PDAnalyticsConfiguration *configuration = [PDAnalyticsConfiguration configurationWithWriteKey:@"YOUR_WRITE_KEY"];
  configuration.trackPushNotifications = YES;
- [SEGAnalytics setupWithConfiguration:configuration];
+ [PDAnalytics setupWithConfiguration:configuration];
  ```
 
  * [New](https://github.com/segmentio/analytics-ios/pull/573): Automatically track deep links. Please note that you'll still need to call the `continueUserActivity` and `openURL` methods on the analytics client.
 
  ```objc
- SEGAnalyticsConfiguration *configuration = [SEGAnalyticsConfiguration configurationWithWriteKey:@"YOUR_WRITE_KEY"];
+ PDAnalyticsConfiguration *configuration = [PDAnalyticsConfiguration configurationWithWriteKey:@"YOUR_WRITE_KEY"];
  configuration.trackDeepLinks = YES;
- [SEGAnalytics setupWithConfiguration:configuration];
+ [PDAnalytics setupWithConfiguration:configuration];
  ```
 
  * [Improvement](https://github.com/segmentio/analytics-ios/pull/565): Limit queue size to 1000. This will prevent crashes/memory issues from the queue being too large.
@@ -381,8 +381,8 @@ Version 3.2.6 *(07-10-2016)*
  * Improvement: Fixes the following static analyzer warnings.
 
  ```
- SEGReachability.m:115:9: Potential leak of an object stored into 'ref'
- SEGReachability.m:131:9: Potential leak of an object stored into 'ref'
+ PDReachability.m:115:9: Potential leak of an object stored into 'ref'
+ PDReachability.m:131:9: Potential leak of an object stored into 'ref'
  ```
 
 Version 3.2.5 *(06-30-2016)*
@@ -402,9 +402,9 @@ Version 3.2.3 *(06-08-2016)*
  * Instrument automatic in app purchase tracking. Enable this during initialization.
 
  ```objc
- SEGAnalyticsConfiguration *configuration = [SEGAnalyticsConfiguration configurationWithWriteKey:@"YOUR_WRITE_KEY"];
+ PDAnalyticsConfiguration *configuration = [PDAnalyticsConfiguration configurationWithWriteKey:@"YOUR_WRITE_KEY"];
  configuration.trackInAppPurchases = YES;
- [SEGAnalytics setupWithConfiguration:configuration];
+ [PDAnalytics setupWithConfiguration:configuration];
  ```
 
 Version 3.2.2 *(06-06-2016)*
@@ -434,9 +434,9 @@ Version 3.1.1 *(05-24-2016)*
  * Instrument automatic screen view tracking. Enable this during initialization.
 
 ```objc
-SEGAnalyticsConfiguration *configuration = [SEGAnalyticsConfiguration configurationWithWriteKey:@"YOUR_WRITE_KEY"];
+PDAnalyticsConfiguration *configuration = [PDAnalyticsConfiguration configurationWithWriteKey:@"YOUR_WRITE_KEY"];
 configuration.recordScreenViews = YES;
-[SEGAnalytics setupWithConfiguration:configuration];
+[PDAnalytics setupWithConfiguration:configuration];
 ```
 
 Version 3.1.0 *(05-09-2016)*
@@ -445,12 +445,12 @@ Version 3.1.0 *(05-09-2016)*
  * Instrument automatic application lifecycle event tracking. Enable this during initialization.
 
 ```objc
-SEGAnalyticsConfiguration *configuration = [SEGAnalyticsConfiguration configurationWithWriteKey:@"YOUR_WRITE_KEY"];
+PDAnalyticsConfiguration *configuration = [PDAnalyticsConfiguration configurationWithWriteKey:@"YOUR_WRITE_KEY"];
 configuration.trackApplicationLifecycleEvents = YES;
-[SEGAnalytics setupWithConfiguration:configuration];
+[PDAnalytics setupWithConfiguration:configuration];
 ```
 
- * Make `SEGAnalyticsIntegrationDidStart` public (use this to be notified when an integration is initialized).
+ * Make `PDAnalyticsIntegrationDidStart` public (use this to be notified when an integration is initialized).
  * Fixed crashes due to NSNotificationCenter observers not being removed.
 
 Version 3.0.7 *(02-01-2016)*
@@ -508,14 +508,14 @@ pod `Segment-Branch`
 
 Register them in your configuration when you initialize the SDK.
 ```
-SEGAnalyticsConfiguration *config = [SEGAnalyticsConfiguration configurationWithWriteKey:@"YOUR_WRITE_KEY"];
+PDAnalyticsConfiguration *config = [PDAnalyticsConfiguration configurationWithWriteKey:@"YOUR_WRITE_KEY"];
 
 // Add any of your bundled integrations.
-config use:[SEGGoogleAnalyticsIntegrationFactory instance];
+config use:[PDGoogleAnalyticsIntegrationFactory instance];
 config use:[BNCBranchIntegrationFactory instance];
 ...
 
-[SEGAnalytics setupWithConfiguration:config];
+[PDAnalytics setupWithConfiguration:config];
 ```
 
 Version 3.0.4-alpha *(10-24-2015)*

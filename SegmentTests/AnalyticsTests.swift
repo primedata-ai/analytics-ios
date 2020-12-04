@@ -31,10 +31,10 @@ class AnalyticsTests: XCTestCase {
         config.application = testApplication
         config.trackApplicationLifecycleEvents = true
         
-        UserDefaults.standard.set("test SEGQueue should be removed", forKey: "SEGQueue")
+        UserDefaults.standard.set("test PDQueue should be removed", forKey: "PDQueue")
         // pump the run loop so we can be sure the value was written.
         RunLoop.current.run(until: Date.distantPast)
-        XCTAssertNotNil(UserDefaults.standard.string(forKey: "SEGQueue"))
+        XCTAssertNotNil(UserDefaults.standard.string(forKey: "PDQueue"))
 
         analytics = Analytics(configuration: config)
         analytics.test_integrationsManager()?.test_setCachedSettings(settings: cachedSettings)
@@ -61,7 +61,7 @@ class AnalyticsTests: XCTestCase {
         let webhookIntegration = WebhookIntegrationFactory.init(name: "dest1", webhookUrl: "blah")
         let webhookIntegrationKey = webhookIntegration.key()
         var initialized = false
-        NotificationCenter.default.addObserver(forName: NSNotification.Name(rawValue: SEGAnalyticsIntegrationDidStart), object: nil, queue: nil) { (notification) in
+        NotificationCenter.default.addObserver(forName: NSNotification.Name(rawValue: PDAnalyticsIntegrationDidStart), object: nil, queue: nil) { (notification) in
             let key = notification.object as? String
             if (key == webhookIntegrationKey) {
                 initialized = true
@@ -79,8 +79,8 @@ class AnalyticsTests: XCTestCase {
         XCTAssertNotNil(analytics2.test_integrationsManager()?.test_integrations()?[webhookIntegrationKey])
     }
     
-    func testClearsSEGQueueFromUserDefaults() {
-        expectUntil(2.0, expression: UserDefaults.standard.string(forKey: "SEGQueue") == nil)
+    func testClearsPDQueueFromUserDefaults() {
+        expectUntil(2.0, expression: UserDefaults.standard.string(forKey: "PDQueue") == nil)
     }
     
     /* TODO: Fix me when the Context object isn't so wild.
@@ -239,7 +239,7 @@ class AnalyticsTests: XCTestCase {
         // In Xcode8/iOS10, UIApplication.h typedefs UIBackgroundTaskIdentifier as NSUInteger,
         // whereas Swift has UIBackgroundTaskIdentifier typealiaed to Int.
         // This is likely due to a custom Swift mapping for UIApplication which got out of sync.
-        // If we extract the exact UIApplication method names in SEGApplicationProtocol,
+        // If we extract the exact UIApplication method names in PDApplicationProtocol,
         // it will cause a type mismatch between the return value from beginBackgroundTask
         // and the argument for endBackgroundTask.
         // This would impact all code in a project that imports the Segment framework.
@@ -295,7 +295,7 @@ class AnalyticsTests: XCTestCase {
         XCTAssertEqual(event?.properties?["url"] as? String, "myapp://auth?token=((redacted/my-auth))&other=stuff")
     }
     
-    func testDefaultsSEGQueueToEmptyArray() {
+    func testDefaultsPDQueueToEmptyArray() {
         let integration = analytics.test_integrationsManager()?.test_segmentIntegration()
         XCTAssertNotNil(integration)
         integration?.test_fileStorage()?.resetAll()

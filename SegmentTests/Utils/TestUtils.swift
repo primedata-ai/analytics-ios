@@ -23,7 +23,7 @@ import UIKit
 class PassthroughMiddleware: Middleware {
     var lastContext: Context?
 
-    func context(_ context: Context, next: @escaping SEGMiddlewareNext) {
+    func context(_ context: Context, next: @escaping PDMiddlewareNext) {
         lastContext = context;
         next(context)
     }
@@ -32,7 +32,7 @@ class PassthroughMiddleware: Middleware {
 class TestMiddleware: Middleware {
     var lastContext: Context?
     var swallowEvent = false
-    func context(_ context: Context, next: @escaping SEGMiddlewareNext) {
+    func context(_ context: Context, next: @escaping PDMiddlewareNext) {
         lastContext = context
         if !swallowEvent {
             next(context)

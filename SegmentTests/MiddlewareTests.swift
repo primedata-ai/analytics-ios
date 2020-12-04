@@ -128,7 +128,7 @@ class IntegrationMiddlewareTests: XCTestCase {
     func testExpectsEventToBeSwallowedIfOtherIsNotCalled() {
         // Since we're testing that an event is dropped, the previously used run loop pump won't work here.
         var initialized = false
-        NotificationCenter.default.addObserver(forName: NSNotification.Name(rawValue: SEGAnalyticsIntegrationDidStart), object: nil, queue: nil) { (notification) in
+        NotificationCenter.default.addObserver(forName: NSNotification.Name(rawValue: PDAnalyticsIntegrationDidStart), object: nil, queue: nil) { (notification) in
             initialized = true
         }
         

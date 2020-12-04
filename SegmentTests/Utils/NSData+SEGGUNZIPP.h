@@ -1,5 +1,5 @@
 //
-//  NSData+SEGGUNZIPP.h
+//  NSData+PDGUNZIPP.h
 //  Analytics
 //
 //  Created by Tony Xiao on 9/19/16.
@@ -10,7 +10,7 @@
 #import <Foundation/Foundation.h>
 
 
-@interface NSData (SEGGUNZIPP)
+@interface NSData (PDGUNZIPP)
 
 - (NSData *_Nullable)seg_gunzippedData;
 

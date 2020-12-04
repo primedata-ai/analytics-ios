@@ -14,11 +14,11 @@ FOUNDATION_EXPORT double SegmentVersionNumber;
 //! Project version string for Analytics.
 FOUNDATION_EXPORT const unsigned char SegmentVersionString[];
 
-#import "SEGAnalytics.h"
-#import "SEGSegmentIntegration.h"
-#import "SEGSegmentIntegrationFactory.h"
-#import "SEGContext.h"
-#import "SEGMiddleware.h"
-#import "SEGScreenReporting.h"
-#import "SEGAnalyticsUtils.h"
-#import "SEGWebhookIntegration.h"
+#import "PDAnalytics.h"
+#import "PDSegmentIntegration.h"
+#import "PDSegmentIntegrationFactory.h"
+#import "PDContext.h"
+#import "PDMiddleware.h"
+#import "PDScreenReporting.h"
+#import "PDAnalyticsUtils.h"
+#import "PDWebhookIntegration.h"

@@ -1,5 +1,5 @@
 //
-//  NSData+SEGGUNZIPP.m
+//  NSData+PDGUNZIPP.m
 //  Analytics
 //
 //  Created by Tony Xiao on 9/19/16.
@@ -9,11 +9,11 @@
 
 #import <zlib.h>
 #import <dlfcn.h>
-#import <Segment/NSData+SEGGZIP.h>
-#import "NSData+SEGGUNZIPP.h"
+#import <Segment/NSData+PDGZIP.h>
+#import "NSData+PDGUNZIPP.h"
 
 
-@implementation NSData (SEGGUNZIPP)
+@implementation NSData (PDGUNZIPP)
 
 - (NSData *)seg_gunzippedData
 {
