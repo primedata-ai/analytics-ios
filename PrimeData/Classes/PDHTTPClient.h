@@ -3,9 +3,6 @@
 
 // TODO: Make this configurable via PDAnalyticsConfiguration
 // NOTE: `/` at the end kind of screws things up. So don't use it
-//#define PDMENT_API_BASE [NSURL URLWithString:@"https://powehi.primedata.ai"]
-#define PDMENT_API_BASE [NSURL URLWithString:@"https://abcdefabcdefabcdef.abcdefabcdefabcdef.com"]
-
 NS_ASSUME_NONNULL_BEGIN
 
 
@@ -16,11 +13,12 @@ NS_SWIFT_NAME(HTTPClient)
 @property (nonatomic, readonly) NSMutableDictionary<NSString *, NSURLSession *> *sessionsByWriteKey;
 @property (nonatomic, readonly) NSURLSession *genericSession;
 @property (nonatomic, weak)  id<NSURLSessionDelegate> httpSessionDelegate;
+@property (nonatomic, copy, readwrite) NSString *url;
 
 + (PDRequestFactory)defaultRequestFactory;
 + (NSString *)authorizationHeader:(NSString *)writeKey;
 
-- (instancetype)initWithRequestFactory:(PDRequestFactory _Nullable)requestFactory;
+- (instancetype)initWithRequestFactory:(PDRequestFactory _Nullable)requestFactory url:(NSString*)url;
 
 /**
  * Upload dictionary formatted as per https://segment.com/docs/sources/server/http/#batch.
@@ -30,7 +28,9 @@ NS_SWIFT_NAME(HTTPClient)
  * NOTE: You need to re-dispatch within the completionHandler onto a desired queue to avoid threading issues.
  * Completion handlers are called on a dispatch queue internal to PDHTTPClient. 
  */
-- (nullable NSURLSessionUploadTask *)upload:(JSON_DICT)batch forWriteKey:(NSString *)writeKey completionHandler:(void (^)(BOOL retry))completionHandler;
+
+- (nullable NSURLSessionUploadTask *)upload_context_events:(NSDictionary *)batch forWriteKey:(NSString *)writeKey completionHandler:(void (^)(BOOL retry))completionHandler;
+- (nullable NSURLSessionUploadTask *)upload_track_events:(JSON_DICT)batch forWriteKey:(NSString *)writeKey completionHandler:(void (^)(BOOL retry))completionHandler;
 
 - (NSURLSessionDataTask *)settingsForWriteKey:(NSString *)writeKey completionHandler:(void (^)(BOOL success, JSON_DICT _Nullable settings))completionHandler;
 

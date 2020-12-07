@@ -57,8 +57,13 @@ NS_SWIFT_NAME(AnalyticsConfiguration)
  *
  * @param writeKey Your project's write key from segment.io.
  */
-+ (_Nonnull instancetype)configurationWithWriteKey:(NSString *_Nonnull)writeKey andScopeKey:(NSString *_Nonnull)scopeKey;
++ (instancetype)configurationWithWriteKey:(NSString *)writeKey scopeKey:(NSString *)scopeKey url:(NSString*)url;
 
+- (void)createNewSession:(NSString*)newSessionID;
+- (BOOL)sessionIsValid;
+- (void)updateExistingSession;
+
+@property (nonatomic, copy, nonnull) NSDate *sesstionTime;
 /**
  * Your project's write key from segment.io.
  *
@@ -68,6 +73,9 @@ NS_SWIFT_NAME(AnalyticsConfiguration)
 
 
 @property (nonatomic, copy, readonly, nonnull) NSString *scopeKey;
+
+
+@property (nonatomic, copy, readonly, nonnull) NSString *url;
 
 /**
  * Whether the analytics client should use location services.
@@ -90,6 +98,8 @@ NS_SWIFT_NAME(AnalyticsConfiguration)
 * The Session Time Out number in minutes. `30` by default.
 */
 @property (nonatomic, assign) NSUInteger sessionTimeout;
+
+@property (nonatomic, copy, readonly, nonnull) NSString *sessionId;
 
 /**
  * The amount of time to wait before each tick of the flush timer.

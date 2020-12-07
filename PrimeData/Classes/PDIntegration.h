@@ -13,6 +13,9 @@ NS_SWIFT_NAME(Integration)
 @protocol PDIntegration <NSObject>
 
 @optional
+
+- (void)initialize:(PDInitializePayload *)payload;
+
 // Identify will be called when the user calls either of the following:
 // 1. [[PDAnalytics sharedInstance] identify:someUserId];
 // 2. [[PDAnalytics sharedInstance] identify:someUserId traits:someTraits];

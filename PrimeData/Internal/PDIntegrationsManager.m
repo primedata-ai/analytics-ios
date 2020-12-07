@@ -100,7 +100,7 @@ NSString *const kPDCachedSettingsFilename = @"analytics.settings.v2.plist";
         self.configuration = configuration;
         self.serialQueue = seg_dispatch_queue_create_specific("io.segment.analytics", DISPATCH_QUEUE_SERIAL);
         self.messageQueue = [[NSMutableArray alloc] init];
-        self.httpClient = [[PDHTTPClient alloc] initWithRequestFactory:configuration.requestFactory];
+        self.httpClient = [[PDHTTPClient alloc] initWithRequestFactory:configuration.requestFactory url:self.configuration.url];
         
         self.userDefaultsStorage = [[PDUserDefaultsStorage alloc] initWithDefaults:[NSUserDefaults standardUserDefaults] namespacePrefix:nil crypto:configuration.crypto];
         #if TARGET_OS_TV
@@ -207,6 +207,18 @@ NSString *const kPDCachedSettingsFilename = @"analytics.settings.v2.plist";
 }
 
 #pragma mark - Analytics API
+
+#pragma mark - Track
+
+- (void)initialize:(PDInitializePayload *)payload
+{
+    NSCAssert1(payload.event.length > 0, @"event (%@) must not be empty.", payload.event);
+
+    [self callIntegrationsWithSelector:NSSelectorFromString(@"initialize:")
+                             arguments:@[ payload ]
+                               options:payload.options
+                                  sync:false];
+}
 
 - (void)identify:(PDIdentifyPayload *)payload
 {
@@ -562,7 +574,9 @@ NSString *const kPDCachedSettingsFilename = @"analytics.settings.v2.plist";
     NSString *selectorString = NSStringFromSelector(selector);
     PDEventType result = PDEventTypeUndefined;
     
-    if ([selectorString hasPrefix:@"identify"]) {
+    if ([selectorString hasPrefix:@"initialize"]) {
+        result = PDEventTypeTrack;
+    } else if ([selectorString hasPrefix:@"identify"]) {
         result = PDEventTypeIdentify;
     } else if ([selectorString hasPrefix:@"track"]) {
         result = PDEventTypeTrack;
@@ -616,7 +630,7 @@ NSString *const kPDCachedSettingsFilename = @"analytics.settings.v2.plist";
             return;
         }
     }
-
+    
     NSMutableArray *newArguments = [arguments mutableCopy];
 
     if (eventType != PDEventTypeUndefined) {
@@ -700,6 +714,11 @@ NSString *const kPDCachedSettingsFilename = @"analytics.settings.v2.plist";
 - (void)context:(PDContext *)context next:(void (^_Nonnull)(PDContext *_Nullable))next
 {
     switch (context.eventType) {
+        case PDEventTypeInitialize: {
+            PDInitializePayload *p = (PDInitializePayload *)context.payload;
+            [self initialize:p];
+            break;
+        }
         case PDEventTypeIdentify: {
             PDIdentifyPayload *p = (PDIdentifyPayload *)context.payload;
             [self identify:p];

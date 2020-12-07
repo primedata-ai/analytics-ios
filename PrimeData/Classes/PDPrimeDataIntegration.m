@@ -8,6 +8,7 @@
 #import "PDStorage.h"
 #import "PDMacros.h"
 #import "PDState.h"
+#import "PDUtils.h"
 
 #if TARGET_OS_IPHONE
 #import <UIKit/UIKit.h>
@@ -71,10 +72,11 @@ NSUInteger const kPDBackgroundTaskInvalid = 0;
         self.analytics = analytics;
         self.configuration = analytics.oneTimeConfiguration;
         self.httpClient = httpClient;
+        self.httpClient.url = self.configuration.url;
         self.httpClient.httpSessionDelegate = analytics.oneTimeConfiguration.httpSessionDelegate;
         self.fileStorage = fileStorage;
         self.userDefaultsStorage = userDefaultsStorage;
-        self.apiURL = [PDMENT_API_BASE URLByAppendingPathComponent:@"import"];
+        self.apiURL = [[NSURL URLWithString:self.configuration.url] URLByAppendingPathComponent:@"import"];
         self.reachability = [PDReachability reachabilityWithHostname:@"google.com"];
         [self.reachability startNotifier];
         self.serialQueue = seg_dispatch_queue_create_specific("io.segment.analytics.segmentio", DISPATCH_QUEUE_SERIAL);
@@ -200,6 +202,33 @@ NSUInteger const kPDBackgroundTaskInvalid = 0;
 
 #pragma mark - Analytics API
 
+- (void)initialize:(PDInitializePayload *)payload
+{
+    NSMutableDictionary *dictionary = [NSMutableDictionary dictionary];
+    [dictionary setValue:payload.event forKey:@"eventType"];
+    [dictionary setValue:self.configuration.scopeKey forKey:@"scope"];
+    [dictionary setValue:payload.pd_properties forKey:@"properties"];
+    
+    NSMutableDictionary *combinedTarget = [[NSMutableDictionary alloc] init];
+    [combinedTarget addEntriesFromDictionary:payload.pd_target];
+    [combinedTarget setValue:self.configuration.scopeKey forKey:@"scope"];
+    [dictionary setValue:combinedTarget forKey:@"target"];
+    
+    NSMutableDictionary *combinedSource = [[NSMutableDictionary alloc] init];
+    [combinedSource addEntriesFromDictionary:payload.pd_source];
+    [combinedSource setValue:self.configuration.scopeKey forKey:@"scope"];
+    [dictionary setValue:combinedSource forKey:@"source"];
+    
+    [dictionary setValue:payload.timestamp forKey:@"timeStamp"];
+    
+    NSMutableDictionary *combinedInternalSource = [[NSMutableDictionary alloc] init];
+    [combinedInternalSource addEntriesFromDictionary:payload.internal_source];
+    [combinedInternalSource setValue:self.configuration.scopeKey forKey:@"scope"];
+    [dictionary setValue:combinedInternalSource forKey:@"source"];
+    
+    [self enqueueAction:@"initialize" dictionary:dictionary context:payload.context integrations:payload.integrations];
+}
+
 - (void)identify:(PDIdentifyPayload *)payload
 {
     [self dispatchBackground:^{
@@ -217,10 +246,22 @@ NSUInteger const kPDBackgroundTaskInvalid = 0;
 - (void)track:(PDTrackPayload *)payload
 {
     NSMutableDictionary *dictionary = [NSMutableDictionary dictionary];
-    [dictionary setValue:payload.event forKey:@"event"];
-    [dictionary setValue:payload.properties forKey:@"properties"];
-    [dictionary setValue:payload.timestamp forKey:@"timestamp"];
-    [dictionary setValue:payload.messageId forKey:@"messageId"];
+    [dictionary setValue:payload.event forKey:@"eventType"];
+    [dictionary setValue:self.configuration.scopeKey forKey:@"scope"];
+    [dictionary setValue:payload.pd_properties forKey:@"properties"];
+    
+    NSMutableDictionary *combinedTarget = [[NSMutableDictionary alloc] init];
+    [combinedTarget addEntriesFromDictionary:payload.pd_target];
+    [combinedTarget setValue:self.configuration.scopeKey forKey:@"scope"];
+    [dictionary setValue:combinedTarget forKey:@"target"];
+    
+    NSMutableDictionary *combinedSource = [[NSMutableDictionary alloc] init];
+    [combinedSource addEntriesFromDictionary:payload.pd_source];
+    [combinedSource setValue:self.configuration.scopeKey forKey:@"scope"];
+    [dictionary setValue:combinedSource forKey:@"source"];
+    
+    [dictionary setValue:payload.timestamp forKey:@"timeStamp"];
+    
     [self enqueueAction:@"track" dictionary:dictionary context:payload.context integrations:payload.integrations];
 }
 
@@ -276,21 +317,21 @@ NSUInteger const kPDBackgroundTaskInvalid = 0;
 - (void)enqueueAction:(NSString *)action dictionary:(NSMutableDictionary *)payload context:(NSDictionary *)context integrations:(NSDictionary *)integrations
 {
     // attach these parts of the payload outside since they are all synchronous
-    payload[@"type"] = action;
+    //payload[@"type"] = action;
 
     [self dispatchBackground:^{
         // attach userId and anonymousId inside the dispatch_async in case
         // they've changed (see identify function)
 
         // Do not override the userId for an 'alias' action. This value is set in [alias:] already.
-        if (![action isEqualToString:@"alias"]) {
-            [payload setValue:[PDState sharedInstance].userInfo.userId forKey:@"userId"];
-        }
-        [payload setValue:[self.analytics getAnonymousId] forKey:@"anonymousId"];
+//        if (![action isEqualToString:@"alias"]) {
+//            [payload setValue:[PDState sharedInstance].userInfo.userId forKey:@"userId"];
+//        }
+        //[payload setValue:[self.analytics getAnonymousId] forKey:@"anonymousId"];
 
-        [payload setValue:[self integrationsDictionary:integrations] forKey:@"integrations"];
+        //[payload setValue:[self integrationsDictionary:integrations] forKey:@"integrations"];
 
-        [payload setValue:[context copy] forKey:@"context"];
+        //[payload setValue:[context copy] forKey:@"context"];
 
         PDLog(@"%@ Enqueueing action: %@", self, payload);
         
@@ -393,15 +434,24 @@ NSUInteger const kPDBackgroundTaskInvalid = 0;
 - (void)sendData:(NSArray *)batch
 {
     NSMutableDictionary *payload = [[NSMutableDictionary alloc] init];
-    [payload setObject:iso8601FormattedString([NSDate date]) forKey:@"sentAt"];
-    [payload setObject:batch forKey:@"batch"];
-
+    [payload setObject:iso8601FormattedString([NSDate date]) forKey:@"sendAt"];
+    
+    NSString *profileId =  [[NSUserDefaults standardUserDefaults] objectForKey:@"___profileId___"];
+    if (profileId != nil)
+    {
+        [payload setObject:profileId forKey:@"profileId"];
+    }
+    [payload setObject:batch forKey:@"events"];
+    [payload setObject:self.configuration.sessionId forKey:@"sessionId"];
+    
     PDLog(@"%@ Flushing %lu of %lu queued API calls.", self, (unsigned long)batch.count, (unsigned long)self.queue.count);
     PDLog(@"Flushing batch %@.", payload);
 
-    self.batchRequest = [self.httpClient upload:payload forWriteKey:self.configuration.writeKey completionHandler:^(BOOL retry) {
+    self.batchRequest = [self.httpClient upload_track_events:payload forWriteKey:self.configuration.writeKey completionHandler:^(BOOL retry) {
         void (^completion)(void) = ^{
-            if (retry) {
+            
+            if (retry)
+            {
                 [self notifyForName:PDPrimeDataRequestDidFailNotification userInfo:batch];
                 self.batchRequest = nil;
                 [self endBackgroundTask];

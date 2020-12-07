@@ -41,6 +41,8 @@ typedef NS_ENUM(NSInteger, PDEventType) {
     // Misc.
     PDEventTypeContinueUserActivity,
     PDEventTypeOpenURL,
+    
+    PDEventTypeInitialize,
 
 } NS_SWIFT_NAME(EventType);
 

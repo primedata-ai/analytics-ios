@@ -48,8 +48,8 @@ NS_SWIFT_NAME(Analytics)
  */
 + (instancetype)sharedAnalytics;
 
-/*!
- @method
+ /*!
+  @method
 
  @abstract
  Associate a user with their unique ID and record traits about them.
@@ -58,37 +58,40 @@ NS_SWIFT_NAME(Analytics)
  but want to record traits, you should pass nil. For more information on how we
  generate the UUID and Apple's policies on IDs, see https://segment.io/libraries/ios#ids
 
- @param traits        A dictionary of traits you know about the user. Things like: email, name, plan, etc.
+ @param email  email for logged in user
 
- @param options       A dictionary of options, such as the `@"anonymousId"` key. If no anonymous ID is specified one will be generated for you.
-
+ @param properties  A dictionary of options,  which contain keys/values for event properties
+  
+ @param source  A dictionary of options,  which contain keys/values for event source
+  
+ @param target  A dictionary of options,  which contain keys/values for event target
+  
  @discussion
  When you learn more about who your user is, you can record that information with identify.
-
  */
-- (void)identify:(NSString *_Nullable)userId traits:(SERIALIZABLE_DICT _Nullable)traits options:(SERIALIZABLE_DICT _Nullable)options;
-- (void)identify:(NSString *_Nullable)userId traits:(SERIALIZABLE_DICT _Nullable)traits;
 - (void)identify:(NSString *_Nullable)userId;
-
-
+- (void)identify:(NSString *_Nullable)userId email:(NSString*)email;
+- (void)identify:(NSString *_Nullable)userId email:(NSString*)email properties:(SERIALIZABLE_DICT _Nullable)properties source:(SERIALIZABLE_DICT _Nullable)source target:(SERIALIZABLE_DICT _Nullable)target;
 /*!
  @method
 
  @abstract
  Record the actions your users perform.
-
+ 
  @param event         The name of the event you're tracking. We recommend using human-readable names
  like `Played a Song` or `Updated Status`.
 
- @param properties    A dictionary of properties for the event. If the event was 'Added to Shopping Cart', it might
- have properties like price, productType, etc.
+ @param properties  A dictionary of options,  which contain keys/values for event properties
+  
+ @param source  A dictionary of options,  which contain keys/values for event source
+  
+ @param target  A dictionary of options,  which contain keys/values for event target
 
  @discussion
- When a user performs an action in your app, you'll want to track that action for later analysis. Use the event name to say what the user did, and properties to specify any interesting details of the action.
+ When a user performs an action in your app, you'll want to track that action for later analysis. Use the event name to say what the user did, and properties/source/target to specify any interesting details of the action.
 
  */
-- (void)track:(NSString *)event properties:(SERIALIZABLE_DICT _Nullable)properties options:(SERIALIZABLE_DICT _Nullable)options;
-- (void)track:(NSString *)event properties:(SERIALIZABLE_DICT _Nullable)properties;
+- (void)track:(NSString *)event properties:(SERIALIZABLE_DICT _Nullable)properties source:(SERIALIZABLE_DICT _Nullable)source target:(SERIALIZABLE_DICT _Nullable)target;
 - (void)track:(NSString *)event;
 
 /*!

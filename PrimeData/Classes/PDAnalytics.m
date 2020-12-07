@@ -27,6 +27,8 @@ static PDAnalytics *__sharedInstance = nil;
 @property (nonatomic, strong) PDStoreKitTracker *storeKitTracker;
 @property (nonatomic, strong) PDIntegrationsManager *integrationsManager;
 @property (nonatomic, strong) PDMiddlewareRunner *runner;
+@property (nonatomic, strong) PDHTTPClient *httpClient;
+
 @end
 
 
@@ -111,6 +113,13 @@ static PDAnalytics *__sharedInstance = nil;
         
         [PDState sharedInstance].configuration = configuration;
         [[PDState sharedInstance].context updateStaticContext];
+        
+        
+        self.httpClient = [[PDHTTPClient alloc] initWithRequestFactory:self.oneTimeConfiguration.requestFactory url:self.oneTimeConfiguration.url];
+        
+        [self initSDK:^(BOOL valid) {
+            NSLog(@"===>>>>SDK init successful");
+        }];
     }
     return self;
 }
@@ -177,28 +186,28 @@ NSString *const PDBuildKeyV2 = @"PDBuildKeyV2";
     NSString *currentVersion = [[NSBundle mainBundle] infoDictionary][@"CFBundleShortVersionString"];
     NSString *currentBuild = [[NSBundle mainBundle] infoDictionary][@"CFBundleVersion"];
 
-    if (!previousBuildV2) {
-        [self track:@"Application Installed" properties:@{
-            @"version" : currentVersion ?: @"",
-            @"build" : currentBuild ?: @"",
-        }];
-    } else if (![currentBuild isEqualToString:previousBuildV2]) {
-        [self track:@"Application Updated" properties:@{
-            @"previous_version" : previousVersion ?: @"",
-            @"previous_build" : previousBuildV2 ?: @"",
-            @"version" : currentVersion ?: @"",
-            @"build" : currentBuild ?: @"",
-        }];
-    }
+//    if (!previousBuildV2) {
+//        [self track:@"Application Installed" properties:@{
+//            @"version" : currentVersion ?: @"",
+//            @"build" : currentBuild ?: @"",
+//        }];
+//    } else if (![currentBuild isEqualToString:previousBuildV2]) {
+//        [self track:@"Application Updated" properties:@{
+//            @"previous_version" : previousVersion ?: @"",
+//            @"previous_build" : previousBuildV2 ?: @"",
+//            @"version" : currentVersion ?: @"",
+//            @"build" : currentBuild ?: @"",
+//        }];
+//    }
 
 #if TARGET_OS_IPHONE
-    [self track:@"Application Opened" properties:@{
-        @"from_background" : @NO,
-        @"version" : currentVersion ?: @"",
-        @"build" : currentBuild ?: @"",
-        @"referring_application" : launchOptions[UIApplicationLaunchOptionsSourceApplicationKey] ?: @"",
-        @"url" : launchOptions[UIApplicationLaunchOptionsURLKey] ?: @"",
-    }];
+//    [self track:@"Application Opened" properties:@{
+//        @"from_background" : @NO,
+//        @"version" : currentVersion ?: @"",
+//        @"build" : currentBuild ?: @"",
+//        @"referring_application" : launchOptions[UIApplicationLaunchOptionsSourceApplicationKey] ?: @"",
+//        @"url" : launchOptions[UIApplicationLaunchOptionsURLKey] ?: @"",
+//    }];
 #elif TARGET_OS_OSX
     [self track:@"Application Opened" properties:@{
         @"from_background" : @NO,
@@ -222,11 +231,11 @@ NSString *const PDBuildKeyV2 = @"PDBuildKeyV2";
     }
     NSString *currentVersion = [[NSBundle mainBundle] infoDictionary][@"CFBundleShortVersionString"];
     NSString *currentBuild = [[NSBundle mainBundle] infoDictionary][@"CFBundleVersion"];
-    [self track:@"Application Opened" properties:@{
-        @"from_background" : @YES,
-        @"version" : currentVersion ?: @"",
-        @"build" : currentBuild ?: @"",
-    }];
+//    [self track:@"Application Opened" properties:@{
+//        @"from_background" : @YES,
+//        @"version" : currentVersion ?: @"",
+//        @"build" : currentBuild ?: @"",
+//    }];
     
     [[PDState sharedInstance].context updateStaticContext];
 }
@@ -253,75 +262,187 @@ NSString *const PDBuildKeyV2 = @"PDBuildKeyV2";
     return nil;
 }
 
+#pragma mark - Validate Session
+
+- (void)validateSession:(void (^)(BOOL valid))completionHandler
+{
+    if([self.oneTimeConfiguration sessionIsValid])
+    {
+        // add SessionTimeout minutes to  current session
+        [self.oneTimeConfiguration updateExistingSession];
+        completionHandler(YES);
+    }else
+    {
+        //create new session
+        [self initSDK: completionHandler];
+    }
+}
+
+#pragma mark - Initialize
+
+- (NSDictionary *)generateInitializePayload:(PDInitializePayload *)payload
+{
+    NSMutableDictionary *dictionary = [NSMutableDictionary dictionary];
+    [dictionary setValue:payload.event forKey:@"eventType"];
+    [dictionary setValue:self.oneTimeConfiguration.scopeKey forKey:@"scope"];
+    [dictionary setValue:payload.pd_properties forKey:@"properties"];
+    
+    NSMutableDictionary *combinedTarget = [[NSMutableDictionary alloc] init];
+    [combinedTarget addEntriesFromDictionary:payload.pd_target];
+    [combinedTarget setValue:self.oneTimeConfiguration.scopeKey forKey:@"scope"];
+    [dictionary setValue:combinedTarget forKey:@"target"];
+    
+    NSMutableDictionary *combinedSource = [[NSMutableDictionary alloc] init];
+    [combinedSource addEntriesFromDictionary:payload.pd_source];
+    [combinedSource setValue:self.oneTimeConfiguration.scopeKey forKey:@"scope"];
+    [dictionary setValue:combinedSource forKey:@"source"];
+    
+    [dictionary setValue:payload.timestamp forKey:@"timeStamp"];
+    
+    NSMutableDictionary *combinedInternalSource = [[NSMutableDictionary alloc] init];
+    [combinedInternalSource addEntriesFromDictionary:payload.internal_source];
+    [combinedInternalSource setValue:self.oneTimeConfiguration.scopeKey forKey:@"scope"];
+    [dictionary setValue:combinedInternalSource forKey:@"source"];
+    
+    NSMutableDictionary *batch = [[NSMutableDictionary alloc] init];
+    [batch setObject:iso8601FormattedString([NSDate date]) forKey:@"sendAt"];
+    
+    NSString *profileId =  [[NSUserDefaults standardUserDefaults] objectForKey:@"___profileId___"];
+    if (profileId != nil)
+    {
+        [batch setObject:profileId forKey:@"profileId"];
+    }
+    [batch setObject:@[dictionary] forKey:@"events"];
+    [batch setObject:self.oneTimeConfiguration.sessionId forKey:@"sessionId"];
+    return batch;
+}
+
+- (void)initSDK:(void (^)(BOOL valid))completionHandler
+{
+    [self  initSDKWithEvent:@"open_app"
+                 properties:@{}
+                     source:
+                           @{
+                                 @"itemId": @"home",
+                                 @"itemType": @"screen"
+                           }
+                    target:
+                           @{
+
+                                @"itemId": @"home",
+                                @"itemType": @"screen"
+                           } completionHandler:(void (^)(BOOL valid))completionHandler];
+}
+
+- (void)initSDKWithEvent:(NSString *)event properties:(NSDictionary *)properties source:(NSDictionary *)source target:(NSDictionary *)target completionHandler:(void (^)(BOOL valid))completionHandler
+{
+    [self.oneTimeConfiguration createNewSession:GenerateUUIDString()];
+    
+    PDInitializePayload *payload = [[PDInitializePayload alloc] initWithEvent:event
+                                    properties:PDCoerceDictionary(properties)
+                                        source:PDCoerceDictionary(source)
+                                        target:PDCoerceDictionary(target)
+                                       context:PDCoerceDictionary(nil)
+                                  integrations:PDCoerceDictionary(nil)];
+    
+    if (self.oneTimeConfiguration.experimental.nanosecondTimestamps) {
+        payload.timestamp = iso8601NanoFormattedString([NSDate date]);
+    } else {
+        payload.timestamp = iso8601FormattedString([NSDate date]);
+    }
+
+    [self.httpClient upload_context_events:[self generateInitializePayload:payload] forWriteKey:self.oneTimeConfiguration.writeKey completionHandler:^(BOOL retry) {
+        completionHandler(YES);
+    }];
+}
+
 #pragma mark - Identify
 
 - (void)identify:(NSString *)userId
 {
-    [self identify:userId traits:nil options:nil];
+    [self identify:userId email:nil];
 }
 
-- (void)identify:(NSString *)userId traits:(NSDictionary *)traits
+- (void)identify:(NSString *)userId email:(NSString* )email
 {
-    [self identify:userId traits:traits options:nil];
+    [self identify:userId email:email
+        properties:nil
+            source:@{
+                      @"itemId": @"home",
+                      @"itemType": @"screen"
+                    }
+            target:@{
+                     @"itemId": @"user_info",
+                     @"itemType": @"analyticsUser"
+                    }];
 }
 
-- (void)identify:(NSString *)userId traits:(NSDictionary *)traits options:(NSDictionary *)options
+- (void)identify:(NSString *)userId email:(NSString*)email properties:(NSDictionary *)properties source:(NSDictionary *)source target:(NSDictionary *)target
 {
-    NSCAssert2(userId.length > 0 || traits.count > 0, @"either userId (%@) or traits (%@) must be provided.", userId, traits);
+    NSCAssert2(userId.length > 0 || target.count > 0, @"either userId (%@) or traits (%@) must be provided.", userId, target);
     
-    // this is done here to match functionality on android where these are inserted BEFORE being spread out amongst destinations.
-    // it will be set globally later when it runs through PDIntegrationManager.identify.
-    NSString *anonId = [options objectForKey:@"anonymousId"];
-    if (anonId == nil) {
-        anonId = [self getAnonymousId];
-    }
-    // configure traits to match what is seen on android.
-    NSMutableDictionary *existingTraitsCopy = [[PDState sharedInstance].userInfo.traits mutableCopy];
-    NSMutableDictionary *traitsCopy = [traits mutableCopy];
-    // if no traits were passed in, need to create.
-    if (existingTraitsCopy == nil) {
-        existingTraitsCopy = [[NSMutableDictionary alloc] init];
-    }
-    if (traitsCopy == nil) {
-        traitsCopy = [[NSMutableDictionary alloc] init];
-    }
-    traitsCopy[@"anonymousId"] = anonId;
-    if (userId != nil) {
-        traitsCopy[@"userId"] = userId;
-        [PDState sharedInstance].userInfo.userId = userId;
-    }
-    // merge w/ existing traits and set them.
-    [existingTraitsCopy addEntriesFromDictionary:traits];
-    [PDState sharedInstance].userInfo.traits = existingTraitsCopy;
+    NSMutableDictionary *combined_target = [[NSMutableDictionary alloc] init];
+    [combined_target addEntriesFromDictionary:target];
+    NSDictionary *targetProperties = PDCoerceDictionary([target objectForKey:@"properties"]);
     
-    [self run:PDEventTypeIdentify payload:
-                                       [[PDIdentifyPayload alloc] initWithUserId:userId
-                                                                      anonymousId:anonId
-                                                                           traits:PDCoerceDictionary(existingTraitsCopy)
-                                                                          context:PDCoerceDictionary([options objectForKey:@"context"])
-                                                                     integrations:[options objectForKey:@"integrations"]]];
+    NSMutableDictionary *combined_target_properties = [[NSMutableDictionary alloc] init];
+    [combined_target_properties addEntriesFromDictionary:targetProperties];
+    [combined_target_properties setValue:userId forKey:@"id"];
+    if (email)
+    {
+        [combined_target_properties setValue:email forKey:@"email"];
+    }
+    [combined_target setValue:combined_target_properties forKey:@"properties"];
+    
+    [self validateSession:^(BOOL valid) {
+        PDInitializePayload *payload = [[PDInitializePayload alloc] initWithEvent:@"identify"
+                                         properties:PDCoerceDictionary(properties)
+                                             source:PDCoerceDictionary(source)
+                                             target:PDCoerceDictionary(combined_target)
+                                            context:PDCoerceDictionary(nil)
+                                       integrations:PDCoerceDictionary(nil)];
+        
+        if (self.oneTimeConfiguration.experimental.nanosecondTimestamps) {
+            payload.timestamp = iso8601NanoFormattedString([NSDate date]);
+        } else {
+            payload.timestamp = iso8601FormattedString([NSDate date]);
+        }
+        
+        [self.httpClient upload_context_events:[self generateInitializePayload:payload] forWriteKey:self.oneTimeConfiguration.writeKey completionHandler:^(BOOL retry) {
+            NSLog(@"Identify successful");
+        }];
+    }];
 }
 
 #pragma mark - Track
 
 - (void)track:(NSString *)event
 {
-    [self track:event properties:nil options:nil];
+    [self track:event
+     properties:nil
+         source:@{
+                  @"itemId": @"home",
+                  @"itemType": @"screen"
+                 }
+         target:@{
+                 @"itemId": @"home",
+                 @"itemType": @"screen"
+                 }];
 }
 
-- (void)track:(NSString *)event properties:(NSDictionary *)properties
-{
-    [self track:event properties:properties options:nil];
-}
-
-- (void)track:(NSString *)event properties:(NSDictionary *)properties options:(NSDictionary *)options
+- (void)track:(NSString *)event properties:(NSDictionary *)properties source:(NSDictionary *)source target:(NSDictionary *)target
 {
     NSCAssert1(event.length > 0, @"event (%@) must not be empty.", event);
-    [self run:PDEventTypeTrack payload:
-                                    [[PDTrackPayload alloc] initWithEvent:event
-                                                                properties:PDCoerceDictionary(properties)
-                                                                   context:PDCoerceDictionary([options objectForKey:@"context"])
-                                                              integrations:[options objectForKey:@"integrations"]]];
+    
+    [self validateSession:^(BOOL valid) {
+            [self run:PDEventTypeTrack payload:
+         [[PDTrackPayload alloc] initWithEvent:event
+                                    properties:PDCoerceDictionary(properties)
+                                        source:PDCoerceDictionary(source)
+                                        target:PDCoerceDictionary(target)
+                                       context:PDCoerceDictionary(nil)
+                                  integrations:PDCoerceDictionary(nil)]];
+    }];
 }
 
 #pragma mark - Screen
@@ -401,11 +522,11 @@ NSString *const PDBuildKeyV2 = @"PDBuildKeyV2";
 
 - (void)trackPushNotification:(NSDictionary *)properties fromLaunch:(BOOL)launch
 {
-    if (launch) {
-        [self track:@"Push Notification Tapped" properties:properties];
-    } else {
-        [self track:@"Push Notification Received" properties:properties];
-    }
+//    if (launch) {
+//        [self track:@"Push Notification Tapped" properties:properties];
+//    } else {
+//        [self track:@"Push Notification Received" properties:properties];
+//    }
 }
 
 - (void)receivedRemoteNotification:(NSDictionary *)userInfo
@@ -464,7 +585,7 @@ NSString *const PDBuildKeyV2 = @"PDBuildKeyV2";
         properties[@"title"] = activity.title ?: @"";
         properties = [PDUtils traverseJSON:properties
                       andReplaceWithFilters:self.oneTimeConfiguration.payloadFilters];
-        [self track:@"Deep Link Opened" properties:[properties copy]];
+//        [self track:@"Deep Link Opened" properties:[properties copy]];
     }
 }
 
@@ -490,7 +611,7 @@ NSString *const PDBuildKeyV2 = @"PDBuildKeyV2";
     properties[@"url"] = urlString;
     properties = [PDUtils traverseJSON:properties
                   andReplaceWithFilters:self.oneTimeConfiguration.payloadFilters];
-    [self track:@"Deep Link Opened" properties:[properties copy]];
+//    [self track:@"Deep Link Opened" properties:[properties copy]];
 }
 
 - (void)reset
@@ -575,7 +696,9 @@ NSString *const PDBuildKeyV2 = @"PDBuildKeyV2";
     }];
     
     // Could probably do more things with callback later, but we don't use it yet.
-    [self.runner run:context callback:nil];
+    [self.runner run:context callback:^(BOOL earlyExit, NSArray<id<PDMiddleware>> * _Nonnull remainingMiddlewares) {
+        NSLog(@"finish...");
+    }];
 }
 
 - (id<PDEdgeFunctionMiddleware>)edgeFunction

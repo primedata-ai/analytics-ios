@@ -12,9 +12,11 @@ NS_SWIFT_NAME(TrackPayload)
 @property (nonatomic, readonly, nullable) NSDictionary *properties;
 
 - (instancetype)initWithEvent:(NSString *)event
-                   properties:(NSDictionary *_Nullable)properties
-                      context:(NSDictionary *)context
-                 integrations:(NSDictionary *)integrations;
+                   properties:(JSON_DICT)properties
+                       source:(JSON_DICT)source
+                       target:(JSON_DICT)target
+                      context:(JSON_DICT)context
+                 integrations:(JSON_DICT)integrations;
 
 @end
 

@@ -200,8 +200,8 @@ NS_ASSUME_NONNULL_END
 }
 
 - (id <PDIntegration>)createWithSettings:(NSDictionary *)settings forAnalytics:(PDAnalytics *)analytics {
-    PDHTTPClient *httpClient = [[PDHTTPClient alloc] initWithRequestFactory:nil];
-    return [[PDWebhookIntegration alloc] initWithAnalytics:analytics httpClient:httpClient webhookUrl:self.webhookUrl name:self.name];
+    PDHTTPClient *httpClient = [[PDHTTPClient alloc] initWithRequestFactory:nil url:nil];
+    return [[PDWebhookIntegration alloc] initWithAnalytics: analytics httpClient:httpClient webhookUrl:self.webhookUrl name:self.name];
 }
 
 - (NSString *)key {

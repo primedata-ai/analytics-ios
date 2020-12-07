@@ -13,7 +13,13 @@ NS_SWIFT_NAME(Payload)
 @property (nonatomic, strong) NSString *anonymousId;
 @property (nonatomic, strong) NSString *userId;
 
+@property (nonatomic, readonly) JSON_DICT pd_properties;
+@property (nonatomic, readonly) JSON_DICT pd_source;
+@property (nonatomic, readonly) JSON_DICT pd_target;
+
+
 - (instancetype)initWithContext:(JSON_DICT)context integrations:(JSON_DICT)integrations;
+- (instancetype)initWithProperties:(JSON_DICT)properties source:(JSON_DICT)source target:(JSON_DICT)target context:(JSON_DICT)context integrations:(JSON_DICT)integrations;
 
 @end
 
@@ -62,5 +68,15 @@ NS_SWIFT_NAME(RemoteNotificationPayload)
 
 // PDEventTypeRegisteredForRemoteNotifications
 @property (nonatomic, strong, nullable) NSData *deviceToken;
+
+@end
+
+NS_SWIFT_NAME(InitializePayload)
+@interface PDInitializePayload : PDPayload
+
+@property (nonatomic, readonly, nullable) NSDictionary *internal_source;
+@property (nonatomic, readonly, nonnull) NSString *event;
+
+- (instancetype)initWithEvent:(NSString* )event properties:(JSON_DICT)properties source:(JSON_DICT)source target:(JSON_DICT)target context:(JSON_DICT)context integrations:(JSON_DICT)integrations;
 
 @end

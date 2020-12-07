@@ -79,20 +79,20 @@
 
     NSString *currency = [product.priceLocale objectForKey:NSLocaleCurrencyCode];
 
-    [self.analytics track:@"Order Completed" properties:@{
-        @"orderId" : transaction.transactionIdentifier,
-        @"affiliation" : @"App Store",
-        @"currency" : currency ?: @"",
-        @"products" : @[
-            @{
-               @"sku" : transaction.transactionIdentifier,
-               @"quantity" : @(transaction.payment.quantity),
-               @"productId" : product.productIdentifier ?: @"",
-               @"price" : product.price ?: @0,
-               @"name" : product.localizedTitle ?: @"",
-            }
-        ]
-    }];
+//    [self.analytics track:@"Order Completed" properties:@{
+//        @"orderId" : transaction.transactionIdentifier,
+//        @"affiliation" : @"App Store",
+//        @"currency" : currency ?: @"",
+//        @"products" : @[
+//            @{
+//               @"sku" : transaction.transactionIdentifier,
+//               @"quantity" : @(transaction.payment.quantity),
+//               @"productId" : product.productIdentifier ?: @"",
+//               @"price" : product.price ?: @0,
+//               @"name" : product.localizedTitle ?: @"",
+//            }
+//        ]
+//    }];
 }
 
 @end

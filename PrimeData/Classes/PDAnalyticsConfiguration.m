@@ -39,24 +39,31 @@
 
 @property (nonatomic, copy, readwrite) NSString *writeKey;
 @property (nonatomic, copy, readwrite) NSString *scopeKey;
+@property (nonatomic, copy, readwrite) NSString *url;
 @property (nonatomic, strong, readonly) NSMutableArray *factories;
 @property (nonatomic, strong) PDAnalyticsExperimental *experimental;
+
+
+@property (nonatomic, assign) NSUInteger sessionLifeTime;
+
+@property (nonatomic, assign) NSUInteger currentSessionLifeTime;
 
 @end
 
 
 @implementation PDAnalyticsConfiguration
 
-+ (instancetype)configurationWithWriteKey:(NSString *)writeKey andScopeKey:(NSString *)scopeKey
++ (instancetype)configurationWithWriteKey:(NSString *)writeKey scopeKey:(NSString *)scopeKey url:(NSString*)url
 {
-    return [[PDAnalyticsConfiguration alloc] initWithWriteKey:writeKey andScopeKey:scopeKey];
+    return [[PDAnalyticsConfiguration alloc] initWithWriteKey:writeKey scopeKey:scopeKey url:url];
 }
 
-- (instancetype)initWithWriteKey:(NSString *)writeKey andScopeKey:(NSString *)scopeKey
+- (instancetype)initWithWriteKey:(NSString *)writeKey scopeKey:(NSString *)scopeKey  url:(NSString*)url
 {
     if (self = [self init]) {
         self.writeKey = writeKey;
         self.scopeKey = scopeKey;
+        self.url = url;
     }
     return self;
 }
@@ -87,6 +94,29 @@
 #endif
     }
     return self;
+}
+
+- (void)createNewSession:(NSString *)newSessionID
+{
+    self.sesstionTime = [NSDate date];
+    self.currentSessionLifeTime = self.sessionTimeout;
+    _sessionId = newSessionID;
+}
+
+- (BOOL)sessionIsValid
+{
+    NSDate *now = [NSDate date];
+    NSInteger minuteDifference = [now timeIntervalSinceDate:self.sesstionTime] / 60.0;
+    if (minuteDifference  > self.currentSessionLifeTime)
+    {
+        return NO;
+    }
+    return YES;
+}
+
+- (void)updateExistingSession
+{
+    self.currentSessionLifeTime = self.currentSessionLifeTime + self.sessionTimeout;
 }
 
 - (void)use:(id<PDIntegrationFactory>)factory
