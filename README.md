@@ -66,27 +66,36 @@ pod 'Analytics', :git => 'https://github.com/primedata-ai/analytics-ios.git'
 ## Quickstart
 
 ## Iitialize SDK:
+```objectc
 PDAnalyticsConfiguration *configuration = [PDAnalyticsConfiguration configurationWithWriteKey: <write_key> scopeKey: <scope_key> url: <prime_data_server_url>];
 [PDAnalytics setupWithConfiguration:configuration];
+```
 
 ## Iitialize SDK and change session timeout (in minutes, default value is 30 minutes)
+```objectc
 PDAnalyticsConfiguration *configuration = [PDAnalyticsConfiguration configurationWithWriteKey: <write_key> scopeKey: <scope_key> url: <prime_data_server_url>];
 configuration.sessionTimeout = <integer_number>
 [PDAnalytics setupWithConfiguration:configuration];
+```
 
 ## Iitialize SDK and change session timeout (in minutes, default value is 30 minutes) and change the number of events to send to server (default value is 20 events)
+```objectc
 PDAnalyticsConfiguration *configuration = [PDAnalyticsConfiguration configurationWithWriteKey: <write_key> scopeKey: <scope_key> url: <prime_data_server_url>];
 configuration.sessionTimeout = <integer_number>
 configuration.flushAt = <integer_number>
 [PDAnalytics setupWithConfiguration:configuration];
+```
 
 ## Identify User:
+```objectc
 [[PDAnalytics sharedAnalytics] identify: <user_id>];
 [[PDAnalytics sharedAnalytics] identify: <user_id> email: <email>];
 [[PDAnalytics sharedAnalytics] identify:<user_id> email: <email> properties: <NSDictionary> source: <NSDictionary> target: <NSDictionary>];
-
+```
 ## Track events:
+```objectc
 [[PDAnalytics sharedAnalytics] track: <event_name>];
 [[PDAnalytics sharedAnalytics] track: <event_name>  properties: <NSDictionary> source: <NSDictionary>  target: <NSDictionary>];
+```
 
 
