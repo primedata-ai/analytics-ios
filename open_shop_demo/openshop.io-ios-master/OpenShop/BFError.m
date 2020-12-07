@@ -343,7 +343,7 @@
 }
 
 - (void)showAlertFromSender:(id)sender {
-    [self showAlertFromSender:sender withCompletionBlock:nil];
+    //[self showAlertFromSender:sender withCompletionBlock:nil];
 }
 
 

@@ -68,7 +68,7 @@ static NSString *const pageControllerSegueIdentifier = @"pageControllerSegue";
     self.dimsBackground = false;
     self.blursBackground = false;
     self.allowsSkip = true;
-    self.containerDimView.backgroundColor = [UIColor BFN_dimColor];
+    //self.containerDimView.backgroundColor = [UIColor BFN_dimColor];
     
     // initial child container height
     BFOnboardingContentViewController *firstController = self.viewControllers.firstObject;
@@ -110,21 +110,21 @@ static NSString *const pageControllerSegueIdentifier = @"pageControllerSegue";
 }
 
 - (void)setBlursBackground:(BOOL)blursBackground {
-    _blursBackground = blursBackground;
-    if(_blursBackground) {
-        // iOS 8 <= effect view
-        if([UIVisualEffectView class]) {
-            UIBlurEffect *blur = [UIBlurEffect effectWithStyle:UIBlurEffectStyleLight];
-            // add effect to an effect view
-            UIVisualEffectView *effectView = [[UIVisualEffectView alloc]initWithEffect:blur];
-            effectView.frame = self.backgroundImageView.frame;
-            [self.backgroundImageView addSubview:effectView];
-        }
-        // pre iOS 8 effect view
-        else {
-            self.backgroundImageView.image = [UIImageEffects imageByApplyingLightEffectToImage:self.backgroundImageView.image];
-        }
-    }
+//    _blursBackground = blursBackground;
+//    if(_blursBackground) {
+//        // iOS 8 <= effect view
+//        if([UIVisualEffectView class]) {
+//            UIBlurEffect *blur = [UIBlurEffect effectWithStyle:UIBlurEffectStyleLight];
+//            // add effect to an effect view
+//            UIVisualEffectView *effectView = [[UIVisualEffectView alloc]initWithEffect:blur];
+//            effectView.frame = self.backgroundImageView.frame;
+//            [self.backgroundImageView addSubview:effectView];
+//        }
+//        // pre iOS 8 effect view
+//        else {
+//            self.backgroundImageView.image = [UIImageEffects imageByApplyingLightEffectToImage:self.backgroundImageView.image];
+//        }
+//    }
 }
 
 
