@@ -64,7 +64,7 @@ static const NSUInteger kMaxBatchSize = 475000; // 475KB
     [self.genericSession finishTasksAndInvalidate];
 }
 
-- (nullable NSURLSessionUploadTask *)upload_context_events:(NSDictionary *)batch forWriteKey:(NSString *)writeKey completionHandler:(void (^)(BOOL retry))completionHandler
+- (nullable NSURLSessionUploadTask *)uploadContextEvents:(NSDictionary *)batch forWriteKey:(NSString *)writeKey completionHandler:(void (^)(BOOL retry))completionHandler
 {
     NSString *api = @"context";
     NSURLSession *session = [self sessionForWriteKey:writeKey];
@@ -137,7 +137,7 @@ static const NSUInteger kMaxBatchSize = 475000; // 475KB
     return task;
 }
 
-- (nullable NSURLSessionUploadTask *)upload_track_events:(NSDictionary *)batch forWriteKey:(NSString *)writeKey completionHandler:(void (^)(BOOL retry))completionHandler
+- (nullable NSURLSessionUploadTask *)uploadTrackEvents:(NSDictionary *)batch forWriteKey:(NSString *)writeKey completionHandler:(void (^)(BOOL retry))completionHandler
 {
     NSString *api = @"smile";
     

@@ -447,7 +447,7 @@ NSUInteger const kPDBackgroundTaskInvalid = 0;
     PDLog(@"%@ Flushing %lu of %lu queued API calls.", self, (unsigned long)batch.count, (unsigned long)self.queue.count);
     PDLog(@"Flushing batch %@.", payload);
 
-    self.batchRequest = [self.httpClient upload_track_events:payload forWriteKey:self.configuration.writeKey completionHandler:^(BOOL retry) {
+    self.batchRequest = [self.httpClient uploadTrackEvents:payload forWriteKey:self.configuration.writeKey completionHandler:^(BOOL retry) {
         void (^completion)(void) = ^{
             
             if (retry)

@@ -268,7 +268,7 @@ NSString *const PDBuildKeyV2 = @"PDBuildKeyV2";
 {
     if([self.oneTimeConfiguration sessionIsValid])
     {
-        // add SessionTimeout minutes to  current session
+        // add sessionTimeout minutes to  current session
         [self.oneTimeConfiguration updateExistingSession];
         completionHandler(YES);
     }else
@@ -351,7 +351,7 @@ NSString *const PDBuildKeyV2 = @"PDBuildKeyV2";
         payload.timestamp = iso8601FormattedString([NSDate date]);
     }
 
-    [self.httpClient upload_context_events:[self generateInitializePayload:payload] forWriteKey:self.oneTimeConfiguration.writeKey completionHandler:^(BOOL retry) {
+    [self.httpClient uploadContextEvents:[self generateInitializePayload:payload] forWriteKey:self.oneTimeConfiguration.writeKey completionHandler:^(BOOL retry) {
         completionHandler(YES);
     }];
 }
@@ -408,7 +408,7 @@ NSString *const PDBuildKeyV2 = @"PDBuildKeyV2";
             payload.timestamp = iso8601FormattedString([NSDate date]);
         }
         
-        [self.httpClient upload_context_events:[self generateInitializePayload:payload] forWriteKey:self.oneTimeConfiguration.writeKey completionHandler:^(BOOL retry) {
+        [self.httpClient uploadContextEvents:[self generateInitializePayload:payload] forWriteKey:self.oneTimeConfiguration.writeKey completionHandler:^(BOOL retry) {
             NSLog(@"Identify successful");
         }];
     }];

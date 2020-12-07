@@ -29,8 +29,8 @@ NS_SWIFT_NAME(HTTPClient)
  * Completion handlers are called on a dispatch queue internal to PDHTTPClient. 
  */
 
-- (nullable NSURLSessionUploadTask *)upload_context_events:(NSDictionary *)batch forWriteKey:(NSString *)writeKey completionHandler:(void (^)(BOOL retry))completionHandler;
-- (nullable NSURLSessionUploadTask *)upload_track_events:(JSON_DICT)batch forWriteKey:(NSString *)writeKey completionHandler:(void (^)(BOOL retry))completionHandler;
+- (nullable NSURLSessionUploadTask *)uploadContextEvents:(NSDictionary *)batch forWriteKey:(NSString *)writeKey completionHandler:(void (^)(BOOL retry))completionHandler;
+- (nullable NSURLSessionUploadTask *)uploadTrackEvents:(JSON_DICT)batch forWriteKey:(NSString *)writeKey completionHandler:(void (^)(BOOL retry))completionHandler;
 
 - (NSURLSessionDataTask *)settingsForWriteKey:(NSString *)writeKey completionHandler:(void (^)(BOOL success, JSON_DICT _Nullable settings))completionHandler;
 
