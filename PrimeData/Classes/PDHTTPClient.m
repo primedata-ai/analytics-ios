@@ -170,16 +170,6 @@ static const NSUInteger kMaxBatchSize = 475000; // 475KB
         NSInteger code = ((NSHTTPURLResponse *)response).statusCode;
         if (code < 300) {
             NSError *jsonError = nil;
-            
-            NSDictionary * parsedData = [NSJSONSerialization JSONObjectWithData:data options:0 error:&jsonError];
-            NSString *profileId = [parsedData objectForKey:@"profileId"];
-            NSLog(@"___profileID___: %@", profileId);
-            if (profileId != nil)
-            {
-                [[NSUserDefaults standardUserDefaults] setValue:profileId forKey:@"___profileId___"];
-                [[NSUserDefaults standardUserDefaults] synchronize];
-            }
-            
             // 2xx response codes. Don't retry.
             completionHandler(NO);
             return;

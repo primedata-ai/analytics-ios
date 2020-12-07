@@ -70,8 +70,8 @@ NS_SWIFT_NAME(Analytics)
  When you learn more about who your user is, you can record that information with identify.
  */
 - (void)identify:(NSString *_Nullable)userId;
-- (void)identify:(NSString *_Nullable)userId email:(NSString*)email;
-- (void)identify:(NSString *_Nullable)userId email:(NSString*)email properties:(SERIALIZABLE_DICT _Nullable)properties source:(SERIALIZABLE_DICT _Nullable)source target:(SERIALIZABLE_DICT _Nullable)target;
+- (void)identify:(NSString *_Nullable)userId email:(NSString* _Nullable)email;
+- (void)identify:(NSString *_Nullable)userId email:(NSString* _Nullable)email properties:(SERIALIZABLE_DICT _Nullable)properties source:(SERIALIZABLE_DICT _Nullable)source target:(SERIALIZABLE_DICT _Nullable)target;
 /*!
  @method
 

@@ -363,7 +363,7 @@ NSString *const PDBuildKeyV2 = @"PDBuildKeyV2";
     [self identify:userId email:nil];
 }
 
-- (void)identify:(NSString *)userId email:(NSString* )email
+- (void)identify:(NSString *)userId email:(NSString* _Nullable)email
 {
     [self identify:userId email:email
         properties:nil
@@ -379,7 +379,7 @@ NSString *const PDBuildKeyV2 = @"PDBuildKeyV2";
 
 - (void)identify:(NSString *)userId email:(NSString*)email properties:(NSDictionary *)properties source:(NSDictionary *)source target:(NSDictionary *)target
 {
-    NSCAssert2(userId.length > 0 || target.count > 0, @"either userId (%@) or traits (%@) must be provided.", userId, target);
+    NSCAssert2(userId.length > 0 || target.count > 0, @"either userId (%@) or target (%@) must be provided.", userId, target);
     
     NSMutableDictionary *combined_target = [[NSMutableDictionary alloc] init];
     [combined_target addEntriesFromDictionary:target];
