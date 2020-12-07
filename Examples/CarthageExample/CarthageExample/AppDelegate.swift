@@ -3,7 +3,7 @@
 //  CarthageExample
 //
 //  Created by Tony Xiao on 6/30/16.
-//  Copyright © 2016 Segment. All rights reserved.
+//  Copyright © 2016 PrimeData. All rights reserved.
 //
 
 import UIKit
@@ -11,7 +11,7 @@ import Analytics
 
 // https://segment.com/segment-mobile/sources/ios_carthage_example/overview
 // Use your own writekey people :)
-let Analytics = SEGAnalytics(configuration: SEGAnalyticsConfiguration(writeKey: "b2XoQDHA5YhWQAjr2FZ4qIckgyEqXyY8"))
+let Analytics = PDAnalytics(configuration: PDAnalyticsConfiguration(writeKey: "b2XoQDHA5YhWQAjr2FZ4qIckgyEqXyY8"))
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {

@@ -34,8 +34,8 @@ analytics.track("CTA Tapped", properties: ["plan": "premium"])
 """
         
         // Add the button
-        let trackButton = UIButton.SegmentButton("Track", target: self, action: #selector(trackUser(_:)))
-        continueButton = UIButton.SegmentButton("Continue", target: self, action: #selector(continueToNext(_:)))
+        let trackButton = UIButton.PrimeDataButton("Track", target: self, action: #selector(trackUser(_:)))
+        continueButton = UIButton.PrimeDataButton("Continue", target: self, action: #selector(continueToNext(_:)))
         continueButton.isEnabled = false
     
         propertyViews = [trackButton, UIView.separator(), continueButton, UIView.separator()]

@@ -36,10 +36,10 @@ analytics.track("Trial Started", properties: ...)
 """
         
         // Add the button
-        let createButton = UIButton.SegmentButton("Create Account", target: self, action: #selector(createUser(_:)))
-        trackButton = UIButton.SegmentButton("Start Trial", target: self, action: #selector(trackUser(_:)))
+        let createButton = UIButton.PrimeDataButton("Create Account", target: self, action: #selector(createUser(_:)))
+        trackButton = UIButton.PrimeDataButton("Start Trial", target: self, action: #selector(trackUser(_:)))
         trackButton.isEnabled = false
-        continueButton = UIButton.SegmentButton("Continue", target: self, action: #selector(continueToNext(_:)))
+        continueButton = UIButton.PrimeDataButton("Continue", target: self, action: #selector(continueToNext(_:)))
         continueButton.isEnabled = false
     
         propertyViews = [createButton, UIView.separator(), trackButton, UIView.separator(), continueButton, UIView.separator()]

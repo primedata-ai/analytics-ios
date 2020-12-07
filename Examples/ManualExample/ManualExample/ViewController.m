@@ -3,7 +3,7 @@
 //  ManualExample
 //
 //  Created by Tony Xiao on 6/30/16.
-//  Copyright © 2016 Segment. All rights reserved.
+//  Copyright © 2016 PrimeData. All rights reserved.
 //
 
 #import <Analytics/Analytics.h>
@@ -20,8 +20,8 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    [[SEGAnalytics sharedAnalytics] track:@"Manual Example Main View Loaded"];
-    [[SEGAnalytics sharedAnalytics] flush];
+    [[PDAnalytics sharedAnalytics] track:@"Manual Example Main View Loaded"];
+    [[PDAnalytics sharedAnalytics] flush];
 }
 
 - (void)didReceiveMemoryWarning
@@ -32,8 +32,8 @@
 
 - (IBAction)fireEvent:(id)sender
 {
-    [[SEGAnalytics sharedAnalytics] track:@"Manual Example Fire Event"];
-    [[SEGAnalytics sharedAnalytics] flush];
+    [[PDAnalytics sharedAnalytics] track:@"Manual Example Fire Event"];
+    [[PDAnalytics sharedAnalytics] flush];
 }
 
 @end

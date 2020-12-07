@@ -29,8 +29,8 @@ analytics.track("Signed Out", properties: ["username": "pgibbons"])
 """
         
         // Add the button
-        let signoutButton = UIButton.SegmentButton("Signout", target: self, action: #selector(signout(_:)))
-        continueButton = UIButton.SegmentButton("Continue", target: self, action: #selector(continueToNext(_:)))
+        let signoutButton = UIButton.PrimeDataButton("Signout", target: self, action: #selector(signout(_:)))
+        continueButton = UIButton.PrimeDataButton("Continue", target: self, action: #selector(continueToNext(_:)))
         continueButton.isEnabled = false
     
         propertyViews = [signoutButton, UIView.separator(), continueButton, UIView.separator()]

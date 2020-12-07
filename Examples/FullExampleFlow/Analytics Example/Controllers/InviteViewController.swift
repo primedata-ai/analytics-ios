@@ -29,8 +29,8 @@ analytics.track("Invite Sent", properties: ["first": "Jane", "last": "Doe", "ema
 """
         
         // Add the button
-        let inviteButton = UIButton.SegmentButton("Invite Yser", target: self, action: #selector(createUser(_:)))
-        continueButton = UIButton.SegmentButton("Continue", target: self, action: #selector(continueToNext(_:)))
+        let inviteButton = UIButton.PrimeDataButton("Invite Yser", target: self, action: #selector(createUser(_:)))
+        continueButton = UIButton.PrimeDataButton("Continue", target: self, action: #selector(continueToNext(_:)))
         continueButton.isEnabled = false
     
         propertyViews = [inviteButton, UIView.separator(), continueButton, UIView.separator()]

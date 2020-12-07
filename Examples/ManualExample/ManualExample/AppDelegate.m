@@ -3,7 +3,7 @@
 //  ManualExample
 //
 //  Created by Tony Xiao on 6/30/16.
-//  Copyright © 2016 Segment. All rights reserved.
+//  Copyright © 2016 PrimeData. All rights reserved.
 //
 
 #import <Analytics/Analytics.h>
@@ -21,9 +21,9 @@
 {
     // https://segment.com/segment-mobile/sources/ios_manual_example/overview
     // Use your own writekey people :)
-    [SEGAnalytics setupWithConfiguration:[SEGAnalyticsConfiguration configurationWithWriteKey:@"St5WbSrxW5bzxn2NGwPDVzS9PBPYctOl"]];
-    [[SEGAnalytics sharedAnalytics] track:@"Manual Example Launched"];
-    [[SEGAnalytics sharedAnalytics] flush];
+    [PDAnalytics setupWithConfiguration:[PDAnalyticsConfiguration configurationWithWriteKey:@"St5WbSrxW5bzxn2NGwPDVzS9PBPYctOl"]];
+    [[PDAnalytics sharedAnalytics] track:@"Manual Example Launched"];
+    [[PDAnalytics sharedAnalytics] flush];
     return YES;
 }
 

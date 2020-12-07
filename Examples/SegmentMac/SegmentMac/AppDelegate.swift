@@ -1,6 +1,6 @@
 //
 //  AppDelegate.swift
-//  SegmentMac
+//  PrimeDataMac
 //
 //  Created by Cody Garvin on 7/6/20.
 //  Copyright © 2020 Cody Garvin. All rights reserved.
