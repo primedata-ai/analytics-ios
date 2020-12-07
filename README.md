@@ -65,20 +65,20 @@ pod 'Analytics', :git => 'https://github.com/primedata-ai/analytics-ios.git'
 
 ## Quickstart
 
-## Iitialize SDK:
+## Initialize SDK:
 ```objective-c
 PDAnalyticsConfiguration *configuration = [PDAnalyticsConfiguration configurationWithWriteKey: <write_key> scopeKey: <scope_key> url: <prime_data_server_url>];
 [PDAnalytics setupWithConfiguration:configuration];
 ```
 
-## Iitialize SDK and change session timeout (in minutes, default value is 30 minutes)
+## Initialize SDK and change session timeout (in minutes, default value is 30 minutes)
 ```objective-c
 PDAnalyticsConfiguration *configuration = [PDAnalyticsConfiguration configurationWithWriteKey: <write_key> scopeKey: <scope_key> url: <prime_data_server_url>];
 configuration.sessionTimeout = <integer_number>
 [PDAnalytics setupWithConfiguration:configuration];
 ```
 
-## Iitialize SDK and change session timeout (in minutes, default value is 30 minutes) and change the number of events to send to server (default value is 20 events)
+## Initialize SDK and change session timeout (in minutes, default value is 30 minutes) and change the number of events to send to server (default value is 20 events)
 ```objective-c
 PDAnalyticsConfiguration *configuration = [PDAnalyticsConfiguration configurationWithWriteKey: <write_key> scopeKey: <scope_key> url: <prime_data_server_url>];
 configuration.sessionTimeout = <integer_number>
