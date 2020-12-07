@@ -65,6 +65,11 @@ pod 'Analytics', :git => 'https://github.com/primedata-ai/analytics-ios.git'
 
 ## Quickstart
 
+## Import SDK:
+```objective-c
+#import <PrimeData.h>
+```
+
 ## Initialize SDK:
 ```objective-c
 PDAnalyticsConfiguration *configuration = [PDAnalyticsConfiguration configurationWithWriteKey: <write_key> scopeKey: <scope_key> url: <prime_data_server_url>];
