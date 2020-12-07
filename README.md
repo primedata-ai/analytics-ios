@@ -95,7 +95,7 @@ configuration.flushAt = <integer_number>;
 ```objective-c
 [[PDAnalytics sharedAnalytics] identify: <user_id>];
 [[PDAnalytics sharedAnalytics] identify: <user_id> email: <email>];
-[[PDAnalytics sharedAnalytics] identify:<user_id> email: <email> properties: <NSDictionary> source: <NSDictionary> target: <NSDictionary>];
+[[PDAnalytics sharedAnalytics] identify: <user_id> email: <email> properties: <NSDictionary> source: <NSDictionary> target: <NSDictionary>];
 ```
 ## Track events:
 ```objective-c
