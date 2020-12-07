@@ -79,15 +79,15 @@ PDAnalyticsConfiguration *configuration = [PDAnalyticsConfiguration configuratio
 ## Initialize SDK and change session timeout (in minutes, default value is 30 minutes)
 ```objective-c
 PDAnalyticsConfiguration *configuration = [PDAnalyticsConfiguration configurationWithWriteKey: <write_key> scopeKey: <scope_key> url: <prime_data_server_url>];
-configuration.sessionTimeout = <integer_number>
+configuration.sessionTimeout = <integer_number>;
 [PDAnalytics setupWithConfiguration:configuration];
 ```
 
 ## Initialize SDK and change session timeout (in minutes, default value is 30 minutes) and change the number of events to send to server (default value is 20 events)
 ```objective-c
 PDAnalyticsConfiguration *configuration = [PDAnalyticsConfiguration configurationWithWriteKey: <write_key> scopeKey: <scope_key> url: <prime_data_server_url>];
-configuration.sessionTimeout = <integer_number>
-configuration.flushAt = <integer_number>
+configuration.sessionTimeout = <integer_number>;
+configuration.flushAt = <integer_number>;
 [PDAnalytics setupWithConfiguration:configuration];
 ```
 
