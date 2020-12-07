@@ -992,9 +992,9 @@ kde chcete nakupovat</string>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="37" id="fGt-Gh-76U"/>
                                 </constraints>
-                                <color key="textColor" systemColor="systemPinkColor" red="1" green="0.1764705882" blue="0.33333333329999998" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <color key="textColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <fontDescription key="fontDescription" name="Roboto-Light" family="Roboto" pointSize="15"/>
-                                <textInputTraits key="textInputTraits" autocorrectionType="no" spellCheckingType="no" keyboardType="emailAddress"/>
+                                <textInputTraits key="textInputTraits" autocorrectionType="no" spellCheckingType="no" keyboardType="emailAddress" keyboardAppearance="alert"/>
                                 <userDefinedRuntimeAttributes>
                                     <userDefinedRuntimeAttribute type="number" keyPath="horizontalMargin">
                                         <integer key="value" value="10"/>
@@ -1007,9 +1007,9 @@ kde chcete nakupovat</string>
                             <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="line" placeholder="Heslo" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="AAL-Wv-TgK" customClass="BFTextField">
                                 <rect key="frame" x="25" y="112.5" width="230" height="37"/>
                                 <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                <color key="textColor" systemColor="systemPinkColor" red="1" green="0.1764705882" blue="0.33333333329999998" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <color key="textColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <fontDescription key="fontDescription" name="Roboto-Light" family="Roboto" pointSize="15"/>
-                                <textInputTraits key="textInputTraits" autocorrectionType="no" spellCheckingType="no" secureTextEntry="YES"/>
+                                <textInputTraits key="textInputTraits" autocorrectionType="no" spellCheckingType="no" keyboardAppearance="alert" secureTextEntry="YES"/>
                                 <userDefinedRuntimeAttributes>
                                     <userDefinedRuntimeAttribute type="number" keyPath="horizontalMargin">
                                         <integer key="value" value="10"/>
@@ -1128,7 +1128,7 @@ kde chcete nakupovat</string>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Qyg-46-uUc" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-262" y="2850"/>
+            <point key="canvasLocation" x="-187" y="2850"/>
         </scene>
         <!--Push Pop Navigation Controller-->
         <scene sceneID="vSG-1T-S2f">
@@ -1314,9 +1314,9 @@ kde chcete nakupovat</string>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="37" id="CTT-fM-zgT"/>
                                 </constraints>
-                                <color key="textColor" systemColor="systemRedColor" red="1" green="0.23137254900000001" blue="0.18823529410000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <color key="textColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <fontDescription key="fontDescription" name="Roboto-Light" family="Roboto" pointSize="15"/>
-                                <textInputTraits key="textInputTraits" autocorrectionType="no" spellCheckingType="no" keyboardType="emailAddress"/>
+                                <textInputTraits key="textInputTraits" autocorrectionType="no" spellCheckingType="no" keyboardType="emailAddress" keyboardAppearance="alert"/>
                                 <userDefinedRuntimeAttributes>
                                     <userDefinedRuntimeAttribute type="number" keyPath="horizontalMargin">
                                         <integer key="value" value="10"/>
@@ -1332,9 +1332,9 @@ kde chcete nakupovat</string>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="37" id="YGb-6Q-k9c"/>
                                 </constraints>
-                                <color key="textColor" systemColor="systemPinkColor" red="1" green="0.1764705882" blue="0.33333333329999998" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <color key="textColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <fontDescription key="fontDescription" name="Roboto-Light" family="Roboto" pointSize="15"/>
-                                <textInputTraits key="textInputTraits" autocorrectionType="no" spellCheckingType="no" secureTextEntry="YES"/>
+                                <textInputTraits key="textInputTraits" autocorrectionType="no" spellCheckingType="no" keyboardAppearance="alert" secureTextEntry="YES"/>
                                 <userDefinedRuntimeAttributes>
                                     <userDefinedRuntimeAttribute type="number" keyPath="horizontalMargin">
                                         <integer key="value" value="10"/>
@@ -5327,8 +5327,8 @@ kde chcete nakupovat</string>
         <segue reference="QUD-HK-yGf"/>
         <segue reference="DJj-sJ-oEP"/>
         <segue reference="dv6-rf-L8H"/>
-        <segue reference="ZUG-IV-99L"/>
-        <segue reference="x9Y-Xo-xZt"/>
+        <segue reference="4fe-0d-b5E"/>
+        <segue reference="zFg-Aw-NAi"/>
     </inferredMetricsTieBreakers>
     <resources>
         <image name="ChevronIcon" width="4.5" height="7.5"/>

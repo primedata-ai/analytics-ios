@@ -91,7 +91,7 @@ static CGFloat const contentViewFadeInDuration = 0.5;
     [controller presentFormSheetWithSize:CGSizeMake(self.view.frame.size.width, contentHeight) optionsHandler:^(MZFormSheetPresentationViewController *formSheetController) {
         formSheetController.contentViewControllerTransitionStyle = MZFormSheetPresentationTransitionStyleSlideFromBottom;
         // disable default MZFormSheet background color
-        formSheetController.presentationController.backgroundColor = [UIColor clearColor];
+        //formSheetController.presentationController.backgroundColor = [UIColor clearColor];
         
         // custom presentation options with handlers
         __weak __typeof__(self) weakSelf = self;
@@ -109,14 +109,14 @@ static CGFloat const contentViewFadeInDuration = 0.5;
         };
         formSheetController.presentationController.frameConfigurationHandler = ^(UIView *presentedView, CGRect currentFrame, BOOL isKeyboardVisible) {
             if (isKeyboardVisible) {
-                weakSelf.onboardingController.containerDimView.backgroundColor = [UIColor redColor];
+                //weakSelf.onboardingController.containerDimView.backgroundColor = [UIColor redColor];
                 return CGRectMake(currentFrame.origin.x,
                                   weakSelf.onboardingController.view.frame.size.height - currentFrame.size.height*2.4 - weakSelf.onboardingController.containerBottomConstraint.constant,
                                   currentFrame.size.width,
                                   currentFrame.size.height);
             }
             else {
-                weakSelf.onboardingController.containerDimView.backgroundColor = [UIColor BFN_dimColor];
+                //weakSelf.onboardingController.containerDimView.backgroundColor = [UIColor BFN_dimColor];
                 return CGRectMake(currentFrame.origin.x,
                                   weakSelf.onboardingController.view.frame.size.height - currentFrame.size.height*2.4,
                                   currentFrame.size.width,
