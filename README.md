@@ -54,24 +54,39 @@ If you are part of a new startup  (&lt;$5M raised, &lt;2 years since founding), 
 
 ## Installation
 
-Analytics is available through [CocoaPods](http://cocoapods.org) and [Carthage](https://github.com/Carthage/Carthage).
+Install Analytics using pod command.
 
 ### CocoaPods
 
 ```ruby
-pod "Analytics", "3.7.0"
+pod 'Analytics', :git => 'https://github.com/primedata-ai/analytics-ios.git'
 ```
 
-### Carthage
-
-```
-github "segmentio/analytics-ios"
-```
 
 ## Quickstart
 
-Refer to the Quickstart documentation at [https://segment.com/docs/libraries/ios/quickstart](https://segment.com/docs/libraries/ios/quickstart/).
+## Iitialize SDK:
+PDAnalyticsConfiguration *configuration = [PDAnalyticsConfiguration configurationWithWriteKey: <write_key> scopeKey: <scope_key> url: <prime_data_server_url>];
+[PDAnalytics setupWithConfiguration:configuration];
 
-## Documentation
+## Iitialize SDK and change session timeout (in minutes, default value is 30 minutes)
+PDAnalyticsConfiguration *configuration = [PDAnalyticsConfiguration configurationWithWriteKey: <write_key> scopeKey: <scope_key> url: <prime_data_server_url>];
+configuration.sessionTimeout = <integer_number>
+[PDAnalytics setupWithConfiguration:configuration];
 
-More detailed documentation is available at [https://segment.com/docs/libraries/ios](https://segment.com/docs/libraries/ios/).
+## Iitialize SDK and change session timeout (in minutes, default value is 30 minutes) and change the number of events to send to server (default value is 20 events)
+PDAnalyticsConfiguration *configuration = [PDAnalyticsConfiguration configurationWithWriteKey: <write_key> scopeKey: <scope_key> url: <prime_data_server_url>];
+configuration.sessionTimeout = <integer_number>
+configuration.flushAt = <integer_number>
+[PDAnalytics setupWithConfiguration:configuration];
+
+## Identify User:
+[[PDAnalytics sharedAnalytics] identify: <user_id>];
+[[PDAnalytics sharedAnalytics] identify: <user_id> email: <email>];
+[[PDAnalytics sharedAnalytics] identify:<user_id> email: <email> properties: <NSDictionary> source: <NSDictionary> target: <NSDictionary>];
+
+## Track events:
+[[PDAnalytics sharedAnalytics] track: <event_name>];
+[[PDAnalytics sharedAnalytics] track: <event_name>  properties: <NSDictionary> source: <NSDictionary>  target: <NSDictionary>];
+
+
