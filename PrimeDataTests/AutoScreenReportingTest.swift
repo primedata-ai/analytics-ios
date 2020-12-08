@@ -16,7 +16,7 @@ class AutoScreenReportingTests: XCTestCase {
     override func setUp() {
         super.setUp()
         
-        let config = AnalyticsConfiguration(writeKey: "foobar", andScopeKey:"IOS-bfiahefiohjsad0f0-9sdaujfd")
+        let config = AnalyticsConfiguration(writeKey: "QUI5ydwIGeFFTa1IvCBUhxL9PyW5B0jE", scopeKey:"IOS-bfiahefiohjsad0f0-9sdaujfd", url: "https://powehi.primedata.ai")
         config.trackApplicationLifecycleEvents = true
         config.recordScreenViews = true
         

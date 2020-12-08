@@ -57,7 +57,7 @@ NS_SWIFT_NAME(AnalyticsConfiguration)
  *
  * @param writeKey Your project's write key from segment.io.
  */
-+ (instancetype)configurationWithWriteKey:(NSString *)writeKey scopeKey:(NSString *)scopeKey url:(NSString*)url;
++ (instancetype _Nonnull)configurationWithWriteKey:(NSString *_Nonnull)writeKey scopeKey:(NSString *_Nonnull)scopeKey url:(NSString*_Nonnull)url;
 
 - (void)createNewSession:(NSString*)newSessionID;
 - (BOOL)sessionIsValid;

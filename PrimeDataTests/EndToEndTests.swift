@@ -10,7 +10,7 @@ class EndToEndTests: XCTestCase {
         super.setUp()
         
         // Write Key for https://app.segment.com/segment-libraries/sources/analytics_ios_e2e_test/overview
-        configuration = AnalyticsConfiguration(writeKey: "3VxTfPsVOoEOSbbzzbFqVNcYMNu2vjnr", andScopeKey:"IOS-bfiahefiohjsad0f0-9sdaujfd")
+        configuration = AnalyticsConfiguration(writeKey: "QUI5ydwIGeFFTa1IvCBUhxL9PyW5B0jE", scopeKey:"IOS-bfiahefiohjsad0f0-9sdaujfd", url: "https://powehi.primedata.ai")
         configuration.flushAt = 1
 
         Analytics.setup(with: configuration)
@@ -36,8 +36,6 @@ class EndToEndTests: XCTestCase {
             return data
         }
 
-        analytics.track("E2E Test", properties: ["id": uuid])
-        
         wait(for: [expectation], timeout: 2.0)
     }
 }
