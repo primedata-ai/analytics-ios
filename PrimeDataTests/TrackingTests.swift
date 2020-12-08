@@ -17,7 +17,7 @@ class TrackingTests: XCTestCase {
     
     override func setUp() {
         super.setUp()
-        let config = AnalyticsConfiguration(writeKey: "1klTIBeF4McXUFp2WySSjYtJroA", andScopeKey:"IOS-bfiahefiohjsad0f0-9sdaujfd")
+        let config = AnalyticsConfiguration(writeKey: "QUI5ydwIGeFFTa1IvCBUhxL9PyW5B0jE", scopeKey:"IOS-bfiahefiohjsad0f0-9sdaujfd", url: "https://powehi.primedata.ai")
         config.flushAt = 1
         passthrough = PassthroughMiddleware()
         config.sourceMiddleware = [
@@ -29,46 +29,6 @@ class TrackingTests: XCTestCase {
     override func tearDown() {
         super.tearDown()
         analytics.reset()
-    }
-    
-    func testHandlesIdentify() {
-        analytics.identify("testUserId1", traits: [
-            "firstName": "Peter"
-        ])
-        XCTAssertEqual(passthrough.lastContext?.eventType, EventType.identify)
-        let identify = passthrough.lastContext?.payload as? IdentifyPayload
-        XCTAssertEqual(identify?.userId, "testUserId1")
-        XCTAssertNotNil(identify?.anonymousId)
-        XCTAssertEqual(identify?.traits?["firstName"] as? String, "Peter")
-    }
-    
-    func testHandlesIdentifyWithCustomAnonymousId() {
-        analytics.identify("testUserId1", traits: [
-            "firstName": "Peter"
-            ], options: [
-                "anonymousId": "a_custom_anonymous_id"
-        ])
-        XCTAssertEqual(passthrough.lastContext?.eventType, EventType.identify)
-        let identify = passthrough.lastContext?.payload as? IdentifyPayload
-        XCTAssertEqual(identify?.userId, "testUserId1")
-        XCTAssertEqual(identify?.anonymousId, "a_custom_anonymous_id")
-        XCTAssertEqual(identify?.traits?["firstName"] as? String, "Peter")
-    }
-    
-    func testHandlesTrack() {
-        analytics.track("User Signup", properties: [
-            "method": "SSO"
-            ], options: [
-                "context": [
-                    "device": [
-                        "token": "1234"
-                    ]
-                ]
-        ])
-        XCTAssertEqual(passthrough.lastContext?.eventType, EventType.track)
-        let payload = passthrough.lastContext?.payload as? TrackPayload
-        XCTAssertEqual(payload?.event, "User Signup")
-        XCTAssertEqual(payload?.properties?["method"] as? String, "SSO")
     }
     
     func testHandlesAlias() {
@@ -97,14 +57,5 @@ class TrackingTests: XCTestCase {
         let payload = passthrough.lastContext?.payload as? GroupPayload
         XCTAssertEqual(payload?.groupId, "acme-company")
         XCTAssertEqual(payload?.traits?["employees"] as? Int, 2333)
-    }
-    
-    func testHandlesNullValues() {
-        analytics.track("null test", properties: [
-            "nullTest": NSNull()
-        ])
-        let payload = passthrough.lastContext?.payload as? TrackPayload
-        let isNull = (payload?.properties?["nullTest"] is NSNull)
-        XCTAssert(isNull)
     }
 }

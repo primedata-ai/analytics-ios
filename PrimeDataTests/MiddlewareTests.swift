@@ -21,12 +21,7 @@ let customizeAllTrackCalls = BlockMiddleware { (context, next) in
             var newProps = track.properties ?? [:]
             newProps["customAttribute"] = "Hello"
             newProps["nullTest"] = NSNull()
-            ctx.payload = TrackPayload(
-                event: newEvent,
-                properties: newProps,
-                context: track.context,
-                integrations: track.integrations
-            )
+          
         })
     } else {
         next(context)
@@ -40,7 +35,7 @@ let eatAllCalls = BlockMiddleware { (context, next) in
 class SourceMiddlewareTests: XCTestCase {
     
     func testReceivesEvents() {
-        let config = AnalyticsConfiguration(writeKey: "TESTKEY", andScopeKey:"IOS-bfiahefiohjsad0f0-9sdaujfd")
+        let config = AnalyticsConfiguration(writeKey: "QUI5ydwIGeFFTa1IvCBUhxL9PyW5B0jE", scopeKey:"IOS-bfiahefiohjsad0f0-9sdaujfd", url: "https://powehi.primedata.ai")
         let passthrough = PassthroughMiddleware()
         config.sourceMiddleware = [
             passthrough,
@@ -53,7 +48,7 @@ class SourceMiddlewareTests: XCTestCase {
     }
     
     func testModifiesAndPassesEventToNext() {
-        let config = AnalyticsConfiguration(writeKey: "TESTKEY", andScopeKey:"IOS-bfiahefiohjsad0f0-9sdaujfd")
+        let config = AnalyticsConfiguration(writeKey: "QUI5ydwIGeFFTa1IvCBUhxL9PyW5B0jE", scopeKey:"IOS-bfiahefiohjsad0f0-9sdaujfd", url: "https://powehi.primedata.ai")
         let passthrough = PassthroughMiddleware()
         config.sourceMiddleware = [
             customizeAllTrackCalls,
@@ -70,7 +65,7 @@ class SourceMiddlewareTests: XCTestCase {
     }
     
     func testExpectsEventToBeSwallowed() {
-        let config = AnalyticsConfiguration(writeKey: "TESTKEY", andScopeKey:"IOS-bfiahefiohjsad0f0-9sdaujfd")
+        let config = AnalyticsConfiguration(writeKey: "QUI5ydwIGeFFTa1IvCBUhxL9PyW5B0jE", scopeKey:"IOS-bfiahefiohjsad0f0-9sdaujfd", url: "https://powehi.primedata.ai")
         let passthrough = PassthroughMiddleware()
         config.sourceMiddleware = [
             eatAllCalls,
@@ -85,7 +80,7 @@ class SourceMiddlewareTests: XCTestCase {
 class IntegrationMiddlewareTests: XCTestCase {
     
     func testReceivesEvents() {
-        let config = AnalyticsConfiguration(writeKey: "TESTKEY", andScopeKey:"IOS-bfiahefiohjsad0f0-9sdaujfd")
+        let config = AnalyticsConfiguration(writeKey: "QUI5ydwIGeFFTa1IvCBUhxL9PyW5B0jE", scopeKey:"IOS-bfiahefiohjsad0f0-9sdaujfd", url: "https://powehi.primedata.ai")
         let passthrough = PassthroughMiddleware()
         config.destinationMiddleware = [DestinationMiddleware(key: PrimeDataIntegrationFactory().key(), middleware: [passthrough])]
         let analytics = Analytics(configuration: config)
@@ -104,7 +99,7 @@ class IntegrationMiddlewareTests: XCTestCase {
     }
     
     func testModifiesAndPassesEventToNext() {
-        let config = AnalyticsConfiguration(writeKey: "TESTKEY", andScopeKey:"IOS-bfiahefiohjsad0f0-9sdaujfd")
+        let config = AnalyticsConfiguration(writeKey: "QUI5ydwIGeFFTa1IvCBUhxL9PyW5B0jE", scopeKey:"IOS-bfiahefiohjsad0f0-9sdaujfd", url: "https://powehi.primedata.ai")
         let passthrough = PassthroughMiddleware()
         config.destinationMiddleware = [DestinationMiddleware(key: PrimeDataIntegrationFactory().key(), middleware: [customizeAllTrackCalls, passthrough])]
         let analytics = Analytics(configuration: config)
@@ -132,7 +127,7 @@ class IntegrationMiddlewareTests: XCTestCase {
             initialized = true
         }
         
-        let config = AnalyticsConfiguration(writeKey: "TESTKEY", andScopeKey:"IOS-bfiahefiohjsad0f0-9sdaujfd")
+        let config = AnalyticsConfiguration(writeKey: "QUI5ydwIGeFFTa1IvCBUhxL9PyW5B0jE", scopeKey:"IOS-bfiahefiohjsad0f0-9sdaujfd", url: "https://powehi.primedata.ai")
         let passthrough = PassthroughMiddleware()
         config.destinationMiddleware = [DestinationMiddleware(key: PrimeDataIntegrationFactory().key(), middleware: [eatAllCalls, passthrough])]
         let analytics = Analytics(configuration: config)

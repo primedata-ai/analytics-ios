@@ -12,7 +12,7 @@ import XCTest
 
 class AnalyticsTests: XCTestCase {
     
-    let config = AnalyticsConfiguration(writeKey: "QUI5ydwIGeFFTa1IvCBUhxL9PyW5B0jE", andScopeKey:"IOS-bfiahefiohjsad0f0-9sdaujfd")
+    let config = AnalyticsConfiguration(writeKey: "QUI5ydwIGeFFTa1IvCBUhxL9PyW5B0jE", scopeKey:"IOS-bfiahefiohjsad0f0-9sdaujfd", url: "https://powehi.primedata.ai")
     let cachedSettings = [
         "integrations": [
             "PrimeData.io": ["apiKey": "QUI5ydwIGeFFTa1IvCBUhxL9PyW5B0jE"]
@@ -67,7 +67,7 @@ class AnalyticsTests: XCTestCase {
                 initialized = true
             }
         }
-        let config2 = AnalyticsConfiguration(writeKey: "TESTKEY", andScopeKey:"IOS-bfiahefiohjsad0f0-9sdaujfd")
+        let config2 = AnalyticsConfiguration(writeKey: "TESTKEY", scopeKey:"IOS-bfiahefiohjsad0f0-9sdaujfd" , url: "https://testurl.com")
         config2.use(webhookIntegration)
         let analytics2 = Analytics(configuration: config2)
         let factoryList = (config2.value(forKey: "factories") as? NSMutableArray)
@@ -110,59 +110,6 @@ class AnalyticsTests: XCTestCase {
         
         XCTAssertEqual(analytics.test_integrationsManager()?.test_segmentIntegration()?.test_userId(), "testUserId1")
         XCTAssertEqual(analytics2.test_integrationsManager()?.test_segmentIntegration()?.test_userId(), "testUserId1")
-    }
-    
-    func testPersistsTraits() {
-        analytics.identify("testUserId1", traits: ["trait1": "someTrait"])
-        
-        let analytics2 = Analytics(configuration: config)
-        analytics2.test_integrationsManager()?.test_setCachedSettings(settings: cachedSettings)
-        
-        XCTAssertEqual(analytics.test_integrationsManager()?.test_segmentIntegration()?.test_userId(), "testUserId1")
-        XCTAssertEqual(analytics2.test_integrationsManager()?.test_segmentIntegration()?.test_userId(), "testUserId1")
-        
-        var traits = analytics.test_integrationsManager()?.test_segmentIntegration()?.test_traits()
-        var storedTraits = analytics2.test_integrationsManager()?.test_segmentIntegration()?.test_traits()
-        
-        if let trait1 = traits?["trait1"] as? String {
-            XCTAssertEqual(trait1, "someTrait")
-        } else {
-            XCTAssert(false, "Traits are nil!")
-        }
-        
-        if let storedTrait1 = storedTraits?["trait1"] as? String {
-            XCTAssertEqual(storedTrait1, "someTrait")
-        } else {
-            XCTAssert(false, "Traits were not stored!")
-        }
-        
-        analytics.identify("testUserId1", traits: ["trait2": "someOtherTrait"])
-        
-        traits = analytics.test_integrationsManager()?.test_segmentIntegration()?.test_traits()
-        storedTraits = analytics2.test_integrationsManager()?.test_segmentIntegration()?.test_traits()
-        
-        if let trait1 = traits?["trait2"] as? String {
-            XCTAssertEqual(trait1, "someOtherTrait")
-        } else {
-            XCTAssert(false, "Traits are nil!")
-        }
-        
-        if let storedTrait1 = storedTraits?["trait2"] as? String {
-            XCTAssertEqual(storedTrait1, "someOtherTrait")
-        } else {
-            XCTAssert(false, "Traits were not stored!")
-        }
-        
-
-    }
-    
-    func testClearsUserData() {
-        analytics.identify("testUserId1", traits: [ "Test trait key" : "Test trait value"])
-        analytics.reset()
-        
-        expectUntil(2.0, expression: self.analytics.test_integrationsManager()?.test_segmentIntegration()?.test_userId() == nil)
-        
-        expectUntil(2.0, expression: self.analytics.test_integrationsManager()?.test_segmentIntegration()?.test_traits()?.count == 0)
     }
     
     #if os(iOS)
