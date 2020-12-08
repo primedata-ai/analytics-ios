@@ -201,10 +201,12 @@ NSDictionary *mobileSpecifications(PDAnalyticsConfiguration *configuration, NSSt
 #endif
         dict[@"model"] = getDeviceModel();
         dict[@"id"] = [[device identifierForVendor] UUIDString];
+        dict[@"advertisingId"] = @"00000000-0000-0000-0000-000000000000";
         if (getAdTrackingEnabled(configuration)) {
             NSString *idfa = configuration.adSupportBlock();
             // This isn't ideal.  We're doing this because we can't actually check if IDFA is enabled on
             // the customer device.  Apple docs and tests show that if it is disabled, one gets back all 0's.
+            
             BOOL adTrackingEnabled = (![idfa isEqualToString:@"00000000-0000-0000-0000-000000000000"]);
             dict[@"adTrackingEnabled"] = @(adTrackingEnabled);
 
