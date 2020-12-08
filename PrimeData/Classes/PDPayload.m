@@ -81,6 +81,7 @@
                           @"screen_height": [NSString stringWithFormat:@"%d", [[[internal_source objectForKey:@"screen"] objectForKey:@"height"] intValue]],
                           @"connection_type": [self connectionType: [internal_source objectForKey:@"network"]],
                           @"device_id": [[internal_source objectForKey:@"device"] objectForKey:@"id"],
+                          @"advertisingId": [[internal_source objectForKey:@"device"] objectForKey:@"advertisingId"],
                           @"userAgentName": [[internal_source objectForKey:@"os"] objectForKey:@"name"],
                           @"userAgentVersion": [[internal_source objectForKey:@"os"] objectForKey:@"version"],
                           @"deviceName": [[internal_source objectForKey:@"device"] objectForKey:@"name"],
