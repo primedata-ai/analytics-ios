@@ -16,6 +16,7 @@
 #import "BFCoreSpotlightService.h"
 #import "BFCrashLoggerService.h"
 #import <PrimeData.h>
+#import <AdSupport/AdSupport.h>
 
 @interface BFAppDelegate ()
 @property (nonatomic, strong) BFServicesDispatcher *serviceDispatcher;
@@ -47,6 +48,11 @@
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
 
     PDAnalyticsConfiguration *configuration = [PDAnalyticsConfiguration configurationWithWriteKey:@"1klTIBeF4McXUFp2WySSjYtJroA" scopeKey:@"IOS-1klTI9PsENXKu1Jt9zoS4A1OSUD" url:@"https://powehi.primedata.ai"];
+    
+    configuration.adSupportBlock = ^NSString * _Nonnull{
+        return [[[ASIdentifierManager sharedManager] advertisingIdentifier] UUIDString];
+    };
+    
     [PDAnalytics setupWithConfiguration:configuration];
     
     return [self.serviceDispatcher performBOOLSelector:@selector(application:didFinishLaunchingWithOptions:) sender:self withArguments:@[application, launchOptions ?: @{}]];
