@@ -63,7 +63,6 @@ NS_SWIFT_NAME(AnalyticsConfiguration)
 - (BOOL)sessionIsValid;
 - (void)updateExistingSession;
 
-@property (nonatomic, copy, nonnull) NSDate *sesstionTime;
 /**
  * Your project's write key from segment.io.
  *

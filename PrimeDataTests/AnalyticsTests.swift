@@ -12,13 +12,14 @@ import XCTest
 
 class AnalyticsTests: XCTestCase {
     
-    let config = AnalyticsConfiguration(writeKey: "QUI5ydwIGeFFTa1IvCBUhxL9PyW5B0jE", scopeKey:"IOS-bfiahefiohjsad0f0-9sdaujfd", url: "https://powehi.primedata.ai")
+    let config = AnalyticsConfiguration(writeKey: "1klTIBeF4McXUFp2WySSjYtJroA", scopeKey:"IOS-1klTI9PsENXKu1Jt9zoS4A1OSUD", url: "https://powehi.primedata.ai")
     let cachedSettings = [
         "integrations": [
             "PrimeData.io": ["apiKey": "QUI5ydwIGeFFTa1IvCBUhxL9PyW5B0jE"]
         ],
         "plan": ["track": [:]],
         ] as NSDictionary
+
     var analytics: Analytics!
     var testMiddleware: TestMiddleware!
     var testApplication: TestApplication!
@@ -46,10 +47,11 @@ class AnalyticsTests: XCTestCase {
     }
     
     func testInitializedCorrectly() {
+        
         XCTAssertEqual(config.flushAt, 20)
         XCTAssertEqual(config.flushInterval, 30)
         XCTAssertEqual(config.maxQueueSize, 1000)
-        XCTAssertEqual(config.writeKey, "QUI5ydwIGeFFTa1IvCBUhxL9PyW5B0jE")
+        XCTAssertEqual(config.writeKey, "1klTIBeF4McXUFp2WySSjYtJroA")
         XCTAssertEqual(config.shouldUseLocationServices, false)
         XCTAssertEqual(config.enableAdvertisingTracking, true)
         XCTAssertEqual(config.shouldUseBluetooth,  false)
@@ -57,6 +59,18 @@ class AnalyticsTests: XCTestCase {
         XCTAssertNotNil(analytics.getAnonymousId())
     }
 
+    func testCreateNewSession() {
+        config.createNewSession("IU9934325-34RFWESR-FDWRE-98REGU9")
+        XCTAssertEqual(config.sessionIsValid(),  true)
+        XCTAssertEqual(config.sessionId, "IU9934325-34RFWESR-FDWRE-98REGU9")
+    }
+    
+    func testIdentify() {
+        analytics.identify("peternguyen")
+        analytics.identify("peternguyen", email: "peternguyen@gmail.com")
+        analytics.identify("peternguyen", email: "peternguyen@gmail.com", properties: ["hometown": "Binh Dinh"], source: nil, target: nil)
+    }
+    
     func testWebhookIntegrationInitializedCorrectly() {
         let webhookIntegration = WebhookIntegrationFactory.init(name: "dest1", webhookUrl: "blah")
         let webhookIntegrationKey = webhookIntegration.key()
@@ -100,44 +114,6 @@ class AnalyticsTests: XCTestCase {
     func testPersistsAnonymousId() {
         let analytics2 = Analytics(configuration: config)
         XCTAssertEqual(analytics.getAnonymousId(), analytics2.getAnonymousId())
-    }
-    
-    func testPersistsUserId() {
-        analytics.identify("testUserId1")
-        
-        let analytics2 = Analytics(configuration: config)
-        analytics2.test_integrationsManager()?.test_setCachedSettings(settings: cachedSettings)
-        
-        XCTAssertEqual(analytics.test_integrationsManager()?.test_segmentIntegration()?.test_userId(), "testUserId1")
-        XCTAssertEqual(analytics2.test_integrationsManager()?.test_segmentIntegration()?.test_userId(), "testUserId1")
-    }
-    
-    #if os(iOS)
-    func testFiresApplicationOpenedForAppLaunchingEvent() {
-        testMiddleware.swallowEvent = true
-        NotificationCenter.default.post(name: UIApplication.didFinishLaunchingNotification, object: testApplication, userInfo: [
-            UIApplication.LaunchOptionsKey.sourceApplication: "testApp",
-            UIApplication.LaunchOptionsKey.url: "test://test",
-        ])
-        let event = testMiddleware.lastContext?.payload as? TrackPayload
-        XCTAssertEqual(event?.event, "Application Opened")
-        XCTAssertEqual(event?.properties?["from_background"] as? Bool, false)
-        XCTAssertEqual(event?.properties?["referring_application"] as? String, "testApp")
-        XCTAssertEqual(event?.properties?["url"] as? String, "test://test")
-    }
-    #else
-    #endif
-    
-    func testFiresApplicationEnterForeground() {
-        testMiddleware.swallowEvent = true
-        #if os(macOS)
-        NotificationCenter.default.post(name: NSApplication.willBecomeActiveNotification, object: testApplication)
-        #else
-        NotificationCenter.default.post(name: UIApplication.willEnterForegroundNotification, object: testApplication)
-        #endif
-        let event = testMiddleware.lastContext?.payload as? TrackPayload
-        XCTAssertEqual(event?.event, "Application Opened")
-        XCTAssertEqual(event?.properties?["from_background"] as? Bool, true)
     }
     
     func testFiresApplicationDuringEnterBackground() {
@@ -217,29 +193,6 @@ class AnalyticsTests: XCTestCase {
         
         XCTAssertNotNil(timer)
         XCTAssertEqual(timer?.timeInterval, config.flushInterval)
-    }
-    
-    func testRedactsSensibleURLsFromDeepLinksTracking() {
-        testMiddleware.swallowEvent = true
-        config.trackDeepLinks = true
-        analytics.open(URL(string: "fb123456789://authorize#access_token=hastoberedacted")!, options: [:])
-        
-        
-        let event = testMiddleware.lastContext?.payload as? TrackPayload
-        XCTAssertEqual(event?.event, "Deep Link Opened")
-        XCTAssertEqual(event?.properties?["url"] as? String, "fb123456789://authorize#access_token=((redacted/fb-auth-token))")
-    }
-    
-    func testRedactsSensibleURLsFromDeepLinksWithFilters() {
-        testMiddleware.swallowEvent = true
-        config.payloadFilters["(myapp://auth\\?token=)([^&]+)"] = "$1((redacted/my-auth))"
-        config.trackDeepLinks = true
-        analytics.open(URL(string: "myapp://auth?token=hastoberedacted&other=stuff")!, options: [:])
-        
-        
-        let event = testMiddleware.lastContext?.payload as? TrackPayload
-        XCTAssertEqual(event?.event, "Deep Link Opened")
-        XCTAssertEqual(event?.properties?["url"] as? String, "myapp://auth?token=((redacted/my-auth))&other=stuff")
     }
     
     func testDefaultsPDQueueToEmptyArray() {

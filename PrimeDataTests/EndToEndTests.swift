@@ -23,19 +23,4 @@ class EndToEndTests: XCTestCase {
         
         analytics.reset()
     }
-    
-    func testTrack() {
-        let uuid = UUID().uuidString
-        let expectation = XCTestExpectation(description: "PrimeDataRequestDidSucceed")
-        
-        configuration.experimental.rawPrimeDataModificationBlock = { data in
-            if let properties = data["properties"] as? Dictionary<String, Any?>,
-                let tempUUID = properties["id"] as? String, tempUUID == uuid {
-                expectation.fulfill()
-            }
-            return data
-        }
-
-        wait(for: [expectation], timeout: 2.0)
-    }
 }

@@ -48,6 +48,8 @@
 
 @property (nonatomic, assign) NSUInteger currentSessionLifeTime;
 
+@property (nonatomic, copy, nonnull) NSDate *sesstionTime;
+
 @end
 
 

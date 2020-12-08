@@ -17,7 +17,7 @@ class TrackingTests: XCTestCase {
     
     override func setUp() {
         super.setUp()
-        let config = AnalyticsConfiguration(writeKey: "QUI5ydwIGeFFTa1IvCBUhxL9PyW5B0jE", scopeKey:"IOS-bfiahefiohjsad0f0-9sdaujfd", url: "https://powehi.primedata.ai")
+        let config = AnalyticsConfiguration(writeKey: "1klTIBeF4McXUFp2WySSjYtJroA", scopeKey:"IOS-1klTI9PsENXKu1Jt9zoS4A1OSUD", url: "https://powehi.primedata.ai")
         config.flushAt = 1
         passthrough = PassthroughMiddleware()
         config.sourceMiddleware = [
@@ -29,6 +29,27 @@ class TrackingTests: XCTestCase {
     override func tearDown() {
         super.tearDown()
         analytics.reset()
+    }
+
+    func testTrackEventWithEventName() {
+        analytics.track("open_app")
+        XCTAssertEqual(passthrough.lastContext?.eventType, EventType.track)
+        let payload = passthrough.lastContext?.payload as? TrackPayload
+        XCTAssertEqual(payload?.event, "open_app")
+    }
+    
+    func testTrackEventWithPropertiesSourceTarget() {
+        analytics.track("category_viewed_test", properties:["category_id": "SALE_OFF","category_level": "50_PERCENT_OFF","category_name": "BEAT THE CHILL KNITS & JACKETS","category_url_slug": "JUST_ARRVED_TAB"], source: ["itemId": "ARRVED","itemType": "ARRVED_TAB"], target: ["itemId": "ARRVED_TAB_ROW","itemType": "ARRVED_TAB_ROW"])
+        XCTAssertEqual(passthrough.lastContext?.eventType, EventType.track)
+        let payload = passthrough.lastContext?.payload as? TrackPayload
+        XCTAssertEqual(payload?.event, "category_viewed_test")
+    }
+    
+    func testTrackEventWithPropertiesSourceTargetNULL() {
+        analytics.track("category_viewed_test", properties:nil, source: nil, target: nil)
+        XCTAssertEqual(passthrough.lastContext?.eventType, EventType.track)
+        let payload = passthrough.lastContext?.payload as? TrackPayload
+        XCTAssertEqual(payload?.event, "category_viewed_test")
     }
     
     func testHandlesAlias() {

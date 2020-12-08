@@ -52,16 +52,4 @@ class StoreKitTrackerTests: XCTestCase {
         analytics = Analytics(configuration: config)
         tracker = StoreKitTracker.trackTransactions(for: analytics)
     }
-    
-    func testSKPaymentQueueObserver() {
-        let transaction = mockTransaction()
-        XCTAssertEqual(transaction.transactionIdentifier, "tid")
-        tracker.paymentQueue(SKPaymentQueue(), updatedTransactions: [transaction])
-        
-        tracker.productsRequest(SKProductsRequest(), didReceive: mockProductResponse())
-        
-        let payload = test.lastContext?.payload as? TrackPayload
-        
-        XCTAssertEqual(payload?.event, "Order Completed")
-    }
 }
