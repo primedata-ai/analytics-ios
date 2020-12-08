@@ -92,6 +92,16 @@ configuration.sessionTimeout = <integer_number>;
 configuration.flushAt = <integer_number>;
 [PDAnalytics setupWithConfiguration:configuration];
 ```
+## Initialize SDK and enable AdSupport (purpose to get advertisingIdentifier)
+```objective-c
+PDAnalyticsConfiguration *configuration = [PDAnalyticsConfiguration configurationWithWriteKey: <write_key> scopeKey: <scope_key> url: <prime_data_server_url>];
+configuration.sessionTimeout = <integer_number>;
+configuration.flushAt = <integer_number>;
+configuration.adSupportBlock = ^NSString * _Nonnull{
+        return [[[ASIdentifierManager sharedManager] advertisingIdentifier] UUIDString];
+    };
+[PDAnalytics setupWithConfiguration:configuration];
+```
 
 ## Identify User:
 ```objective-c
