@@ -271,7 +271,7 @@ CHECKOUT OPTIONS:
     :commit: b7cce59a369788c409d218e8dab7f381a858cee4
     :git: https://github.com/AFNetworking/AFNetworkActivityLogger.git
   Analytics:
-    :commit: 82ebd88a79f8872d8ea7e9da66f909743b234405
+    :commit: 2b64c4ccb33a522d636e875afccc00a1df6ad806
     :git: https://github.com/primedata-ai/analytics-ios.git
   MMRecord:
     :commit: 36a63cd16d658465edccb499e7a84bd40f72ebc1
