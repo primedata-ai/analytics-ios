@@ -365,6 +365,7 @@ NSString *const PDBuildKeyV2 = @"PDBuildKeyV2";
 
 - (void)identify:(NSString *)userId email:(NSString* _Nullable)email
 {
+    NSCAssert1(userId.length > 0 , @"either userId (%@) must be provided.", userId);
     [self identify:userId email:email
         properties:nil
             source:@{
@@ -372,7 +373,7 @@ NSString *const PDBuildKeyV2 = @"PDBuildKeyV2";
                       @"itemType": @"screen"
                     }
             target:@{
-                     @"itemId": @"user_info",
+                     @"itemId": userId,
                      @"itemType": @"analyticsUser"
                     }];
 }
