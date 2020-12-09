@@ -107,7 +107,6 @@ configuration.adSupportBlock = ^NSString * _Nonnull{
 ```objective-c
 [[PDAnalytics sharedAnalytics] identify: <user_id>];
 [[PDAnalytics sharedAnalytics] identify: <user_id> email: <email>];
-[[PDAnalytics sharedAnalytics] identify: <user_id> email: <email> properties: <NSDictionary> source: <NSDictionary> target: <NSDictionary>];
 ```
 
 For examples:
