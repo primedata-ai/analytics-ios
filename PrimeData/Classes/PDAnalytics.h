@@ -59,19 +59,12 @@ NS_SWIFT_NAME(Analytics)
  generate the UUID and Apple's policies on IDs, see https://segment.io/libraries/ios#ids
 
  @param email  email for logged in user
-
- @param properties  A dictionary of options,  which contain keys/values for event properties
-  
- @param source  A dictionary of options,  which contain keys/values for event source
-  
- @param target  A dictionary of options,  which contain keys/values for event target
   
  @discussion
  When you learn more about who your user is, you can record that information with identify.
  */
 - (void)identify:(NSString *_Nullable)userId;
 - (void)identify:(NSString *_Nullable)userId email:(NSString* _Nullable)email;
-- (void)identify:(NSString *_Nullable)userId email:(NSString* _Nullable)email properties:(SERIALIZABLE_DICT _Nullable)properties source:(SERIALIZABLE_DICT _Nullable)source target:(SERIALIZABLE_DICT _Nullable)target;
 /*!
  @method
 

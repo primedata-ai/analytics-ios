@@ -54,7 +54,7 @@
     };
     
     [PDAnalytics setupWithConfiguration:configuration];
-    
+
     return [self.serviceDispatcher performBOOLSelector:@selector(application:didFinishLaunchingWithOptions:) sender:self withArguments:@[application, launchOptions ?: @{}]];
 }
 
