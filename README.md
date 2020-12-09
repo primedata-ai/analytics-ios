@@ -109,10 +109,53 @@ configuration.adSupportBlock = ^NSString * _Nonnull{
 [[PDAnalytics sharedAnalytics] identify: <user_id> email: <email>];
 [[PDAnalytics sharedAnalytics] identify: <user_id> email: <email> properties: <NSDictionary> source: <NSDictionary> target: <NSDictionary>];
 ```
+
+For examples:
+```objective-c
+[[PDAnalytics sharedAnalytics] identify:@"abc" email:@"abc@icloud.com"];
+```
+
 ## Track events:
 ```objective-c
 [[PDAnalytics sharedAnalytics] track: <event_name>];
 [[PDAnalytics sharedAnalytics] track: <event_name>  properties: <NSDictionary> source: <NSDictionary>  target: <NSDictionary>];
+```
+
+For examples:
+```objective-c
+ [[PDAnalytics sharedAnalytics] track:@"category_viewed_test"
+                              properties: @{
+                                              @"category_id": @"SALE_OFF",
+                                              @"category_level": @"50_PERCENT_OFF",
+                                              @"category_name": @"BEAT THE CHILL KNITS & JACKETS",
+                                              @"category_url_slug": @"JUST_ARRVED_TAB"
+                                          }
+                                  source:@{
+                                              @"itemId": @"ARRVED",
+                                              @"itemType": @"ARRVED_TAB"
+                                          }
+                                  target: @{
+                                               @"itemId": @"ARRVED_TAB_ROW",
+                                               @"itemType": @"ARRVED_TAB_ROW"
+                                           }];
+//========================================================================================================
+[[PDAnalytics sharedAnalytics] track:@"product_cart_dded_test"
+                              properties: @{
+                                             @"currency": @"Euro",
+                                              @"product_category": [NSString stringWithFormat:@"%d", [productVariant.category intValue]],
+                                              @"product_color": productVariant.color.name,
+                                              @"product_id": [NSString stringWithFormat:@"%d", [productVariant.product.productID  intValue]],
+                                              @"product_name": productVariant.product.name,
+                                              @"product_price": [NSString stringWithFormat:@"%d", [productVariant.product.price intValue]]
+                                          }
+                                  source:@{
+                                              @"itemId": @"SALE_OFF",
+                                              @"itemType": @"BEAT THE CHILL KNITS & JACKETS"
+                                          }
+                                  target: @{
+                                              @"itemId": productVariant.product.name,
+                                              @"itemType": productVariant.product.name
+                                           }]; 
 ```
 
 
