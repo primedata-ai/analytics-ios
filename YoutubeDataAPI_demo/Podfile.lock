@@ -1,4 +1,5 @@
 PODS:
+  - Analytics (4.1.1)
   - GoogleSignIn (4.1.2):
     - "GoogleToolboxForMac/NSDictionary+URLArguments (~> 2.1)"
     - "GoogleToolboxForMac/NSString+URLArguments (~> 2.1)"
@@ -22,6 +23,7 @@ PODS:
   - youtube-ios-player-helper (0.1.6)
 
 DEPENDENCIES:
+  - Analytics (from `https://github.com/primedata-ai/analytics-ios.git`)
   - GoogleSignIn
   - youtube-ios-player-helper (~> 0.1.4)
 
@@ -33,13 +35,23 @@ SPEC REPOS:
     - GTMSessionFetcher
     - youtube-ios-player-helper
 
+EXTERNAL SOURCES:
+  Analytics:
+    :git: https://github.com/primedata-ai/analytics-ios.git
+
+CHECKOUT OPTIONS:
+  Analytics:
+    :commit: 322a336d8143641955f6d6e0792531be1588dba8
+    :git: https://github.com/primedata-ai/analytics-ios.git
+
 SPEC CHECKSUMS:
+  Analytics: 41058fb5e1628b2973a340d1bb75b944203e2f50
   GoogleSignIn: d9ef55b10f0aa401a5de2747f59b725e4b9732ac
   GoogleToolboxForMac: 2501e2ad72a52eb3dfe7bd9aee7dad11b858bd20
   GTMOAuth2: e8b6512c896235149df975c41d9a36c868ab7fba
   GTMSessionFetcher: 5bb1eae636127de695590f50e7d248483eb891e6
   youtube-ios-player-helper: 21ab92db027c7ff86cb17a3843a3f6eafc8158d2
 
-PODFILE CHECKSUM: a95c4b74b6281ab0b20f7f4eb965781e0052efc1
+PODFILE CHECKSUM: 60ee84c8c59bb2c8ba270a35de472541b5e1c726
 
 COCOAPODS: 1.9.3

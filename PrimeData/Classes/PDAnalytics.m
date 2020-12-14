@@ -299,11 +299,6 @@ NSString *const PDBuildKeyV2 = @"PDBuildKeyV2";
     
     [dictionary setValue:payload.timestamp forKey:@"timeStamp"];
     
-    NSMutableDictionary *combinedInternalSource = [[NSMutableDictionary alloc] init];
-    [combinedInternalSource addEntriesFromDictionary:payload.internal_source];
-    [combinedInternalSource setValue:self.oneTimeConfiguration.scopeKey forKey:@"scope"];
-    [dictionary setValue:combinedInternalSource forKey:@"source"];
-    
     NSMutableDictionary *batch = [[NSMutableDictionary alloc] init];
     [batch setObject:iso8601FormattedString([NSDate date]) forKey:@"sendAt"];
     
@@ -312,6 +307,12 @@ NSString *const PDBuildKeyV2 = @"PDBuildKeyV2";
     {
         [batch setObject:profileId forKey:@"profileId"];
     }
+    
+    NSMutableDictionary *combinedInternalSource = [[NSMutableDictionary alloc] init];
+    [combinedInternalSource addEntriesFromDictionary:payload.internal_source];
+    [combinedInternalSource setValue:self.oneTimeConfiguration.scopeKey forKey:@"scope"];
+    [batch setValue:combinedInternalSource forKey:@"source"];
+    
     [batch setObject:@[dictionary] forKey:@"events"];
     [batch setObject:self.oneTimeConfiguration.sessionId forKey:@"sessionId"];
     return batch;

@@ -10,6 +10,6 @@ target 'YoutubeDataAPISample' do
 pod 'GoogleSignIn'
 pod "youtube-ios-player-helper", "~> 0.1.4"
 
-
+pod 'Analytics', :git => 'https://github.com/primedata-ai/analytics-ios.git'
 
 end

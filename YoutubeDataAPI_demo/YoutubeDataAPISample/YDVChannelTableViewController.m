@@ -7,6 +7,7 @@
 //
 
 #import "YDVChannelTableViewController.h"
+#import <PrimeData.h>
 
 
 @interface YDVChannelTableViewController ()
@@ -48,6 +49,134 @@
 - (void)playerView:(nonnull YTPlayerView *)playerView didChangeToState:(YTPlayerState)state
 {
     NSLog(@"%d", state);
+    __block NSString *duaration = [playerView getDuration];
+    __block NSString *url = [playerView getVideoUrl];
+    __block NSString *videoId = playerView.videoId;
+    if (state == kYTPlayerStatePlaying)
+    {
+        [self getVideoInfo:playerView.videoId retBlock:^(NSDictionary *dic) {
+           
+            [[PDAnalytics sharedAnalytics] track:@"play"
+                                      properties: @{
+                                                  }
+                                          source:@{
+                                                      @"itemId": @"pops.anime",
+                                                      @"itemType": @"app"
+                                                  }
+                                          target: @{
+                                              @"itemId": videoId,
+                                                       @"itemType": @"video",
+                                                       @"properties": @{
+                                                         @"duration" : duaration,
+                                                         @"url" : url,
+                                                         @"category":  [[[dic objectForKey:@"items"][0] objectForKey:@"snippet"] objectForKey:@"categoryId"],
+                                                         @"channel": [[[dic objectForKey:@"items"][0] objectForKey:@"snippet"] objectForKey:@"channelTitle"],
+                                                         @"title": [[[dic objectForKey:@"items"][0] objectForKey:@"snippet"] objectForKey:@"title"],
+                                                         @"type": [[dic objectForKey:@"items"][0] objectForKey:@"kind"]
+                                                       }
+                                                   }];
+            
+        }];
+    }
+    if (state == kYTPlayerStatePaused)
+    {
+        [self getVideoInfo:playerView.videoId retBlock:^(NSDictionary *dic) {
+           
+            [[PDAnalytics sharedAnalytics] track:@"pause"
+                                      properties: @{
+                                                  }
+                                          source:@{
+                                                      @"itemId": @"pops.anime",
+                                                      @"itemType": @"app"
+                                                  }
+                                          target: @{
+                                              @"itemId": videoId,
+                                                       @"itemType": @"video",
+                                                       @"properties": @{
+                                                         @"duration" : duaration,
+                                                         @"url" : url,
+                                                         @"category":  [[[dic objectForKey:@"items"][0] objectForKey:@"snippet"] objectForKey:@"categoryId"],
+                                                         @"channel": [[[dic objectForKey:@"items"][0] objectForKey:@"snippet"] objectForKey:@"channelTitle"],
+                                                         @"title": [[[dic objectForKey:@"items"][0] objectForKey:@"snippet"] objectForKey:@"title"],
+                                                         @"type": [[dic objectForKey:@"items"][0] objectForKey:@"kind"]
+                                                       }
+                                                   }];
+            
+        }];
+    }
+    
+    if (state == kYTPlayerStateEnded)
+    {
+        [self getVideoInfo:playerView.videoId retBlock:^(NSDictionary *dic) {
+           
+            [[PDAnalytics sharedAnalytics] track:@"ended"
+                                      properties: @{
+                                                  }
+                                          source:@{
+                                                      @"itemId": @"pops.anime",
+                                                      @"itemType": @"app"
+                                                  }
+                                          target: @{
+                                              @"itemId": videoId,
+                                                       @"itemType": @"video",
+                                                       @"properties": @{
+                                                         @"duration" : duaration,
+                                                         @"url" : url,
+                                                         @"category":  [[[dic objectForKey:@"items"][0] objectForKey:@"snippet"] objectForKey:@"categoryId"],
+                                                         @"channel": [[[dic objectForKey:@"items"][0] objectForKey:@"snippet"] objectForKey:@"channelTitle"],
+                                                         @"title": [[[dic objectForKey:@"items"][0] objectForKey:@"snippet"] objectForKey:@"title"],
+                                                         @"type": [[dic objectForKey:@"items"][0] objectForKey:@"kind"]
+                                                       }
+                                                   }];
+            
+        }];
+    }
+    
+    if (state == kYTPlayerStateBuffering)
+    {
+        [self getVideoInfo:playerView.videoId retBlock:^(NSDictionary *dic) {
+           
+            [[PDAnalytics sharedAnalytics] track:@"seek"
+                                      properties: @{
+                                                  }
+                                          source:@{
+                                                      @"itemId": @"pops.anime",
+                                                      @"itemType": @"app"
+                                                  }
+                                          target: @{
+                                              @"itemId": videoId,
+                                                       @"itemType": @"video",
+                                                       @"properties": @{
+                                                         @"duration" : duaration,
+                                                         @"url" : url,
+                                                         @"category":  [[[dic objectForKey:@"items"][0] objectForKey:@"snippet"] objectForKey:@"categoryId"],
+                                                         @"channel": [[[dic objectForKey:@"items"][0] objectForKey:@"snippet"] objectForKey:@"channelTitle"],
+                                                         @"title": [[[dic objectForKey:@"items"][0] objectForKey:@"snippet"] objectForKey:@"title"],
+                                                         @"type": [[dic objectForKey:@"items"][0] objectForKey:@"kind"]
+                                                       }
+                                                   }];
+            
+        }];
+    }
+}
+
+- (void) getVideoInfo:(NSString*)videId retBlock: (void (^)(NSDictionary *dic))completionHandler {
+    
+    //firebase channel being used
+    NSString* urlString = [NSString stringWithFormat:@"https://www.googleapis.com/youtube/v3/videos?part=snippet&id=%@&key=AIzaSyAnfEMEP1NtYc4bmXLRrlRJwgJQ1SATFQY", videId];
+    NSURLSessionConfiguration* sessionConfiguration = [NSURLSessionConfiguration defaultSessionConfiguration];
+    NSURLSession* session = [NSURLSession sessionWithConfiguration:sessionConfiguration];
+    NSMutableURLRequest* request = [NSMutableURLRequest requestWithURL:[[NSURL alloc] initWithString:urlString]];
+    [request setHTTPMethod:@"GET"];
+
+    NSURLSessionDataTask* dataTask = [session dataTaskWithRequest:request completionHandler:^(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable error) {
+        
+        if (!error) {
+            NSDictionary* responseDict = [NSJSONSerialization JSONObjectWithData:data options:0 error:&error];
+            completionHandler(responseDict);
+        }
+    }];
+    [dataTask resume];
 }
 
 - (void) getVideoList {

@@ -20,7 +20,6 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view, typically from a nib.
     [GIDSignIn sharedInstance].uiDelegate = self;
-    self.title = @"Login";
 
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(userDidLogIn) name:@"userLoggedIn" object:nil];
 }

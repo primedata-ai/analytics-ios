@@ -7,6 +7,8 @@
 //
 
 #import "AppDelegate.h"
+#import <PrimeData.h>
+#import <AdSupport/AdSupport.h>
 
 @import GoogleSignIn;
 
@@ -22,6 +24,14 @@
     [GIDSignIn sharedInstance].clientID = @"106698409480-midbp7dd96hn6ehsgdt1uuv271o29vnd.apps.googleusercontent.com";
     [GIDSignIn sharedInstance].scopes = [[GIDSignIn sharedInstance].scopes arrayByAddingObject:@"https://www.googleapis.com/auth/youtube"];
     [GIDSignIn sharedInstance].delegate = self;
+    
+    PDAnalyticsConfiguration *configuration = [PDAnalyticsConfiguration configurationWithWriteKey:@"1klTIBeF4McXUFp2WySSjYtJroA" scopeKey:@"IOS-1klTI9PsENXKu1Jt9zoS4A1OSUD" url:@"https://powehi.primedata.ai"];
+    
+    configuration.adSupportBlock = ^NSString * _Nonnull{
+        return [[[ASIdentifierManager sharedManager] advertisingIdentifier] UUIDString];
+    };
+    
+    [PDAnalytics setupWithConfiguration:configuration];
 
     return YES;
 }
@@ -76,6 +86,7 @@ didSignInForUser:(GIDGoogleUser *)user
     [[NSUserDefaults standardUserDefaults] setValue:idToken forKey:@"token"];
     [[NSUserDefaults standardUserDefaults] synchronize];
     
+    [[PDAnalytics sharedAnalytics] identify:user.userID email:user.profile.email];
     [[NSNotificationCenter defaultCenter] postNotificationName:@"userLoggedIn" object:nil];
 }
 

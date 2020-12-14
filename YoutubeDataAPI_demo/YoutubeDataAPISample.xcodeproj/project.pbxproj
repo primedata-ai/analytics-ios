@@ -379,7 +379,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 7G4HHVAG9A;
 				INFOPLIST_FILE = YoutubeDataAPISample/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.abdextous.Gamer.YoutubeDataAPISample;
 				PRODUCT_NAME = "POPS Anime";
@@ -395,7 +395,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 7G4HHVAG9A;
 				INFOPLIST_FILE = YoutubeDataAPISample/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.abdextous.Gamer.YoutubeDataAPISample;
 				PRODUCT_NAME = "POPS Anime";
