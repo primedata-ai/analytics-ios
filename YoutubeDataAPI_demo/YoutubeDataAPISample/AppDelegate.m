@@ -25,7 +25,9 @@
     [GIDSignIn sharedInstance].scopes = [[GIDSignIn sharedInstance].scopes arrayByAddingObject:@"https://www.googleapis.com/auth/youtube"];
     [GIDSignIn sharedInstance].delegate = self;
     
-    PDAnalyticsConfiguration *configuration = [PDAnalyticsConfiguration configurationWithWriteKey:@"1kdtO39R21tTzFxB9Un4u7kgLex" scopeKey:@"IOS-1kdtO13OTiGdlyFLFMdjqzHQ4u7" url:@"https://powehi.primedata.ai"];
+    PDAnalyticsConfiguration *configuration = [PDAnalyticsConfiguration configurationWithWriteKey:@"1klTIBeF4McXUFp2WySSjYtJroA" scopeKey:@"IOS-1klTI9PsENXKu1Jt9zoS4A1OSUD" url:@"https://powehi.primedata.ai"];
+    
+//    PDAnalyticsConfiguration *configuration = [PDAnalyticsConfiguration configurationWithWriteKey:@"1kdtO39R21tTzFxB9Un4u7kgLex" scopeKey:@"IOS-1kdtO13OTiGdlyFLFMdjqzHQ4u7" url:@"https://powehi.primedata.ai"];
     
     configuration.adSupportBlock = ^NSString * _Nonnull{
         return [[[ASIdentifierManager sharedManager] advertisingIdentifier] UUIDString];

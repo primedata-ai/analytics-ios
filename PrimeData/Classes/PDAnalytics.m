@@ -387,13 +387,17 @@ NSString *const PDBuildKeyV2 = @"PDBuildKeyV2";
     [combined_target addEntriesFromDictionary:target];
     NSDictionary *targetProperties = PDCoerceDictionary([target objectForKey:@"properties"]);
     
+    
     NSMutableDictionary *combined_target_properties = [[NSMutableDictionary alloc] init];
     [combined_target_properties addEntriesFromDictionary:targetProperties];
     [combined_target_properties setValue:userId forKey:@"id"];
+    [combined_target_properties setValue:[[[PDState sharedInstance].context.payload objectForKey:@"device"] objectForKey:@"id"] forKey:@"device_id"];
+    [combined_target_properties setValue:[[[PDState sharedInstance].context.payload objectForKey:@"device"] objectForKey:@"advertisingId"] forKey:@"advertisingId"];
     if (email)
     {
         [combined_target_properties setValue:email forKey:@"email"];
     }
+    
     [combined_target setValue:combined_target_properties forKey:@"properties"];
     
     [self validateSession:^(BOOL valid) {
