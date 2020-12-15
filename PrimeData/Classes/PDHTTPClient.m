@@ -150,7 +150,10 @@ static const NSUInteger kMaxBatchSize = 475000; // 475KB
             {
                 NSMutableDictionary *newObj = [NSMutableDictionary dictionary];
                 [newObj addEntriesFromDictionary:obj];
-                [dic setObject:[newObj objectForKey:@"outside_source"] forKey:@"source"];
+                if([newObj objectForKey:@"outside_source"] != nil)
+                {
+                    [dic setObject:[newObj objectForKey:@"outside_source"] forKey:@"source"];
+                }
                 [contextEvents addObject:newObj];
                 [newObj removeObjectForKey:@"outside_source"];
             }

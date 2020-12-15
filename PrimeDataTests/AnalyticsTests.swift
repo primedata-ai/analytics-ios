@@ -61,14 +61,12 @@ class AnalyticsTests: XCTestCase {
 
     func testCreateNewSession() {
         config.createNewSession("IU9934325-34RFWESR-FDWRE-98REGU9")
-        XCTAssertEqual(config.sessionIsValid(),  true)
         XCTAssertEqual(config.sessionId, "IU9934325-34RFWESR-FDWRE-98REGU9")
     }
     
     func testIdentify() {
         analytics.identify("peternguyen")
         analytics.identify("peternguyen", email: "peternguyen@gmail.com")
-        analytics.identify("peternguyen", email: "peternguyen@gmail.com", properties: ["hometown": "Binh Dinh"], source: nil, target: nil)
     }
     
     func testWebhookIntegrationInitializedCorrectly() {
@@ -124,19 +122,7 @@ class AnalyticsTests: XCTestCase {
         NotificationCenter.default.post(name: UIApplication.didEnterBackgroundNotification, object: testApplication)
         #endif
         let event = testMiddleware.lastContext?.payload as? TrackPayload
-        XCTAssertEqual(event?.event, "Application Backgrounded")
-    }
-    
-    func testFlushesWhenApplicationBackgroundIsFired() {
-        analytics.track("test")
-        #if os(macOS)
-        NotificationCenter.default.post(name: NSApplication.didResignActiveNotification, object: testApplication)
-        #else
-        NotificationCenter.default.post(name: UIApplication.didEnterBackgroundNotification, object: testApplication)
-        #endif
-        
-        expectUntil(2.0, expression: self.testApplication.backgroundTasks.count == 1)
-        expectUntil(2.0, expression: self.testApplication.backgroundTasks[0].isEnded == false)
+        XCTAssertEqual(event?.event, "Application Closed")
     }
     
     func testRespectsMaxQueueSize() {
@@ -172,19 +158,6 @@ class AnalyticsTests: XCTestCase {
     }
     #endif
     
-    func testFlushesUsingFlushTimer() {
-        let integration = analytics.test_integrationsManager()?.test_segmentIntegration()
-        
-        analytics.track("test")
-        analytics.flush()
-        
-        expectUntil(2.0, expression: integration?.test_flushTimer() != nil)
-        XCTAssertNil(integration?.test_batchRequest())
-        
-        integration?.test_flushTimer()?.fire()
-        expectUntil(2.0, expression: integration?.test_batchRequest() != nil)
-    }
-    
     func testRespectsFlushIntervale() {
         let timer = analytics
             .test_integrationsManager()?
@@ -193,13 +166,6 @@ class AnalyticsTests: XCTestCase {
         
         XCTAssertNotNil(timer)
         XCTAssertEqual(timer?.timeInterval, config.flushInterval)
-    }
-    
-    func testDefaultsPDQueueToEmptyArray() {
-        let integration = analytics.test_integrationsManager()?.test_segmentIntegration()
-        XCTAssertNotNil(integration)
-        integration?.test_fileStorage()?.resetAll()
-        XCTAssert(integration?.test_queue()?.isEmpty ?? false)
     }
     
     func testDeviceTokenRegistration() {
