@@ -60,8 +60,6 @@ NS_SWIFT_NAME(AnalyticsConfiguration)
 + (instancetype _Nonnull)configurationWithWriteKey:(NSString *_Nonnull)writeKey scopeKey:(NSString *_Nonnull)scopeKey url:(NSString*_Nonnull)url;
 
 - (void)createNewSession:(NSString*)newSessionID;
-- (BOOL)sessionIsValid;
-- (void)updateExistingSession;
 
 /**
  * Your project's write key from segment.io.

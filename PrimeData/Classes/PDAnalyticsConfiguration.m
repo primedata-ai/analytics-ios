@@ -44,10 +44,6 @@
 @property (nonatomic, strong) PDAnalyticsExperimental *experimental;
 
 
-@property (nonatomic, assign) NSUInteger currentSessionLifeTime;
-
-@property (nonatomic, copy, nonnull) NSDate *sessionTime;
-
 @end
 
 
@@ -98,25 +94,9 @@
 
 - (void)createNewSession:(NSString *)newSessionID
 {
-    self.sessionTime = [NSDate date];
-    self.currentSessionLifeTime = self.sessionTimeout;
     _sessionId = newSessionID;
-}
-
-- (BOOL)sessionIsValid
-{
-    NSDate *now = [NSDate date];
-    NSInteger minuteDifference = [now timeIntervalSinceDate:self.sessionTime] / 60.0;
-    if (minuteDifference  > self.currentSessionLifeTime)
-    {
-        return NO;
-    }
-    return YES;
-}
-
-- (void)updateExistingSession
-{
-    self.currentSessionLifeTime = self.currentSessionLifeTime + self.sessionTimeout;
+    [[NSUserDefaults standardUserDefaults] setObject:_sessionId forKey:@"___current_valid_session___"];
+    [[NSUserDefaults standardUserDefaults] synchronize];
 }
 
 - (void)use:(id<PDIntegrationFactory>)factory

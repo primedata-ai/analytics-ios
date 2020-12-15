@@ -117,9 +117,44 @@ static PDAnalytics *__sharedInstance = nil;
         
         self.httpClient = [[PDHTTPClient alloc] initWithRequestFactory:self.oneTimeConfiguration.requestFactory url:self.oneTimeConfiguration.url];
         
-        [self initSDK:^(BOOL valid) {
-            NSLog(@"===>>>>SDK init successful");
-        }];
+        NSDate *before =  [[NSUserDefaults standardUserDefaults] objectForKey:@"___background_time___"];
+        if (before != nil)
+        {
+            NSDate *now = [NSDate date];
+            NSInteger minuteDifference = [now timeIntervalSinceDate: before] / 60.0;
+            if (minuteDifference  > self.oneTimeConfiguration.sessionTimeout)
+            {
+                [self.oneTimeConfiguration createNewSession:GenerateUUIDString()];
+                [self initSDK:^(BOOL valid) {
+                    NSLog(@"Open app");
+                    
+                    BOOL isStartedBefore =  [[NSUserDefaults standardUserDefaults] boolForKey:@"___did_start_before___"];
+                    if (!isStartedBefore)
+                    {
+                        [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"___did_start_before___"];
+                        [[NSUserDefaults standardUserDefaults] synchronize];
+                        [self track:@"Application Installed"];
+                    }
+                }];
+            }else
+            {
+                [self.oneTimeConfiguration createNewSession:[[NSUserDefaults standardUserDefaults] objectForKey:@"___current_valid_session___"]];
+            }
+        }else
+        {
+            [self.oneTimeConfiguration createNewSession:GenerateUUIDString()];
+            [self initSDK:^(BOOL valid) {
+                NSLog(@"Open app");
+                
+                BOOL isStartedBefore =  [[NSUserDefaults standardUserDefaults] boolForKey:@"___did_start_before___"];
+                if (!isStartedBefore)
+                {
+                    [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"___did_start_before___"];
+                    [[NSUserDefaults standardUserDefaults] synchronize];
+                    [self track:@"Application Installed"];
+                }
+            }];
+        }
     }
     return self;
 }
@@ -231,6 +266,48 @@ NSString *const PDBuildKeyV2 = @"PDBuildKeyV2";
     }
     NSString *currentVersion = [[NSBundle mainBundle] infoDictionary][@"CFBundleShortVersionString"];
     NSString *currentBuild = [[NSBundle mainBundle] infoDictionary][@"CFBundleVersion"];
+    
+    NSDate *before =  [[NSUserDefaults standardUserDefaults] objectForKey:@"___background_time___"];
+    if (before != nil)
+    {
+        NSDate *now = [NSDate date];
+        NSInteger minuteDifference = [now timeIntervalSinceDate: before] / 60.0;
+        if (minuteDifference  > self.oneTimeConfiguration.sessionTimeout)
+        {
+            [self.oneTimeConfiguration createNewSession:GenerateUUIDString()];
+            
+            [self initSDK:^(BOOL valid) {
+                NSLog(@"Open app");
+                
+                BOOL isStartedBefore =  [[NSUserDefaults standardUserDefaults] boolForKey:@"___did_start_before___"];
+                if (!isStartedBefore)
+                {
+                    [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"___did_start_before___"];
+                    [[NSUserDefaults standardUserDefaults] synchronize];
+                    [self track:@"Application Installed"];
+                }
+            }];
+        }else
+        {
+            [self.oneTimeConfiguration createNewSession:[[NSUserDefaults standardUserDefaults] objectForKey:@"___current_valid_session___"]];
+        }
+    }else
+    {
+        [self.oneTimeConfiguration createNewSession:GenerateUUIDString()];
+        
+        [self initSDK:^(BOOL valid) {
+            NSLog(@"Open app");
+            
+            BOOL isStartedBefore =  [[NSUserDefaults standardUserDefaults] boolForKey:@"___did_start_before___"];
+            if (!isStartedBefore)
+            {
+                [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"___did_start_before___"];
+                [[NSUserDefaults standardUserDefaults] synchronize];
+                [self track:@"Application Installed"];
+            }
+        }];
+    }
+        
 //    [self track:@"Application Opened" properties:@{
 //        @"from_background" : @YES,
 //        @"version" : currentVersion ?: @"",
@@ -242,10 +319,13 @@ NSString *const PDBuildKeyV2 = @"PDBuildKeyV2";
 
 - (void)_applicationDidEnterBackground
 {
-  if (!self.oneTimeConfiguration.trackApplicationLifecycleEvents) {
-    return;
-  }
-  [self track: @"Application Backgrounded"];
+    [self track:@"Application Closed"];
+    
+    [[NSUserDefaults standardUserDefaults] setObject:[NSDate date] forKey:@"___background_time___"];
+    [[NSUserDefaults standardUserDefaults] synchronize];
+    if (!self.oneTimeConfiguration.trackApplicationLifecycleEvents) {
+        return;
+    }
 }
 
 
@@ -260,22 +340,6 @@ NSString *const PDBuildKeyV2 = @"PDBuildKeyV2";
 {
     // Remove deprecated configuration on 4.2+
     return nil;
-}
-
-#pragma mark - Validate Session
-
-- (void)validateSession:(void (^)(BOOL valid))completionHandler
-{
-    if([self.oneTimeConfiguration sessionIsValid])
-    {
-        // add sessionTimeout minutes to  current session
-        [self.oneTimeConfiguration updateExistingSession];
-        completionHandler(YES);
-    }else
-    {
-        //create new session
-        [self initSDK: completionHandler];
-    }
 }
 
 #pragma mark - Initialize
@@ -337,8 +401,6 @@ NSString *const PDBuildKeyV2 = @"PDBuildKeyV2";
 
 - (void)initSDKWithEvent:(NSString *)event properties:(NSDictionary *)properties source:(NSDictionary *)source target:(NSDictionary *)target completionHandler:(void (^)(BOOL valid))completionHandler
 {
-    [self.oneTimeConfiguration createNewSession:GenerateUUIDString()];
-    
     PDInitializePayload *payload = [[PDInitializePayload alloc] initWithEvent:event
                                     properties:PDCoerceDictionary(properties)
                                         source:PDCoerceDictionary(source)
@@ -400,23 +462,21 @@ NSString *const PDBuildKeyV2 = @"PDBuildKeyV2";
     
     [combined_target setValue:combined_target_properties forKey:@"properties"];
     
-    [self validateSession:^(BOOL valid) {
-        PDInitializePayload *payload = [[PDInitializePayload alloc] initWithEvent:@"identify"
-                                         properties:PDCoerceDictionary(properties)
-                                             source:PDCoerceDictionary(source)
-                                             target:PDCoerceDictionary(combined_target)
-                                            context:PDCoerceDictionary(nil)
-                                       integrations:PDCoerceDictionary(nil)];
-        
-        if (self.oneTimeConfiguration.experimental.nanosecondTimestamps) {
-            payload.timestamp = iso8601NanoFormattedString([NSDate date]);
-        } else {
-            payload.timestamp = iso8601FormattedString([NSDate date]);
-        }
-        
-        [self.httpClient uploadContextEvents:[self generateInitializePayload:payload] forWriteKey:self.oneTimeConfiguration.writeKey completionHandler:^(BOOL retry) {
-            NSLog(@"Identify successful");
-        }];
+    PDInitializePayload *payload = [[PDInitializePayload alloc] initWithEvent:@"identify"
+                                     properties:PDCoerceDictionary(properties)
+                                         source:PDCoerceDictionary(source)
+                                         target:PDCoerceDictionary(combined_target)
+                                        context:PDCoerceDictionary(nil)
+                                   integrations:PDCoerceDictionary(nil)];
+    
+    if (self.oneTimeConfiguration.experimental.nanosecondTimestamps) {
+        payload.timestamp = iso8601NanoFormattedString([NSDate date]);
+    } else {
+        payload.timestamp = iso8601FormattedString([NSDate date]);
+    }
+    
+    [self.httpClient uploadContextEvents:[self generateInitializePayload:payload] forWriteKey:self.oneTimeConfiguration.writeKey completionHandler:^(BOOL retry) {
+        NSLog(@"Identify successful");
     }];
 }
 
@@ -440,15 +500,13 @@ NSString *const PDBuildKeyV2 = @"PDBuildKeyV2";
 {
     NSCAssert1(event.length > 0, @"event (%@) must not be empty.", event);
     
-    [self validateSession:^(BOOL valid) {
-            [self run:PDEventTypeTrack payload:
-         [[PDTrackPayload alloc] initWithEvent:event
-                                    properties:PDCoerceDictionary(properties)
-                                        source:PDCoerceDictionary(source)
-                                        target:PDCoerceDictionary(target)
-                                       context:PDCoerceDictionary(nil)
-                                  integrations:PDCoerceDictionary(nil)]];
-    }];
+    [self run:PDEventTypeTrack payload:
+    [[PDTrackPayload alloc] initWithEvent:event
+                            properties:PDCoerceDictionary(properties)
+                                source:PDCoerceDictionary(source)
+                                target:PDCoerceDictionary(target)
+                               context:PDCoerceDictionary(nil)
+                          integrations:PDCoerceDictionary(nil)]];
 }
 
 #pragma mark - Screen

@@ -25,9 +25,9 @@
     [GIDSignIn sharedInstance].scopes = [[GIDSignIn sharedInstance].scopes arrayByAddingObject:@"https://www.googleapis.com/auth/youtube"];
     [GIDSignIn sharedInstance].delegate = self;
     
-    PDAnalyticsConfiguration *configuration = [PDAnalyticsConfiguration configurationWithWriteKey:@"1klTIBeF4McXUFp2WySSjYtJroA" scopeKey:@"IOS-1klTI9PsENXKu1Jt9zoS4A1OSUD" url:@"https://powehi.primedata.ai"];
+//    PDAnalyticsConfiguration *configuration = [PDAnalyticsConfiguration configurationWithWriteKey:@"1klTIBeF4McXUFp2WySSjYtJroA" scopeKey:@"IOS-1klTI9PsENXKu1Jt9zoS4A1OSUD" url:@"https://powehi.primedata.ai"];
     
-//    PDAnalyticsConfiguration *configuration = [PDAnalyticsConfiguration configurationWithWriteKey:@"1kdtO39R21tTzFxB9Un4u7kgLex" scopeKey:@"IOS-1kdtO13OTiGdlyFLFMdjqzHQ4u7" url:@"https://powehi.primedata.ai"];
+    PDAnalyticsConfiguration *configuration = [PDAnalyticsConfiguration configurationWithWriteKey:@"1kdtO39R21tTzFxB9Un4u7kgLex" scopeKey:@"IOS-1kdtO13OTiGdlyFLFMdjqzHQ4u7" url:@"https://powehi.primedata.ai"];
     
     configuration.adSupportBlock = ^NSString * _Nonnull{
         return [[[ASIdentifierManager sharedManager] advertisingIdentifier] UUIDString];
@@ -40,6 +40,7 @@
 
 
 - (void)applicationWillResignActive:(UIApplication *)application {
+    NSLog(@"");
     // Sent when the application is about to move from active to inactive state. This can occur for certain types of temporary interruptions (such as an incoming phone call or SMS message) or when the user quits the application and it begins the transition to the background state.
     // Use this method to pause ongoing tasks, disable timers, and invalidate graphics rendering callbacks. Games should use this method to pause the game.
 }
@@ -52,6 +53,7 @@
 
 
 - (void)applicationWillEnterForeground:(UIApplication *)application {
+    NSLog(@"Log");
     // Called as part of the transition from the background to the active state; here you can undo many of the changes made on entering the background.
 }
 
