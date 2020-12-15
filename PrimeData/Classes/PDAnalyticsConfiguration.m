@@ -95,7 +95,7 @@
 - (void)createNewSession:(NSString *)newSessionID
 {
     _sessionId = newSessionID;
-    [[NSUserDefaults standardUserDefaults] setObject:_sessionId forKey:@"___current_valid_session___"];
+    [[NSUserDefaults standardUserDefaults] setObject:_sessionId forKey:VALID_SESSION_KEY];
     [[NSUserDefaults standardUserDefaults] synchronize];
 }
 

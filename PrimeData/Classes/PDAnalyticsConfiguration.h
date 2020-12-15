@@ -34,6 +34,7 @@ NS_SWIFT_NAME(ApplicationProtocol)
 @end
 #endif
 
+#define VALID_SESSION_KEY @"PRIME_DATA_KEY___current_valid_session___"
 
 typedef NSMutableURLRequest *_Nonnull (^PDRequestFactory)(NSURL *_Nonnull);
 typedef NSString *_Nonnull (^PDAdSupportBlock)(void);

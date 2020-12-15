@@ -5,6 +5,10 @@
 #import "PDSerializableValue.h"
 #import "PDMiddleware.h"
 
+#define BACKGROUND_TIME_KEY @"PRIME_DATA_KEY___background_time___"
+#define APPLICATION_INSTALLED_KEY @"PRIME_DATA_KEY___did_start_before___"
+
+
 NS_ASSUME_NONNULL_BEGIN
 
 /**

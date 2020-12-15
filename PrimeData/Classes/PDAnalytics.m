@@ -117,7 +117,7 @@ static PDAnalytics *__sharedInstance = nil;
         
         self.httpClient = [[PDHTTPClient alloc] initWithRequestFactory:self.oneTimeConfiguration.requestFactory url:self.oneTimeConfiguration.url];
         
-        NSDate *before =  [[NSUserDefaults standardUserDefaults] objectForKey:@"___background_time___"];
+        NSDate *before =  [[NSUserDefaults standardUserDefaults] objectForKey:BACKGROUND_TIME_KEY];
         if (before != nil)
         {
             NSDate *now = [NSDate date];
@@ -128,17 +128,27 @@ static PDAnalytics *__sharedInstance = nil;
                 [self initSDK:^(BOOL valid) {
                     NSLog(@"Open app");
                     
-                    BOOL isStartedBefore =  [[NSUserDefaults standardUserDefaults] boolForKey:@"___did_start_before___"];
+                    BOOL isStartedBefore =  [[NSUserDefaults standardUserDefaults] boolForKey:APPLICATION_INSTALLED_KEY];
                     if (!isStartedBefore)
                     {
-                        [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"___did_start_before___"];
+                        [[NSUserDefaults standardUserDefaults] setBool:YES forKey:APPLICATION_INSTALLED_KEY];
                         [[NSUserDefaults standardUserDefaults] synchronize];
-                        [self track:@"Application Installed"];
+                        [self track:@"Application Installed"
+                        properties:nil
+                            source:@{
+                                     @"itemId": @"ai.primedata",
+                                     @"itemType": @"app"
+                                    }
+                            target:@{
+                                    @"itemId": @"home",
+                                    @"itemType": @"screen"
+                                    }];
+
                     }
                 }];
             }else
             {
-                [self.oneTimeConfiguration createNewSession:[[NSUserDefaults standardUserDefaults] objectForKey:@"___current_valid_session___"]];
+                [self.oneTimeConfiguration createNewSession:[[NSUserDefaults standardUserDefaults] objectForKey:VALID_SESSION_KEY]];
             }
         }else
         {
@@ -146,12 +156,22 @@ static PDAnalytics *__sharedInstance = nil;
             [self initSDK:^(BOOL valid) {
                 NSLog(@"Open app");
                 
-                BOOL isStartedBefore =  [[NSUserDefaults standardUserDefaults] boolForKey:@"___did_start_before___"];
+                BOOL isStartedBefore =  [[NSUserDefaults standardUserDefaults] boolForKey:APPLICATION_INSTALLED_KEY];
                 if (!isStartedBefore)
                 {
-                    [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"___did_start_before___"];
+                    [[NSUserDefaults standardUserDefaults] setBool:YES forKey:APPLICATION_INSTALLED_KEY];
                     [[NSUserDefaults standardUserDefaults] synchronize];
-                    [self track:@"Application Installed"];
+                    [self track:@"Application Installed"
+                    properties:nil
+                        source:@{
+                                 @"itemId": @"ai.primedata",
+                                 @"itemType": @"app"
+                                }
+                        target:@{
+                                @"itemId": @"home",
+                                @"itemType": @"screen"
+                                }];
+
                 }
             }];
         }
@@ -267,7 +287,7 @@ NSString *const PDBuildKeyV2 = @"PDBuildKeyV2";
     NSString *currentVersion = [[NSBundle mainBundle] infoDictionary][@"CFBundleShortVersionString"];
     NSString *currentBuild = [[NSBundle mainBundle] infoDictionary][@"CFBundleVersion"];
     
-    NSDate *before =  [[NSUserDefaults standardUserDefaults] objectForKey:@"___background_time___"];
+    NSDate *before =  [[NSUserDefaults standardUserDefaults] objectForKey:BACKGROUND_TIME_KEY];
     if (before != nil)
     {
         NSDate *now = [NSDate date];
@@ -277,19 +297,27 @@ NSString *const PDBuildKeyV2 = @"PDBuildKeyV2";
             [self.oneTimeConfiguration createNewSession:GenerateUUIDString()];
             
             [self initSDK:^(BOOL valid) {
-                NSLog(@"Open app");
-                
-                BOOL isStartedBefore =  [[NSUserDefaults standardUserDefaults] boolForKey:@"___did_start_before___"];
+
+                BOOL isStartedBefore =  [[NSUserDefaults standardUserDefaults] boolForKey:APPLICATION_INSTALLED_KEY];
                 if (!isStartedBefore)
                 {
-                    [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"___did_start_before___"];
+                    [[NSUserDefaults standardUserDefaults] setBool:YES forKey:APPLICATION_INSTALLED_KEY];
                     [[NSUserDefaults standardUserDefaults] synchronize];
-                    [self track:@"Application Installed"];
+                    [self track:@"Application Installed"
+                     properties:nil
+                         source:@{
+                                  @"itemId": @"ai.primedata",
+                                  @"itemType": @"app"
+                                 }
+                         target:@{
+                                 @"itemId": @"home",
+                                 @"itemType": @"screen"
+                                 }];
                 }
             }];
         }else
         {
-            [self.oneTimeConfiguration createNewSession:[[NSUserDefaults standardUserDefaults] objectForKey:@"___current_valid_session___"]];
+            [self.oneTimeConfiguration createNewSession:[[NSUserDefaults standardUserDefaults] objectForKey:VALID_SESSION_KEY]];
         }
     }else
     {
@@ -298,22 +326,25 @@ NSString *const PDBuildKeyV2 = @"PDBuildKeyV2";
         [self initSDK:^(BOOL valid) {
             NSLog(@"Open app");
             
-            BOOL isStartedBefore =  [[NSUserDefaults standardUserDefaults] boolForKey:@"___did_start_before___"];
+            BOOL isStartedBefore =  [[NSUserDefaults standardUserDefaults] boolForKey:APPLICATION_INSTALLED_KEY];
             if (!isStartedBefore)
             {
-                [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"___did_start_before___"];
+                [[NSUserDefaults standardUserDefaults] setBool:YES forKey:APPLICATION_INSTALLED_KEY];
                 [[NSUserDefaults standardUserDefaults] synchronize];
-                [self track:@"Application Installed"];
+               [self track:@"Application Installed"
+                properties:nil
+                    source:@{
+                             @"itemId": @"ai.primedata",
+                             @"itemType": @"app"
+                            }
+                    target:@{
+                            @"itemId": @"home",
+                            @"itemType": @"screen"
+                            }];
             }
         }];
     }
-        
-//    [self track:@"Application Opened" properties:@{
-//        @"from_background" : @YES,
-//        @"version" : currentVersion ?: @"",
-//        @"build" : currentBuild ?: @"",
-//    }];
-    
+            
     [[PDState sharedInstance].context updateStaticContext];
 }
 
@@ -321,7 +352,7 @@ NSString *const PDBuildKeyV2 = @"PDBuildKeyV2";
 {
     [self track:@"Application Closed"];
     
-    [[NSUserDefaults standardUserDefaults] setObject:[NSDate date] forKey:@"___background_time___"];
+    [[NSUserDefaults standardUserDefaults] setObject:[NSDate date] forKey:BACKGROUND_TIME_KEY];
     [[NSUserDefaults standardUserDefaults] synchronize];
     if (!self.oneTimeConfiguration.trackApplicationLifecycleEvents) {
         return;
