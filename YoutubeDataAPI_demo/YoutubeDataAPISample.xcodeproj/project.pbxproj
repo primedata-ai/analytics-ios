@@ -377,11 +377,12 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = 7G4HHVAG9A;
+				DEVELOPMENT_TEAM = NEH9DF829T;
 				INFOPLIST_FILE = YoutubeDataAPISample/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = com.abdextous.Gamer.YoutubeDataAPISample;
+				MARKETING_VERSION = 1.0.8;
+				PRODUCT_BUNDLE_IDENTIFIER = vn.coloradosaigonclub;
 				PRODUCT_NAME = "POPS Anime";
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -393,11 +394,12 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = 7G4HHVAG9A;
+				DEVELOPMENT_TEAM = NEH9DF829T;
 				INFOPLIST_FILE = YoutubeDataAPISample/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = com.abdextous.Gamer.YoutubeDataAPISample;
+				MARKETING_VERSION = 1.0.8;
+				PRODUCT_BUNDLE_IDENTIFIER = vn.coloradosaigonclub;
 				PRODUCT_NAME = "POPS Anime";
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
