@@ -224,7 +224,7 @@ NSUInteger const kPDBackgroundTaskInvalid = 0;
     NSMutableDictionary *combinedInternalSource = [[NSMutableDictionary alloc] init];
     [combinedInternalSource addEntriesFromDictionary:payload.internal_source];
     [combinedInternalSource setValue:self.configuration.scopeKey forKey:@"scope"];
-    [dictionary setValue:combinedInternalSource forKey:@"source"];
+    [dictionary setValue:combinedInternalSource forKey:@"outside_source"];
     
     [self enqueueAction:@"initialize" dictionary:dictionary context:payload.context integrations:payload.integrations];
 }
@@ -436,7 +436,7 @@ NSUInteger const kPDBackgroundTaskInvalid = 0;
     NSMutableDictionary *payload = [[NSMutableDictionary alloc] init];
     [payload setObject:iso8601FormattedString([NSDate date]) forKey:@"sendAt"];
     
-    NSString *profileId =  [[NSUserDefaults standardUserDefaults] objectForKey:@"___profileId___"];
+    NSString *profileId = [[NSUserDefaults standardUserDefaults] objectForKey:PROFILE_ID_KEY];
     if (profileId != nil)
     {
         [payload setObject:profileId forKey:@"profileId"];
@@ -447,7 +447,7 @@ NSUInteger const kPDBackgroundTaskInvalid = 0;
     PDLog(@"%@ Flushing %lu of %lu queued API calls.", self, (unsigned long)batch.count, (unsigned long)self.queue.count);
     PDLog(@"Flushing batch %@.", payload);
 
-    self.batchRequest = [self.httpClient uploadTrackEvents:payload forWriteKey:self.configuration.writeKey completionHandler:^(BOOL retry) {
+    self.batchRequest = [self.httpClient uploadEvents:payload forWriteKey:self.configuration.writeKey completionHandler:^(BOOL retry) {
         void (^completion)(void) = ^{
             
             if (retry)

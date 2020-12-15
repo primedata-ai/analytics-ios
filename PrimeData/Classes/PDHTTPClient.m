@@ -83,7 +83,7 @@ static const NSUInteger kMaxBatchSize = 475000; // 475KB
     @catch (NSException *exc) {
         exception = exc;
     }
-    
+
     NSURLSessionUploadTask *task = [session uploadTaskWithRequest:request fromData:payload completionHandler:^(NSData *_Nullable data, NSURLResponse *_Nullable response, NSError *_Nullable error) {
         if (error)
         {
@@ -96,16 +96,16 @@ static const NSUInteger kMaxBatchSize = 475000; // 475KB
         NSInteger code = ((NSHTTPURLResponse *)response).statusCode;
         if (code < 300) {
             NSError *jsonError = nil;
-            
+
             NSDictionary * parsedData = [NSJSONSerialization JSONObjectWithData:data options:0 error:&jsonError];
             NSString *profileId = [parsedData objectForKey:@"profileId"];
             NSLog(@"___profileID___: %@", profileId);
             if (profileId != nil)
             {
-                [[NSUserDefaults standardUserDefaults] setValue:profileId forKey:@"___profileId___"];
+                [[NSUserDefaults standardUserDefaults] setValue:profileId forKey:PROFILE_ID_KEY];
                 [[NSUserDefaults standardUserDefaults] synchronize];
             }
-            
+
             // 2xx response codes. Don't retry.
             completionHandler(NO);
             return;
@@ -135,6 +135,77 @@ static const NSUInteger kMaxBatchSize = 475000; // 475KB
     }];
     [task resume];
     return task;
+}
+
+- (NSDictionary *)batchForContextEndpoint:(NSDictionary *)batch
+{
+    NSMutableDictionary *dic = [NSMutableDictionary dictionary];
+    [dic addEntriesFromDictionary:batch];
+    if (batch) {
+        NSArray *events = [batch objectForKey:@"events"];
+        NSMutableArray *contextEvents = [NSMutableArray array];
+        for (NSDictionary *obj in events)
+        {
+            if ([[obj objectForKey:@"eventType"] isEqualToString:@"open_app"] || [[obj objectForKey:@"eventType"] isEqualToString:@"identify"])
+            {
+                NSMutableDictionary *newObj = [NSMutableDictionary dictionary];
+                [newObj addEntriesFromDictionary:obj];
+                [dic setObject:[newObj objectForKey:@"outside_source"] forKey:@"source"];
+                [contextEvents addObject:newObj];
+                [newObj removeObjectForKey:@"outside_source"];
+            }
+        }
+        [dic setObject:contextEvents forKey:@"events"];
+    }
+    return dic;
+}
+
+- (NSDictionary *)batchForSmileEndpoint:(NSDictionary *)batch
+{
+    NSMutableDictionary *dic = [NSMutableDictionary dictionary];
+    [dic addEntriesFromDictionary:batch];
+    if (batch) {
+        NSArray *events = [batch objectForKey:@"events"];
+        NSMutableArray *contextEvents = [NSMutableArray array];
+        for (NSDictionary *obj in events)
+        {
+            if ((![[obj objectForKey:@"eventType"] isEqualToString:@"open_app"]) && (![[obj objectForKey:@"eventType"] isEqualToString:@"identify"]))
+            {
+                [contextEvents addObject:obj];
+            }
+        }
+        [dic setObject:contextEvents forKey:@"events"];
+    }
+    return dic;
+}
+
+- (nullable NSURLSessionUploadTask *)uploadEvents:(NSDictionary *)batch forWriteKey:(NSString *)writeKey completionHandler:(void (^)(BOOL retry))completionHandler
+{
+    __block NSDictionary *contextBatch = [self batchForContextEndpoint:batch];
+    __block NSDictionary *trackBatch = [self batchForSmileEndpoint:batch];
+    if ([[contextBatch objectForKey:@"events"] count] != 0)
+    {
+        NSURLSessionUploadTask *contextTask = [self uploadContextEvents:contextBatch forWriteKey:writeKey completionHandler:^(BOOL retry) {
+            if (retry)
+            {
+                completionHandler(retry);
+                return;
+            }else
+            {
+               if([[trackBatch objectForKey:@"events"] count] != 0)
+               {
+                   [self uploadTrackEvents:trackBatch forWriteKey:writeKey completionHandler:completionHandler];
+               }else
+               {
+                   completionHandler(retry);
+               }
+            }
+        }];
+        return contextTask;
+    }else
+        {
+            return [self uploadTrackEvents:trackBatch forWriteKey:writeKey completionHandler:completionHandler];
+        }
 }
 
 - (nullable NSURLSessionUploadTask *)uploadTrackEvents:(NSDictionary *)batch forWriteKey:(NSString *)writeKey completionHandler:(void (^)(BOOL retry))completionHandler

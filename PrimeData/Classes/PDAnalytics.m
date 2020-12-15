@@ -125,37 +125,7 @@ static PDAnalytics *__sharedInstance = nil;
             if (minuteDifference  > self.oneTimeConfiguration.sessionTimeout)
             {
                 [self.oneTimeConfiguration createNewSession:GenerateUUIDString()];
-                [self initSDK:^(BOOL valid) {
-                    NSLog(@"Open app");
-                    
-                    BOOL isStartedBefore =  [[NSUserDefaults standardUserDefaults] boolForKey:APPLICATION_INSTALLED_KEY];
-                    if (!isStartedBefore)
-                    {
-                        [[NSUserDefaults standardUserDefaults] setBool:YES forKey:APPLICATION_INSTALLED_KEY];
-                        [[NSUserDefaults standardUserDefaults] synchronize];
-                        [self track:@"Application Installed"
-                        properties:nil
-                            source:@{
-                                     @"itemId": @"ai.primedata",
-                                     @"itemType": @"app"
-                                    }
-                            target:@{
-                                    @"itemId": @"home",
-                                    @"itemType": @"screen"
-                                    }];
-
-                    }
-                }];
-            }else
-            {
-                [self.oneTimeConfiguration createNewSession:[[NSUserDefaults standardUserDefaults] objectForKey:VALID_SESSION_KEY]];
-            }
-        }else
-        {
-            [self.oneTimeConfiguration createNewSession:GenerateUUIDString()];
-            [self initSDK:^(BOOL valid) {
-                NSLog(@"Open app");
-                
+                [self initSDK];
                 BOOL isStartedBefore =  [[NSUserDefaults standardUserDefaults] boolForKey:APPLICATION_INSTALLED_KEY];
                 if (!isStartedBefore)
                 {
@@ -173,7 +143,31 @@ static PDAnalytics *__sharedInstance = nil;
                                 }];
 
                 }
-            }];
+            }else
+            {
+                [self.oneTimeConfiguration createNewSession:[[NSUserDefaults standardUserDefaults] objectForKey:VALID_SESSION_KEY]];
+            }
+        }else
+        {
+            [self.oneTimeConfiguration createNewSession:GenerateUUIDString()];
+            [self initSDK];
+            BOOL isStartedBefore =  [[NSUserDefaults standardUserDefaults] boolForKey:APPLICATION_INSTALLED_KEY];
+            if (!isStartedBefore)
+            {
+                [[NSUserDefaults standardUserDefaults] setBool:YES forKey:APPLICATION_INSTALLED_KEY];
+                [[NSUserDefaults standardUserDefaults] synchronize];
+                [self track:@"Application Installed"
+                properties:nil
+                    source:@{
+                             @"itemId": @"ai.primedata",
+                             @"itemType": @"app"
+                            }
+                    target:@{
+                            @"itemId": @"home",
+                            @"itemType": @"screen"
+                            }];
+
+            }
         }
     }
     return self;
@@ -296,25 +290,24 @@ NSString *const PDBuildKeyV2 = @"PDBuildKeyV2";
         {
             [self.oneTimeConfiguration createNewSession:GenerateUUIDString()];
             
-            [self initSDK:^(BOOL valid) {
+            [self initSDK];
 
-                BOOL isStartedBefore =  [[NSUserDefaults standardUserDefaults] boolForKey:APPLICATION_INSTALLED_KEY];
-                if (!isStartedBefore)
-                {
-                    [[NSUserDefaults standardUserDefaults] setBool:YES forKey:APPLICATION_INSTALLED_KEY];
-                    [[NSUserDefaults standardUserDefaults] synchronize];
-                    [self track:@"Application Installed"
-                     properties:nil
-                         source:@{
-                                  @"itemId": @"ai.primedata",
-                                  @"itemType": @"app"
-                                 }
-                         target:@{
-                                 @"itemId": @"home",
-                                 @"itemType": @"screen"
-                                 }];
-                }
-            }];
+            BOOL isStartedBefore =  [[NSUserDefaults standardUserDefaults] boolForKey:APPLICATION_INSTALLED_KEY];
+            if (!isStartedBefore)
+            {
+                [[NSUserDefaults standardUserDefaults] setBool:YES forKey:APPLICATION_INSTALLED_KEY];
+                [[NSUserDefaults standardUserDefaults] synchronize];
+                [self track:@"Application Installed"
+                 properties:nil
+                     source:@{
+                              @"itemId": @"ai.primedata",
+                              @"itemType": @"app"
+                             }
+                     target:@{
+                             @"itemId": @"home",
+                             @"itemType": @"screen"
+                             }];
+            }
         }else
         {
             [self.oneTimeConfiguration createNewSession:[[NSUserDefaults standardUserDefaults] objectForKey:VALID_SESSION_KEY]];
@@ -322,27 +315,24 @@ NSString *const PDBuildKeyV2 = @"PDBuildKeyV2";
     }else
     {
         [self.oneTimeConfiguration createNewSession:GenerateUUIDString()];
+        [self initSDK];
         
-        [self initSDK:^(BOOL valid) {
-            NSLog(@"Open app");
-            
-            BOOL isStartedBefore =  [[NSUserDefaults standardUserDefaults] boolForKey:APPLICATION_INSTALLED_KEY];
-            if (!isStartedBefore)
-            {
-                [[NSUserDefaults standardUserDefaults] setBool:YES forKey:APPLICATION_INSTALLED_KEY];
-                [[NSUserDefaults standardUserDefaults] synchronize];
-               [self track:@"Application Installed"
-                properties:nil
-                    source:@{
-                             @"itemId": @"ai.primedata",
-                             @"itemType": @"app"
-                            }
-                    target:@{
-                            @"itemId": @"home",
-                            @"itemType": @"screen"
-                            }];
-            }
-        }];
+        BOOL isStartedBefore =  [[NSUserDefaults standardUserDefaults] boolForKey:APPLICATION_INSTALLED_KEY];
+        if (!isStartedBefore)
+        {
+            [[NSUserDefaults standardUserDefaults] setBool:YES forKey:APPLICATION_INSTALLED_KEY];
+            [[NSUserDefaults standardUserDefaults] synchronize];
+           [self track:@"Application Installed"
+            properties:nil
+                source:@{
+                         @"itemId": @"ai.primedata",
+                         @"itemType": @"app"
+                        }
+                target:@{
+                        @"itemId": @"home",
+                        @"itemType": @"screen"
+                        }];
+        }
     }
             
     [[PDState sharedInstance].context updateStaticContext];
@@ -375,45 +365,7 @@ NSString *const PDBuildKeyV2 = @"PDBuildKeyV2";
 
 #pragma mark - Initialize
 
-- (NSDictionary *)generateInitializePayload:(PDInitializePayload *)payload
-{
-    NSMutableDictionary *dictionary = [NSMutableDictionary dictionary];
-    [dictionary setValue:payload.event forKey:@"eventType"];
-    [dictionary setValue:self.oneTimeConfiguration.scopeKey forKey:@"scope"];
-    [dictionary setValue:payload.pd_properties forKey:@"properties"];
-    
-    NSMutableDictionary *combinedTarget = [[NSMutableDictionary alloc] init];
-    [combinedTarget addEntriesFromDictionary:payload.pd_target];
-    [combinedTarget setValue:self.oneTimeConfiguration.scopeKey forKey:@"scope"];
-    [dictionary setValue:combinedTarget forKey:@"target"];
-    
-    NSMutableDictionary *combinedSource = [[NSMutableDictionary alloc] init];
-    [combinedSource addEntriesFromDictionary:payload.pd_source];
-    [combinedSource setValue:self.oneTimeConfiguration.scopeKey forKey:@"scope"];
-    [dictionary setValue:combinedSource forKey:@"source"];
-    
-    [dictionary setValue:payload.timestamp forKey:@"timeStamp"];
-    
-    NSMutableDictionary *batch = [[NSMutableDictionary alloc] init];
-    [batch setObject:iso8601FormattedString([NSDate date]) forKey:@"sendAt"];
-    
-    NSString *profileId =  [[NSUserDefaults standardUserDefaults] objectForKey:@"___profileId___"];
-    if (profileId != nil)
-    {
-        [batch setObject:profileId forKey:@"profileId"];
-    }
-    
-    NSMutableDictionary *combinedInternalSource = [[NSMutableDictionary alloc] init];
-    [combinedInternalSource addEntriesFromDictionary:payload.internal_source];
-    [combinedInternalSource setValue:self.oneTimeConfiguration.scopeKey forKey:@"scope"];
-    [batch setValue:combinedInternalSource forKey:@"source"];
-    
-    [batch setObject:@[dictionary] forKey:@"events"];
-    [batch setObject:self.oneTimeConfiguration.sessionId forKey:@"sessionId"];
-    return batch;
-}
-
-- (void)initSDK:(void (^)(BOOL valid))completionHandler
+- (void)initSDK
 {
     [self  initSDKWithEvent:@"open_app"
                  properties:@{}
@@ -427,27 +379,19 @@ NSString *const PDBuildKeyV2 = @"PDBuildKeyV2";
 
                                 @"itemId": @"home",
                                 @"itemType": @"screen"
-                           } completionHandler:(void (^)(BOOL valid))completionHandler];
+                           }];
+    [self flush];
 }
 
-- (void)initSDKWithEvent:(NSString *)event properties:(NSDictionary *)properties source:(NSDictionary *)source target:(NSDictionary *)target completionHandler:(void (^)(BOOL valid))completionHandler
+- (void)initSDKWithEvent:(NSString *)event properties:(NSDictionary *)properties source:(NSDictionary *)source target:(NSDictionary *)target
 {
-    PDInitializePayload *payload = [[PDInitializePayload alloc] initWithEvent:event
-                                    properties:PDCoerceDictionary(properties)
-                                        source:PDCoerceDictionary(source)
-                                        target:PDCoerceDictionary(target)
-                                       context:PDCoerceDictionary(nil)
-                                  integrations:PDCoerceDictionary(nil)];
-    
-    if (self.oneTimeConfiguration.experimental.nanosecondTimestamps) {
-        payload.timestamp = iso8601NanoFormattedString([NSDate date]);
-    } else {
-        payload.timestamp = iso8601FormattedString([NSDate date]);
-    }
-
-    [self.httpClient uploadContextEvents:[self generateInitializePayload:payload] forWriteKey:self.oneTimeConfiguration.writeKey completionHandler:^(BOOL retry) {
-        completionHandler(YES);
-    }];
+    [self run:PDEventTypeInitialize payload:
+    [[PDInitializePayload alloc] initWithEvent:event
+      properties:PDCoerceDictionary(properties)
+          source:PDCoerceDictionary(source)
+          target:PDCoerceDictionary(target)
+         context:PDCoerceDictionary(nil)
+    integrations:PDCoerceDictionary(nil)]];
 }
 
 #pragma mark - Identify
@@ -499,16 +443,7 @@ NSString *const PDBuildKeyV2 = @"PDBuildKeyV2";
                                          target:PDCoerceDictionary(combined_target)
                                         context:PDCoerceDictionary(nil)
                                    integrations:PDCoerceDictionary(nil)];
-    
-    if (self.oneTimeConfiguration.experimental.nanosecondTimestamps) {
-        payload.timestamp = iso8601NanoFormattedString([NSDate date]);
-    } else {
-        payload.timestamp = iso8601FormattedString([NSDate date]);
-    }
-    
-    [self.httpClient uploadContextEvents:[self generateInitializePayload:payload] forWriteKey:self.oneTimeConfiguration.writeKey completionHandler:^(BOOL retry) {
-        NSLog(@"Identify successful");
-    }];
+    [self run:PDEventTypeInitialize payload: payload];
 }
 
 #pragma mark - Track
