@@ -41,7 +41,7 @@ EXTERNAL SOURCES:
 
 CHECKOUT OPTIONS:
   Analytics:
-    :commit: 322a336d8143641955f6d6e0792531be1588dba8
+    :commit: 32108608b2179a25a8e2357ecaaaeee2a347ff92
     :git: https://github.com/primedata-ai/analytics-ios.git
 
 SPEC CHECKSUMS:

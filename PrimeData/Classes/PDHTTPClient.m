@@ -39,14 +39,14 @@ static const NSUInteger kMaxBatchSize = 475000; // 475KB
     return self;
 }
 
-- (NSURLSession *)sessionForWriteKey:(NSString *)writeKey
+- (NSURLSession *)sessionForWriteKey:(NSString *)writeKey scopeKey:(NSString *)scopeKey
 {
     NSURLSession *session = self.sessionsByWriteKey[writeKey];
     if (!session) {
         NSURLSessionConfiguration *config = [NSURLSessionConfiguration defaultSessionConfiguration];
         config.HTTPAdditionalHeaders = @{
-            @"x-client-access-token": @"1klTIBeF4McXUFp2WySSjYtJroA",
-            @"x-client-id": @"IOS-1klTI9PsENXKu1Jt9zoS4A1OSUD",
+            @"x-client-access-token": writeKey,
+            @"x-client-id": scopeKey,
             @"Content-Type": @"text/plain;charset=UTF-8"
         };
         session = [NSURLSession sessionWithConfiguration:config delegate:self.httpSessionDelegate delegateQueue:NULL];
@@ -64,10 +64,10 @@ static const NSUInteger kMaxBatchSize = 475000; // 475KB
     [self.genericSession finishTasksAndInvalidate];
 }
 
-- (nullable NSURLSessionUploadTask *)uploadContextEvents:(NSDictionary *)batch forWriteKey:(NSString *)writeKey completionHandler:(void (^)(BOOL retry))completionHandler
+- (nullable NSURLSessionUploadTask *)uploadContextEvents:(NSDictionary *)batch forWriteKey:(NSString *)writeKey scopeKey:(NSString *)scopeKey completionHandler:(void (^)(BOOL retry))completionHandler
 {
     NSString *api = @"context";
-    NSURLSession *session = [self sessionForWriteKey:writeKey];
+    NSURLSession *session = [self sessionForWriteKey:writeKey scopeKey:scopeKey];
 
     NSURL *url = [[NSURL URLWithString:self.url] URLByAppendingPathComponent:api];
     NSMutableURLRequest *request = self.requestFactory(url);
@@ -182,13 +182,13 @@ static const NSUInteger kMaxBatchSize = 475000; // 475KB
     return dic;
 }
 
-- (nullable NSURLSessionUploadTask *)uploadEvents:(NSDictionary *)batch forWriteKey:(NSString *)writeKey completionHandler:(void (^)(BOOL retry))completionHandler
+- (nullable NSURLSessionUploadTask *)uploadEvents:(NSDictionary *)batch forWriteKey:(NSString *)writeKey scopeKey:(NSString *)scopeKey completionHandler:(void (^)(BOOL retry))completionHandler
 {
     __block NSDictionary *contextBatch = [self batchForContextEndpoint:batch];
     __block NSDictionary *trackBatch = [self batchForSmileEndpoint:batch];
     if ([[contextBatch objectForKey:@"events"] count] != 0)
     {
-        NSURLSessionUploadTask *contextTask = [self uploadContextEvents:contextBatch forWriteKey:writeKey completionHandler:^(BOOL retry) {
+        NSURLSessionUploadTask *contextTask = [self uploadContextEvents:contextBatch forWriteKey:writeKey scopeKey:scopeKey completionHandler:^(BOOL retry) {
             if (retry)
             {
                 completionHandler(retry);
@@ -197,7 +197,7 @@ static const NSUInteger kMaxBatchSize = 475000; // 475KB
             {
                if([[trackBatch objectForKey:@"events"] count] != 0)
                {
-                   [self uploadTrackEvents:trackBatch forWriteKey:writeKey completionHandler:completionHandler];
+                   [self uploadTrackEvents:trackBatch forWriteKey:writeKey scopeKey:scopeKey completionHandler:completionHandler];
                }else
                {
                    completionHandler(retry);
@@ -207,15 +207,15 @@ static const NSUInteger kMaxBatchSize = 475000; // 475KB
         return contextTask;
     }else
         {
-            return [self uploadTrackEvents:trackBatch forWriteKey:writeKey completionHandler:completionHandler];
+            return [self uploadTrackEvents:trackBatch forWriteKey:writeKey  scopeKey:scopeKey completionHandler:completionHandler];
         }
 }
 
-- (nullable NSURLSessionUploadTask *)uploadTrackEvents:(NSDictionary *)batch forWriteKey:(NSString *)writeKey completionHandler:(void (^)(BOOL retry))completionHandler
+- (nullable NSURLSessionUploadTask *)uploadTrackEvents:(NSDictionary *)batch forWriteKey:(NSString *)writeKey  scopeKey:(NSString *)scopeKey  completionHandler:(void (^)(BOOL retry))completionHandler
 {
     NSString *api = @"smile";
     
-    NSURLSession *session = [self sessionForWriteKey:writeKey];
+    NSURLSession *session = [self sessionForWriteKey:writeKey  scopeKey:scopeKey];
 
     NSURL *url = [[NSURL URLWithString:self.url] URLByAppendingPathComponent:api];
     NSMutableURLRequest *request = self.requestFactory(url);
